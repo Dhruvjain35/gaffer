@@ -1,47 +1,47 @@
 # Voiceover — final cut (2:24)
 
-Just read it like you're telling a friend. Short sentences. Pause wherever it feels right.
-If you fall behind the video, skip a sentence. Never rush.
+Read it like you're explaining it to a friend. Pause at periods. If you drift behind
+the video, drop a sentence and keep going.
 
 ---
 
 **0:00 to 0:05, title card**
 
-The World Cup starts today. So we built Gaffer.
+The World Cup kicks off today. Millions of fans, three countries, and a lot of questions. So we built Gaffer.
 
 **0:05 to 0:18, app appears, questions firing**
 
-It's a matchday concierge. Every answer gets traced to Arize Phoenix, and a Gemini judge scores it live.
+It's a matchday concierge built on Gemini and Google Cloud. Every single answer gets traced to Arize Phoenix, and a second model, the referee, scores it live while you watch.
 
 **0:18 to 0:37, the misses land**
 
-If the answer is grounded in real data, that's a goal. If it answered from memory, that's a miss. And there's two misses on day one. Both filed straight to Phoenix.
+If the answer came from real verified data, that's a goal. If the model just made it up from memory, that's a miss. And right there, two misses on day one. Both of them filed to Phoenix as annotations, on the exact trace where it happened.
 
 **0:37 to 0:50, scoreboard**
 
-Normally a human has to find these and fix them. We gave the agent a coach instead.
+Now normally this is where an engineer reads the logs and patches the prompt by hand. We did something different. We gave the agent a coach.
 
 **0:50 to 1:05, film room wakes up**
 
-This is the Gaffer. It's a second agent, and it works Arize's Phoenix MCP server live.
+This is the Gaffer. It's a second agent, and everything it does runs through Arize's official Phoenix MCP server, live, right now, in this panel.
 
 **1:05 to 1:30, coaching timelapse**
 
-It pulls up the failed answers. It saves every miss as a drill in a regression dataset. Then it rewrites the player's playbook.
+Watch it work. It pulls the failed answers from the game tape. It saves every miss into a regression dataset, so they become permanent drills. And then it rewrites the player's playbook to fix exactly what went wrong.
 
 **1:30 to 1:51, scrimmage and promotion**
 
-But it doesn't just trust its own rewrite. It tests the new playbook against the old one, and the judge scores both. Only the winner ships. No human, no redeploy.
+Here's my favorite part. It refuses to trust its own rewrite. It runs a scrimmage, old playbook against new, across every drill, and the referee scores both sides. Only if the new playbook wins does it get promoted to production. No human in the loop. No redeploy.
 
 **1:51 to 2:10, payoff**
 
-Same question, a few minutes later. Goal. And that mistake is now a drill it can never fail again.
+Same question, a few minutes later. Goal. Perfect score. And because that failure is a drill now, it can never quietly break again.
 
 **2:10 to 2:24, close**
 
-It watches its own game tape, coaches itself, and proves it got better. That's Gaffer.
+An agent that watches its own game tape, coaches itself, and proves it got better before it ships. That's Gaffer. Built in one night, on opening day.
 
 ---
 
-About 130 words over 2 minutes 24. That's a relaxed pace. One take.
+About 180 words over 2:24. Comfortable, continuous talking pace.
 Export under 3 minutes, upload to YouTube as Public.
