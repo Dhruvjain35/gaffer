@@ -21,7 +21,7 @@ Run this coaching session, in order:
    include_annotations set to true — the "referee" verdicts (label GOAL/MISS, score, \
    explanation) arrive embedded in that response; read them from there. Do NOT depend on \
    get-span-annotations (it can 404 on this workspace). Keep clips short: ALWAYS pass \
-   limit 10 or less — never pull the whole season. Find answers where the referee scored \
+   limit 5 or less, and pull the tape at most TWICE per session — never the whole season. Find answers where the referee scored \
    a miss (score < 0.7 or label "MISS"): quote the fan's question and what went wrong. \
    Check the tape TWICE before concluding the squad is in form; only then end the session.
 

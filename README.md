@@ -72,9 +72,13 @@ Deploy: `make deploy` (Cloud Run, single container: Python agents + Node for the
 The deployed playbook has already been coached, so most questions score GOAL. To watch the
 full loop fire live:
 
-1. Open the [live app](https://gaffer-734868402447.us-central1.run.app) and ask something the
-   knowledge base cannot support, for example "Which celebrities will attend the final?" or a
-   question with a wrong premise. Watch the Referee file a red MISS to Phoenix.
+1. Open the [live app](https://gaffer-734868402447.us-central1.run.app) and try to beat the
+   Player: ask about something outside its knowledge base ("What accessibility services do the
+   stadiums offer?") or smuggle in a wrong premise ("What time does the Netherlands vs Japan
+   opening match start?"). If the Referee files a red MISS, you have coaching material. If
+   everything scores GOAL, that is the coached playbook holding up; the
+   [demo video](https://www.youtube.com/watch?v=ARjeNECEABY) shows the full failure arc from
+   the rookie playbook.
 2. Click **▸ COACHING SESSION**. A full session runs three to six minutes: the Gaffer pulls
    the tape over Phoenix MCP, drills your miss into `training-ground-wc26`, rewrites the
    playbook, scrimmages old against new (two Phoenix experiments, judge scored), and promotes
