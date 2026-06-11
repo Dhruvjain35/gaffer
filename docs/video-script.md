@@ -1,7 +1,7 @@
 # GAFFER — 3-minute demo video script
 
 **Setup before recording:** run `uv run python -m scripts.seed_playbook` (production tag → baseline v1).
-Open two browser tabs: (1) the Cloud Run app, (2) Phoenix (Tracing → gaffer project).
+Open two browser tabs: (1) the Cloud Run app, (2) Phoenix (Tracing → gaffer-pitch project).
 Record screen + voiceover (QuickTime/CapCut). English. Calm pace — don't rush, don't speed up audio.
 
 ---
