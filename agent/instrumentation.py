@@ -29,7 +29,8 @@ def setup_tracing() -> Optional[Any]:
         auto_instrument=True,
         verbose=False,
     )
-    _provider.add_span_processor(_RootSpanRecorder())
+    # replace_default_processor=False: keep Phoenix's OTLP exporter alongside our recorder
+    _provider.add_span_processor(_RootSpanRecorder(), replace_default_processor=False)
     return _provider
 
 

@@ -16,7 +16,7 @@ from typing import Any
 
 logger = logging.getLogger(__name__)
 
-DATASET_NAME = "training-ground"
+DATASET_NAME = "training-ground-wc26"
 
 
 def _answer_once_sync(instruction: str, question: str) -> str:
@@ -54,7 +54,17 @@ def _answer_once_sync(instruction: str, question: str) -> str:
                         final = part.text
         return final
 
-    return asyncio.run(_run())
+    import time
+
+    for attempt in range(3):
+        try:
+            return asyncio.run(_run())
+        except Exception as exc:  # noqa: BLE001
+            if "RESOURCE_EXHAUSTED" in str(exc) and attempt < 2:
+                time.sleep(15 * (attempt + 1))
+                continue
+            raise
+    return ""
 
 
 def _expected_text(expected: Any) -> str:
@@ -119,7 +129,7 @@ def _run_scrimmage_sync(candidate_instruction: str) -> dict[str, Any]:
             evaluators=[referee],
             experiment_name=f"scrimmage-{side}-{secrets.token_hex(3)}",
             print_summary=False,
-            concurrency=2,
+            concurrency=1,  # stay under fresh-account Vertex burst quotas
         )
         scores: list[float] = []
         per_example: list[dict[str, Any]] = []

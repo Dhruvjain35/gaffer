@@ -15,7 +15,8 @@ from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
-JUDGE_MODEL = os.environ.get("JUDGE_MODEL", os.environ.get("GEMINI_MODEL", "gemini-3.5-flash"))
+# Separate quota pool from the Player's gemini-3.5: scrimmages burst many judge calls.
+JUDGE_MODEL = os.environ.get("JUDGE_MODEL", "gemini-2.5-flash")
 
 _JUDGE_TEMPLATE = """You are a strict football referee judging an AI World Cup concierge's answer.
 
@@ -61,14 +62,26 @@ def judge_answer(
         expected_clause=expected_clause,
     )
     try:
+        import time
+
         from google import genai
+        from google.genai import errors as genai_errors
 
         client = genai.Client()
-        resp = client.models.generate_content(
-            model=JUDGE_MODEL,
-            contents=prompt,
-            config={"response_mime_type": "application/json", "temperature": 0},
-        )
+        resp = None
+        for attempt in range(4):
+            try:
+                resp = client.models.generate_content(
+                    model=JUDGE_MODEL,
+                    contents=prompt,
+                    config={"response_mime_type": "application/json", "temperature": 0},
+                )
+                break
+            except genai_errors.ClientError as exc:
+                if getattr(exc, "code", None) == 429 and attempt < 3:
+                    time.sleep(8 * (attempt + 1))
+                    continue
+                raise
         verdict = json.loads(resp.text)
         score = max(0.0, min(1.0, float(verdict.get("score", 0))))
         label = "GOAL" if str(verdict.get("label", "")).upper() == "GOAL" else "MISS"

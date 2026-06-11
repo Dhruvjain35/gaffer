@@ -66,7 +66,9 @@ gaffer_agent = Agent(
     model=MODEL,
     name="the_gaffer",
     description="The coach: mines the Player's Phoenix traces, drills failures into a regression dataset, rewrites the playbook, and promotes it only after a winning scrimmage.",
-    instruction=GAFFER_INSTRUCTION,
+    instruction=GAFFER_INSTRUCTION.format(
+        project=os.environ.get("PHOENIX_PROJECT_NAME", "gaffer")
+    ),
     tools=[_phoenix_mcp(), FunctionTool(func=run_scrimmage)],
 )
 
