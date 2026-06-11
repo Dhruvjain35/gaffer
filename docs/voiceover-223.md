@@ -15,7 +15,7 @@ they reinforce you. If you fall behind, skip a line; never rush.
 
 **0:18–0:37 — verdicts land, the MISSes appear**
 > Grounded answer? Goal. — Answered from memory? — Miss. —
-> Three misses on opening day. Each one filed to Phoenix, on the exact trace.
+> Two misses on opening day. Each one filed to Phoenix, on the exact trace.
 
 **0:37–0:50 — scoreboard with misses**
 > Most teams patch this by hand. — We hired a coach.
