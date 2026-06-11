@@ -148,19 +148,33 @@ async def coach():
             return
         await _ensure_session(runner, GAFFER_APP, "coach", session_id)
         yield _sse({"type": "meta", "session_id": session_id, "playbook": "coaching session"})
-        try:
-            # Coach traces go to their own Phoenix project so the film room
-            # ("gaffer") contains only the Player's actual game tape.
-            from openinference.instrumentation import dangerously_using_project
+        # Coach traces go to their own Phoenix project so the film room
+        # ("gaffer") contains only the Player's actual game tape.
+        from openinference.instrumentation import dangerously_using_project
 
-            with dangerously_using_project("gaffer-coach"):
-                async for event, _, _ in _stream_run(
-                    runner, "coach", session_id, "Run a coaching session now."
-                ):
-                    yield _sse(event)
-        except Exception as exc:  # noqa: BLE001
-            yield _sse({"type": "error", "message": str(exc)[:300]})
-            return
+        message = "Run a coaching session now."
+        for attempt in range(3):
+            try:
+                with dangerously_using_project("gaffer-coach"):
+                    async for event, _, _ in _stream_run(
+                        runner, "coach", session_id, message
+                    ):
+                        yield _sse(event)
+                break
+            except Exception as exc:  # noqa: BLE001
+                if "RESOURCE_EXHAUSTED" in str(exc) and attempt < 2:
+                    yield _sse(
+                        {
+                            "type": "text",
+                            "text": "Quota breather — the bench takes thirty seconds, then play resumes.",
+                        }
+                    )
+                    await asyncio.sleep(30)
+                    # Same session: the coach keeps its context and picks up where it left off.
+                    message = "Continue the coaching session from where you left off."
+                    continue
+                yield _sse({"type": "error", "message": str(exc)[:300]})
+                return
         yield _sse({"type": "done"})
 
     return StreamingResponse(gen(), media_type="text/event-stream")

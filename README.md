@@ -14,7 +14,7 @@ Every agent ships with a flawed prompt. Most teams find out in production and pa
 
 - **The Player** answers real fan questions (stadiums, schedules, policies, travel) — grounded in a verified knowledge base, traced end-to-end to Phoenix via OpenInference.
 - **The Referee** (Gemini LLM-as-judge) scores every single answer live — `GOAL` or `MISS` — and files the verdict as a span annotation on the exact trace.
-- **The Gaffer** (coach agent) reviews the game tape through the **Phoenix MCP server**: pulls failed traces, names the failure patterns, drills every miss into a regression dataset (`training-ground`), rewrites the playbook, and runs a **scrimmage** — two Phoenix experiments, old prompt vs new, scored by the Referee.
+- **The Gaffer** (coach agent) reviews the game tape through the **Phoenix MCP server**: pulls failed traces, names the failure patterns, drills every miss into a regression dataset (`training-ground-wc26`), rewrites the playbook, and runs a **scrimmage** — two Phoenix experiments, old prompt vs new, scored by the Referee.
 - **Promotion is gated on evidence.** Only if the candidate playbook beats production does the Gaffer move the `production` tag. The Player pulls its prompt from Phoenix's registry by tag at session start — **Phoenix is the deployment mechanism**, not a dashboard.
 
 No human in the loop. No redeploy. The next fan question runs on the improved playbook, and the regression dataset guarantees old failures stay fixed.
@@ -27,7 +27,7 @@ No human in the loop. No redeploy. The next fan question runs on the improved pl
    OpenInference traces  │  traces · annotations · prompt registry    │
       ┌─────────────────▶│  datasets · experiments                    │
       │                  └───────┬───────────────────▲────────────────┘
-      │                          │ prompt by tag      │ MCP (27 tools)
+      │                          │ prompt by tag      │ MCP (16 tools)
       │                          ▼ "production"       │
 ┌─────┴──────┐  questions  ┌──────────┐         ┌─────┴──────┐
 │  Fan (web) │────────────▶│  PLAYER  │         │   GAFFER   │
@@ -66,6 +66,24 @@ make dev                   # http://localhost:8080
 Ask questions on **THE PITCH**. Watch verdicts land. Then hit **▸ COACHING SESSION** and watch the Gaffer work the film room — every Phoenix MCP call streams live.
 
 Deploy: `make deploy` (Cloud Run, single container: Python agents + Node for the MCP server).
+
+## For judges: the two-minute live tour
+
+The deployed playbook has already been coached, so most questions score GOAL. To watch the
+full loop fire live:
+
+1. Open the [live app](https://gaffer-734868402447.us-central1.run.app) and ask something the
+   knowledge base cannot support, for example "Which celebrities will attend the final?" or a
+   question with a wrong premise. Watch the Referee file a red MISS to Phoenix.
+2. Click **▸ COACHING SESSION**. A full session runs three to six minutes: the Gaffer pulls
+   the tape over Phoenix MCP, drills your miss into `training-ground-wc26`, rewrites the
+   playbook, scrimmages old against new (two Phoenix experiments, judge scored), and promotes
+   only on a win. The promotion banner is the payoff.
+3. Re-ask your question. The playbook chip in the header shows the new version, served from
+   the Phoenix prompt registry by tag. No redeploy happened.
+
+The [demo video](https://www.youtube.com/watch?v=ARjeNECEABY) shows the same arc in 2:24 if
+you prefer to watch one we ran on opening day.
 
 ## Why this matters beyond football
 
