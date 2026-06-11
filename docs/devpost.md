@@ -1,4 +1,4 @@
-# Devpost submission — GAFFER
+# Devpost submission: GAFFER
 
 **Title:** GAFFER, the World Cup concierge that coaches itself
 
