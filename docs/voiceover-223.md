@@ -1,44 +1,47 @@
-# Voiceover — FINAL CUT (~2:22) — paced to be SPEAKABLE
+# Voiceover — final cut (2:24)
 
-Rule used: ~2.3 spoken words per second, with air. Don't chase the captions —
-they reinforce you. If you fall behind, skip a line; never rush.
-( — ) means breathe.
-
----
-
-**0:00–0:05 — title card**
-> The World Cup starts today. — Meet GAFFER.
-
-**0:05–0:18 — app appears, questions firing (2× speed)**
-> A matchday concierge. — Every answer is traced to Arize Phoenix —
-> and scored live by a Gemini judge.
-
-**0:18–0:37 — verdicts land, the MISSes appear**
-> Grounded answer? Goal. — Answered from memory? — Miss. —
-> Two misses on opening day. Each one filed to Phoenix, on the exact trace.
-
-**0:37–0:50 — scoreboard with misses**
-> Most teams patch this by hand. — We hired a coach.
-
-**0:50–1:05 — film room wakes up, MCP calls streaming**
-> This is the Gaffer. A second agent — working Arize's Phoenix MCP server, live.
-
-**1:05–1:30 — coaching timelapse (let it breathe — only two lines)**
-> It pulls the failed traces. — Drills every miss into a regression dataset. —
-> Then it rewrites the Player's playbook.
-
-**1:30–1:51 — scrimmage → PROMOTION banner**
-> But it doesn't trust its own rewrite. — It runs a scrimmage: old playbook
-> versus new, judge-scored. — Only the winner gets promoted. — No human. No redeploy.
-
-**1:51–2:10 — payoff: same question, GOAL 1.00**
-> Same question, minutes later. — Goal. — And that failure is now a drill
-> it can never fail again.
-
-**2:10–2:22 — second GOAL + close card**
-> Trace it. Judge it. Drill it. — Prove it. Promote it. — That's GAFFER.
+Just read it like you're telling a friend. Short sentences. Pause wherever it feels right.
+If you fall behind the video, skip a sentence. Never rush.
 
 ---
 
-Total: ~120 words across 142 seconds. That's relaxed. One take is enough.
-Export ≤3:00 · upload YouTube **PUBLIC**.
+**0:00 to 0:05, title card**
+
+The World Cup starts today. So we built Gaffer.
+
+**0:05 to 0:18, app appears, questions firing**
+
+It's a matchday concierge. Every answer gets traced to Arize Phoenix, and a Gemini judge scores it live.
+
+**0:18 to 0:37, the misses land**
+
+If the answer is grounded in real data, that's a goal. If it answered from memory, that's a miss. And there's two misses on day one. Both filed straight to Phoenix.
+
+**0:37 to 0:50, scoreboard**
+
+Normally a human has to find these and fix them. We gave the agent a coach instead.
+
+**0:50 to 1:05, film room wakes up**
+
+This is the Gaffer. It's a second agent, and it works Arize's Phoenix MCP server live.
+
+**1:05 to 1:30, coaching timelapse**
+
+It pulls up the failed answers. It saves every miss as a drill in a regression dataset. Then it rewrites the player's playbook.
+
+**1:30 to 1:51, scrimmage and promotion**
+
+But it doesn't just trust its own rewrite. It tests the new playbook against the old one, and the judge scores both. Only the winner ships. No human, no redeploy.
+
+**1:51 to 2:10, payoff**
+
+Same question, a few minutes later. Goal. And that mistake is now a drill it can never fail again.
+
+**2:10 to 2:24, close**
+
+It watches its own game tape, coaches itself, and proves it got better. That's Gaffer.
+
+---
+
+About 130 words over 2 minutes 24. That's a relaxed pace. One take.
+Export under 3 minutes, upload to YouTube as Public.
