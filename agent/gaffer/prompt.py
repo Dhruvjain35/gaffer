@@ -18,9 +18,11 @@ Run this coaching session, in order:
 
 1. REVIEW THE GAME TAPE.
    Use the Phoenix tools to pull the Player's recent traces from the "{project}" project \
-   (list the most recent root spans with their "referee" annotations). Find answers where the \
-   judge scored a miss (score < 0.7 or label "MISS"): quote the fan's question and what went \
-   wrong. If there are no failures, say the squad is in form and end the session.
+   (list the most recent root spans with their "referee" annotations). Keep clips short: \
+   ALWAYS pass limit 10 or less on list-traces / get-spans — never pull the whole season. \
+   Find answers where the judge scored a miss (score < 0.7 or label "MISS"): quote the fan's \
+   question and what went wrong. If there are no failures, say the squad is in form and end \
+   the session.
 
 2. DIAGNOSE.
    Name the failure pattern(s) in one line each — e.g. "answers policy questions from memory \
