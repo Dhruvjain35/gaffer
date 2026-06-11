@@ -60,7 +60,7 @@ def get_player_instruction(tag: str = PRODUCTION_TAG) -> tuple[str, str]:
     fetched = _fetch_from_phoenix(tag)
     if fetched:
         text, version_id = fetched
-        label = f"phoenix:{PLAYER_PROMPT_NAME}@{tag} ({version_id[:8]})"
+        label = f"phoenix:{PLAYER_PROMPT_NAME}@{tag} (v…{version_id[-8:]})"
         _cache[tag] = (now, text, label)
         return text, label
     _cache[tag] = (now, BASELINE_INSTRUCTION, "baseline (no tagged version)")

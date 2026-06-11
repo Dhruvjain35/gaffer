@@ -162,7 +162,7 @@ section{display:flex;flex-direction:column;min-height:0;position:relative}
   <div class="spacer"></div>
   <div class="tag">
     <div class="lab">Active playbook · Phoenix registry</div>
-    <div class="val" id="playbook">connecting…</div>
+    <a class="val" id="playbook" href="#" target="_blank" rel="noopener" style="text-decoration:none">connecting…</a>
   </div>
   <div class="coachwrap"><button class="coach" id="coachBtn">▸ Coaching session</button></div>
 </header>
@@ -192,7 +192,8 @@ section{display:flex;flex-direction:column;min-height:0;position:relative}
         The Gaffer reviews the Player's traces in Phoenix: failed answers → drills in the
         <b>regression dataset</b> → rewritten playbook → <span class="k">scrimmage</span> (two Phoenix experiments,
         judge-scored) → promotion <b>only if the new playbook wins</b>.<br>
-        Every move is a live <span class="k">Phoenix MCP</span> call — you'll see each one.
+        Every move is a live <span class="k">Phoenix MCP</span> call — you'll see each one.<br>
+        A full session runs <b>several minutes</b>; the tape keeps rolling the whole way.
       </div>
     </div>
   </section>
@@ -215,6 +216,7 @@ SUGGESTIONS.forEach(q=>{const b=document.createElement('button');b.textContent=q
 
 fetch('/api/state').then(r=>r.json()).then(s=>{
   $('playbook').textContent=s.playbook;
+  if(s.phoenix_url)$('playbook').href=s.phoenix_url;
   if(!s.phoenix)$('pxdot').classList.add('off');
 });
 

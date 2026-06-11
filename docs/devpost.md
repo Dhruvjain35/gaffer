@@ -31,9 +31,9 @@ Python ADK agents on `gemini-3.5-flash` (Vertex AI, global endpoint); `arize-pho
 
 A complete, working self-improvement loop — not a mockup:
 
-- **Scrimmage, judge-scored over the regression dataset: old playbook 0.38 → coached playbook 0.60.** Two Phoenix experiments per session, promotion gated on the win.
+- **Scrimmage, judge-scored over the regression dataset: old playbook 0.38 → coached playbook 0.60 — a 58% relative improvement in one session.** Two Phoenix experiments per session, promotion gated on the win — and because nothing ships without beating production on the full drill set, quality only ratchets upward.
 - **Live failures coached into perfection**: "which cities have rail to the stadium" MISS 0.00 → GOAL 1.00; same arc for Houston weather, MetLife transit, and power-bank policy questions.
-- **11 playbook versions in the Phoenix prompt registry** — every production promotion made by the Gaffer itself, through `add-prompt-version-tag`, only after a winning experiment.
+- **13 playbook versions in the Phoenix prompt registry** — every production promotion made by the Gaffer itself, through `add-prompt-version-tag`, only after a winning experiment.
 - The demo video shows the full arc happening live on the hosted URL: three misses on opening day → coaching session → promotion banner → same questions scoring GOAL 1.00.
 - Knowledge base of 16 venues, 48 teams, fixtures and FIFA fan policies — every fact verified against primary sources, all cited in-repo, doubling as eval ground truth.
 
