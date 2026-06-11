@@ -149,10 +149,15 @@ async def coach():
         await _ensure_session(runner, GAFFER_APP, "coach", session_id)
         yield _sse({"type": "meta", "session_id": session_id, "playbook": "coaching session"})
         try:
-            async for event, _, _ in _stream_run(
-                runner, "coach", session_id, "Run a coaching session now."
-            ):
-                yield _sse(event)
+            # Coach traces go to their own Phoenix project so the film room
+            # ("gaffer") contains only the Player's actual game tape.
+            from openinference.instrumentation import dangerously_using_project
+
+            with dangerously_using_project("gaffer-coach"):
+                async for event, _, _ in _stream_run(
+                    runner, "coach", session_id, "Run a coaching session now."
+                ):
+                    yield _sse(event)
         except Exception as exc:  # noqa: BLE001
             yield _sse({"type": "error", "message": str(exc)[:300]})
             return

@@ -28,6 +28,7 @@ def _answer_once_sync(instruction: str, question: str) -> str:
         from google.adk.runners import InMemoryRunner
         from google.adk.tools import FunctionTool
         from google.genai import types
+        from openinference.instrumentation import dangerously_using_project
 
         from agent.player.tools.knowledge import ALL_TOOLS
 
@@ -43,15 +44,17 @@ def _answer_once_sync(instruction: str, question: str) -> str:
             app_name="gaffer_scrimmage", user_id="scrimmage", session_id=sid
         )
         final = ""
-        async for event in runner.run_async(
-            user_id="scrimmage",
-            session_id=sid,
-            new_message=types.Content(role="user", parts=[types.Part(text=question)]),
-        ):
-            if event.content and event.content.parts:
-                for part in event.content.parts:
-                    if getattr(part, "text", None) and not getattr(event, "partial", False):
-                        final = part.text
+        # Scrimmage turns get their own project: only real fan turns belong in "gaffer".
+        with dangerously_using_project("gaffer-scrimmage"):
+            async for event in runner.run_async(
+                user_id="scrimmage",
+                session_id=sid,
+                new_message=types.Content(role="user", parts=[types.Part(text=question)]),
+            ):
+                if event.content and event.content.parts:
+                    for part in event.content.parts:
+                        if getattr(part, "text", None) and not getattr(event, "partial", False):
+                            final = part.text
         return final
 
     import time
