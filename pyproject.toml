@@ -1,0 +1,19 @@
+[project]
+name = "gaffer"
+version = "1.0.0"
+description = "GAFFER — a World Cup 2026 fan concierge that coaches itself. Google Cloud Rapid Agent Hackathon, Arize track."
+requires-python = ">=3.11"
+dependencies = [
+    "google-adk>=1.32.0",
+    "google-genai>=1.9.0",
+    "arize-phoenix>=15.2.0",
+    "openinference-instrumentation-google-adk>=0.1.11",
+    "opentelemetry-sdk>=1.27.0",
+    "opentelemetry-exporter-otlp-proto-http>=1.27.0",
+    "python-dotenv>=1.0.1",
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.30.0",
+]
+
+[tool.uv]
+package = false

@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GAFFER — the concierge that coaches itself</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pitch:#08130c; --pitch-2:#0c1a11; --line:#1d3325; --chalk:#f2f5ef;
+  --chalk-dim:#9fb3a4; --acid:#d8ff3e; --goal:#3eff8b; --miss:#ff5d4f;
+  --mono:"IBM Plex Mono",monospace; --body:"Archivo",sans-serif; --display:"Anton",sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  background:var(--pitch); color:var(--chalk); font-family:var(--body);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:72px 72px; background-position:center top;
+}
+header{
+  display:flex; align-items:center; gap:18px; padding:14px 22px;
+  border-bottom:2px solid var(--line); background:rgba(8,19,12,.92); backdrop-filter:blur(6px);
+  position:sticky; top:0; z-index:10;
+}
+.crest{
+  font-family:var(--display); font-size:34px; letter-spacing:.04em; line-height:1;
+  color:var(--acid); text-transform:uppercase;
+}
+.crest small{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.28em; color:var(--chalk-dim)}
+.spacer{flex:1}
+.chip{
+  font-family:var(--mono); font-size:11px; padding:6px 10px; border:1px solid var(--line);
+  border-radius:3px; color:var(--chalk-dim); white-space:nowrap; max-width:340px; overflow:hidden; text-overflow:ellipsis;
+}
+.chip b{color:var(--acid); font-weight:500}
+.scoreline{font-family:var(--display); font-size:22px; letter-spacing:.06em; display:flex; gap:10px; align-items:baseline}
+.scoreline .g{color:var(--goal)} .scoreline .m{color:var(--miss)}
+.scoreline small{font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--chalk-dim)}
+button.coach{
+  font-family:var(--display); font-size:16px; letter-spacing:.08em; text-transform:uppercase;
+  background:var(--acid); color:#0a130b; border:0; padding:12px 20px; cursor:pointer; border-radius:3px;
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+button.coach:hover{transform:translateY(-1px); box-shadow:0 4px 0 #5d7a17}
+button.coach:disabled{background:#3a4a2a; color:#7c8a6a; cursor:wait; box-shadow:none; transform:none}
+main{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:0; height:calc(100vh - 67px)}
+section{display:flex; flex-direction:column; min-height:0}
+.pitch{border-right:2px solid var(--line)}
+.panel-head{
+  font-family:var(--mono); font-size:11px; letter-spacing:.3em; color:var(--chalk-dim);
+  padding:12px 22px; border-bottom:1px solid var(--line); display:flex; gap:10px; align-items:center;
+  text-transform:uppercase; background:var(--pitch-2);
+}
+.panel-head .dot{width:8px;height:8px;border-radius:50%;background:var(--goal);box-shadow:0 0 8px var(--goal)}
+.panel-head .dot.off{background:var(--miss);box-shadow:none}
+.feed{flex:1; overflow-y:auto; padding:22px; display:flex; flex-direction:column; gap:16px}
+.msg{max-width:92%}
+.msg .who{font-family:var(--mono); font-size:9px; letter-spacing:.25em; color:var(--chalk-dim); margin-bottom:6px; text-transform:uppercase}
+.msg .bubble{
+  padding:14px 16px; border:1px solid var(--line); border-radius:3px; background:var(--pitch-2);
+  font-size:14.5px; line-height:1.65; white-space:pre-wrap; word-wrap:break-word;
+}
+.msg.fan{align-self:flex-end}
+.msg.fan .bubble{background:#132418; border-color:#2a4534}
+.toolrow{
+  font-family:var(--mono); font-size:11px; color:var(--chalk-dim);
+  display:flex; gap:8px; align-items:flex-start; padding:2px 0 2px 12px; border-left:2px solid var(--line);
+}
+.toolrow .tname{color:var(--acid)}
+.verdict{
+  display:flex; gap:10px; align-items:flex-start; margin-top:8px; padding:10px 12px;
+  border-radius:3px; font-family:var(--mono); font-size:11.5px; line-height:1.5;
+}
+.verdict.GOAL{border:1px solid #1d5c38; background:#0c2417; color:#bdf5d4}
+.verdict.MISS{border:1px solid #6e2a23; background:#2a120e; color:#ffd0ca}
+.verdict .badge{font-family:var(--display); font-size:15px; letter-spacing:.06em}
+.verdict.GOAL .badge{color:var(--goal)} .verdict.MISS .badge{color:var(--miss)}
+.composer{display:flex; gap:10px; padding:16px 22px; border-top:1px solid var(--line); background:var(--pitch-2)}
+.composer input{
+  flex:1; background:var(--pitch); border:1px solid var(--line); color:var(--chalk);
+  font-family:var(--body); font-size:14px; padding:13px 14px; border-radius:3px; outline:none;
+}
+.composer input:focus{border-color:var(--acid)}
+.composer button{
+  font-family:var(--display); letter-spacing:.06em; background:var(--chalk); color:#0a130b; border:0;
+  padding:0 22px; cursor:pointer; border-radius:3px; font-size:15px; text-transform:uppercase;
+}
+.suggest{display:flex; gap:8px; padding:10px 22px 14px; flex-wrap:wrap; background:var(--pitch-2)}
+.suggest button{
+  font-family:var(--mono); font-size:10.5px; background:transparent; color:var(--chalk-dim);
+  border:1px solid var(--line); padding:6px 10px; border-radius:99px; cursor:pointer;
+}
+.suggest button:hover{color:var(--acid); border-color:var(--acid)}
+.filmroom .feed{font-size:13px}
+.coach-step{border-left:2px solid var(--acid); padding:4px 0 4px 14px}
+.coach-step .who{font-family:var(--mono); font-size:9px; letter-spacing:.25em; color:var(--acid); margin-bottom:4px}
+.coach-step .txt{font-size:13.5px; line-height:1.65; white-space:pre-wrap}
+.promo{
+  border:1px solid var(--acid); background:#1a2410; padding:14px 16px; border-radius:3px;
+  font-family:var(--display); font-size:17px; letter-spacing:.05em; color:var(--acid); text-transform:uppercase;
+}
+.empty{color:var(--chalk-dim); font-family:var(--mono); font-size:12px; line-height:1.9; padding:10px}
+.empty b{color:var(--chalk)}
+@media (max-width:980px){ main{grid-template-columns:1fr; height:auto} .pitch{border-right:0} }
+</style>
+</head>
+<body>
+<header>
+  <div class="crest">Gaffer<small>WC26 MATCHDAY CONCIERGE · COACHES ITSELF</small></div>
+  <div class="spacer"></div>
+  <div class="scoreline"><span class="g" id="goals">0</span><small>GOALS</small><span style="color:var(--chalk-dim)">–</span><span class="m" id="misses">0</span><small>MISSES</small></div>
+  <div class="chip" id="playbook">playbook: …</div>
+  <button class="coach" id="coachBtn">▸ Coaching session</button>
+</header>
+<main>
+  <section class="pitch">
+    <div class="panel-head"><span class="dot" id="pxdot"></span>THE PITCH — ask the player</div>
+    <div class="feed" id="chatFeed">
+      <div class="empty"><b>Matchday one. Ask anything about World Cup 2026.</b><br>
+      Every answer is traced to Arize Phoenix and scored live by the Referee (Gemini LLM-as-judge).<br>
+      When the Player misses, hit <b>▸ COACHING SESSION</b> and watch the Gaffer fix him — with evidence.</div>
+    </div>
+    <div class="suggest" id="suggest"></div>
+    <div class="composer">
+      <input id="input" placeholder="e.g. Can I bring my reusable water bottle to the match?" autocomplete="off">
+      <button id="send">Send</button>
+    </div>
+  </section>
+  <section class="filmroom">
+    <div class="panel-head"><span class="dot off" id="frdot"></span>THE FILM ROOM — the gaffer's bench</div>
+    <div class="feed" id="coachFeed">
+      <div class="empty">The Gaffer reviews the game tape in Phoenix: failed answers → drills in the
+      <b>training-ground</b> dataset → rewritten playbook → scrimmage (Phoenix experiment) →
+      promotion <b>only if the new playbook wins</b>. His every move is a live Phoenix MCP call — watch them here.</div>
+    </div>
+  </section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const sessionId = Math.random().toString(36).slice(2);
+let goals=0, misses=0;
+
+const SUGGESTIONS=[
+  "Can I bring my reusable water bottle?",
+  "How do I get to MetLife Stadium from Manhattan?",
+  "Who's in Group C?",
+  "Can I leave at halftime and come back in?",
+  "When's the final and where?",
+  "Do I need a visa to follow my team across all three countries?",
+];
+SUGGESTIONS.forEach(q=>{const b=document.createElement('button');b.textContent=q;b.onclick=()=>{$('input').value=q;send();};$('suggest').appendChild(b);});
+
+fetch('/api/state').then(r=>r.json()).then(s=>{
+  $('playbook').innerHTML='playbook: <b>'+esc(s.playbook)+'</b>';
+  if(!s.phoenix)$('pxdot').classList.add('off');
+});
+
+function esc(s){return (s??'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function el(html){const d=document.createElement('div');d.innerHTML=html;return d.firstElementChild}
+function scroll(feed){feed.scrollTop=feed.scrollHeight}
+
+async function consumeSSE(resp, onEvent){
+  const reader=resp.body.getReader(); const dec=new TextDecoder(); let buf='';
+  for(;;){
+    const {done,value}=await reader.read(); if(done)break;
+    buf+=dec.decode(value,{stream:true});
+    let i; while((i=buf.indexOf('\n\n'))>=0){
+      const chunk=buf.slice(0,i); buf=buf.slice(i+2);
+      const line=chunk.split('\n').find(l=>l.startsWith('data: '));
+      if(line) onEvent(JSON.parse(line.slice(6)));
+    }
+  }
+}
+
+async function send(){
+  const q=$('input').value.trim(); if(!q)return;
+  $('input').value='';
+  const feed=$('chatFeed');
+  feed.appendChild(el(`<div class="msg fan"><div class="who">Fan</div><div class="bubble">${esc(q)}</div></div>`));
+  const holder=el(`<div class="msg player"><div class="who">The Player</div><div class="tools"></div><div class="bubble">…</div></div>`);
+  feed.appendChild(holder); scroll(feed);
+  const bubble=holder.querySelector('.bubble'), tools=holder.querySelector('.tools');
+  try{
+    const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,session_id:sessionId})});
+    await consumeSSE(resp, ev=>{
+      if(ev.type==='meta'){$('playbook').innerHTML='playbook: <b>'+esc(ev.playbook)+'</b>';}
+      if(ev.type==='tool_call'){tools.appendChild(el(`<div class="toolrow">▸ <span class="tname">${esc(ev.name)}</span><span>${esc(JSON.stringify(ev.args))}</span></div>`));}
+      if(ev.type==='text'){bubble.textContent=ev.text;}
+      if(ev.type==='eval'){
+        const v=el(`<div class="verdict ${ev.label}"><span class="badge">${ev.label==='GOAL'?'⚽ GOAL':'✕ MISS'}</span><span>${(ev.score??0).toFixed(2)} — ${esc(ev.explanation)}${ev.annotated?' · filed to Phoenix':''}</span></div>`);
+        holder.appendChild(v);
+        if(ev.label==='GOAL'){goals++;$('goals').textContent=goals;}else{misses++;$('misses').textContent=misses;}
+      }
+      if(ev.type==='error'){bubble.textContent='⚠ '+ev.message;}
+      scroll(feed);
+    });
+  }catch(e){bubble.textContent='⚠ '+e.message;}
+}
+$('send').onclick=send;
+$('input').addEventListener('keydown',e=>{if(e.key==='Enter')send();});
+
+$('coachBtn').onclick=async()=>{
+  const btn=$('coachBtn'); btn.disabled=true; btn.textContent='■ In session…';
+  $('frdot').classList.remove('off');
+  const feed=$('coachFeed'); feed.innerHTML='';
+  try{
+    const resp=await fetch('/api/coach',{method:'POST'});
+    await consumeSSE(resp, ev=>{
+      if(ev.type==='tool_call'){
+        feed.appendChild(el(`<div class="toolrow">▸ <span class="tname">${esc(ev.name)}</span><span>${esc(JSON.stringify(ev.args).slice(0,220))}</span></div>`));
+        if(ev.name==='add-prompt-version-tag'){feed.appendChild(el(`<div class="promo">⚽ PLAYBOOK PROMOTED TO PRODUCTION</div>`));}
+      }
+      if(ev.type==='tool_result'){feed.appendChild(el(`<div class="toolrow" style="opacity:.65">◂ <span class="tname">${esc(ev.name)}</span><span>${esc(ev.preview.slice(0,180))}</span></div>`));}
+      if(ev.type==='text'){feed.appendChild(el(`<div class="coach-step"><div class="who">The Gaffer</div><div class="txt">${esc(ev.text)}</div></div>`));}
+      if(ev.type==='error'){feed.appendChild(el(`<div class="coach-step"><div class="txt">⚠ ${esc(ev.message)}</div></div>`));}
+      if(ev.type==='done'){fetch('/api/state').then(r=>r.json()).then(s=>{$('playbook').innerHTML='playbook: <b>'+esc(s.playbook)+'</b>';});}
+      scroll(feed);
+    });
+  }catch(e){feed.appendChild(el(`<div class="coach-step"><div class="txt">⚠ ${esc(e.message)}</div></div>`));}
+  btn.disabled=false; btn.textContent='▸ Coaching session';
+};
+</script>
+</body>
+</html>

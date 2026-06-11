@@ -1,0 +1,57 @@
+{
+  "_meta": {"description": "FIFA Fan Festivals, weather and transit tips for WC26 host cities.", "verified": "2026-06-11"},
+  "fan_festivals": {
+    "overview": "Official FIFA Fan Festival staged in 13 host cities (a tournament record), most running all 39 days June 11 - July 19, free entry, with giant-screen match broadcasts, concerts/DJ sets, food and soccer activations.",
+    "confirmed_sites": {
+      "Mexico City": "Zocalo (main square)",
+      "Guadalajara": "Plaza Liberacion",
+      "Monterrey": "Parque Fundidora (80-hectare urban park, all 39 days)",
+      "Toronto": "Fort York National Historic Site & The Bentway",
+      "Vancouver": "Hastings Park / PNE (Pacific National Exhibition)",
+      "Atlanta": "Centennial Olympic Park",
+      "Boston": "Boston City Hall Plaza",
+      "Dallas": "Fair Park",
+      "Houston": "EaDo (East Downtown soccer district)",
+      "Kansas City": "National WWI Museum and Memorial",
+      "Los Angeles": "LA Memorial Coliseum",
+      "Philadelphia": "Lemon Hill, East Fairmount Park (all 39 days)",
+      "New York / New Jersey": "Original Liberty State Park site cancelled Feb 2026; replaced by Fan Zone Queens at USTA Billie Jean King National Tennis Center (Jun 17-28) and Fan Village Rockefeller Center (Jul 4-19)"
+    },
+    "tbd_sites": {
+      "Miami": "TBD - not confirmed in verified sources this session",
+      "Seattle": "TBD - not confirmed in verified sources this session",
+      "San Francisco Bay Area": "TBD - not confirmed in verified sources this session"
+    }
+  },
+  "weather_june_july": {
+    "highest_heat_risk": "Dallas, Houston, Miami, Monterrey regularly hit dangerous humid-heat levels (wet-bulb 28C+). Forecasters expect an unusually hot summer.",
+    "Houston": "Worst heat+humidity combo of any host city; low-mid 90s F with dew points in the 70s - but matches are indoors with AC.",
+    "Dallas_Arlington": "Afternoon WBGT frequently exceeds 82.4 F / 28 C; matches indoors with AC.",
+    "Miami": "Highs ~90 F, average heat index ~102 F; most matches late afternoon.",
+    "Monterrey": "Low-mid 90s F typical, occasional extremes to 110s.",
+    "Kansas_City": "Upper 80s-90 F with high humidity.",
+    "Philadelphia": "~26 days of 90 F+ across June-July.",
+    "New_York_New_Jersey": "Meadowlands averages ~18 days of 90 F+ across June-July.",
+    "Atlanta": "Hot, humid southern-inland city (30C+ common) - stadium has roof and AC.",
+    "Mexico_City": "Mild thanks to 7,200 ft altitude (rarely 90 F); thin air a bigger factor than heat.",
+    "Guadalajara": "Early-season tropical moisture possible (Tropical Storm Boris brought 1-2 in of rain just before the opener).",
+    "Vancouver": "Most comfortable host city: mid-60s to low-70s F, low humidity.",
+    "Seattle": "Mild Pacific Northwest coastal summer.",
+    "Toronto_Boston": "Northern cities - relatively mild, with occasional hot spells.",
+    "Los_Angeles_San_Francisco": "Mild mid-60s to low-70s F, cool evenings, SF morning fog - the exceptions to the heat trend."
+  },
+  "transit_tips": {
+    "rail_direct_to_stadium": ["Mexico City (Tren Ligero)", "Monterrey (Metrorrey L1 + walk)", "Houston (METRORail Red Line)", "Philadelphia (SEPTA Broad St Line)", "Seattle (Link 1 Line)", "Santa Clara/SF Bay (VTA at stadium)", "Atlanta (MARTA adjacent)", "Vancouver (SkyTrain)", "Toronto (GO Exhibition)", "Boston (express event trains)", "NY/NJ (NJ Transit matchday service)"],
+    "shuttle_or_car_dependent": ["Arlington/Dallas (TRE + free shuttle)", "Inglewood/LA (Metro C/K Line + shuttle)", "Miami Gardens (Brightline/Metrorail + shuttles)", "Kansas City (limited buses; most car-dependent)", "Guadalajara (BRT or FIFA Ride al Estadio shuttle + walk)"],
+    "money_savers": {
+      "Philadelphia": "SEPTA $2.90 to the stadium and FREE rides home after matches - cheapest big-city option.",
+      "Atlanta": "MARTA kept standard fares; ~$5 round trip.",
+      "Seattle": "ORCA 3-Day World Cup Pass: $18 unlimited regional transit.",
+      "Guadalajara": "All transit unified at 11 pesos/ride; buy a 30-peso Mi Movilidad card (many stations cashless).",
+      "Mexico_City": "Metro + Tren Ligero to Azteca costs only a few pesos (~25 pesos from airport, ~90 min).",
+      "Boston_warning": "Foxboro Stadium Train is $80 round trip - book mTicket early; driving parking is worse.",
+      "NYNJ_warning": "NJ Transit stadium round trip is $105, capped at 40,000 riders, app pre-purchase + return wristband mandatory - buy the moment your match is confirmed.",
+      "Dallas_LA_Miami_KC": "Budget extra time and money: these venues need shuttle transfers or rideshare/car."
+    }
+  }
+}

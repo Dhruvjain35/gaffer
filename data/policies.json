@@ -1,0 +1,35 @@
+{
+  "_meta": {"description": "Fan-relevant rules for FIFA World Cup 2026.", "verified": "2026-06-11"},
+  "ticketing": {
+    "format": "Mobile-only via the official FWC2026 Mobile Tickets app. Tickets cannot be printed, downloaded as PDF, or shown as screenshots/photos - these are NOT accepted for entry.",
+    "fifa_id": "Every attendee aged 13+ must have a registered FIFA ID linked to their match ticket.",
+    "id_at_gate": "Bring passport or government-issued photo ID matching the name on your FIFA ID."
+  },
+  "bag_policy": {
+    "allowed_bags": "Clear plastic/vinyl/PVC bags only, max 12 x 12 x 6 in (30x30x15 cm). Small non-clear wallets/purses up to 4.5 x 6.5 in also permitted.",
+    "water": "One factory-sealed, soft plastic, disposable water bottle up to 20 oz (590 ml) allowed at US and Canada matches. Reusable bottles and tumblers of any kind BANNED (FIFA reversed its refill policy in early June 2026, citing player safety).",
+    "toiletries": "Makeup, sunscreen, hand sanitizer allowed if 100 ml or less.",
+    "power_banks": "Allowed if no larger than 4.7 x 6.7 in."
+  },
+  "prohibited_items": [
+    "Noisemakers: vuvuzelas, whistles, air horns, loudspeakers, any device producing excessively loud sound",
+    "Umbrellas (any size)",
+    "Selfie sticks, monopods, tripods, professional photography gear",
+    "Pocket knives, screwdrivers, multi-tools and other work tools",
+    "Weapons of any kind, including firearms, mace, pepper spray",
+    "Reusable water bottles and tumblers"
+  ],
+  "re_entry": "No re-entry. Ticket holders who leave the stadium will not be readmitted except in exceptional circumstances such as a medical emergency.",
+  "alcohol": {
+    "availability": "Beer sold at all US, Mexico and Canada venues, consumption restricted to designated areas and official fan zones.",
+    "alcohol_free_options": "Some venues (e.g. BC Place, Vancouver) offer alcohol-free seating sections.",
+    "prices": "Large domestic beer ~$16.75, premium ~$18 at US venues (LA/SF and MetLife most expensive); Mexico City venues markedly cheaper (about 4 beers for ~GBP 8)."
+  },
+  "travel_entry": {
+    "general": "There is NO special World Cup visa. USA, Canada and Mexico each apply normal entry rules - qualify separately for each country you visit.",
+    "usa": "Visa Waiver Program nationals: ESTA online authorization. All others: B-1/B-2 visitor visa (apply early - interview backlogs are the most common preventable problem).",
+    "canada": "eTA (CAD $7, online at canada.ca/eta, usually approved in minutes) for ~50 eligible nationalities arriving by air; others need a visitor visa.",
+    "mexico": "Most nationalities (US, Canada, UK, EU, Japan, South Korea, Australia, etc.) enter visa-free up to 180 days with an FMM tourist card, now often handled digitally. Shortcut: holders of a valid multiple-entry US B-1/B-2 visa, Canadian TRV, UK, Schengen or Japan visa (or permanent residence there) enter Mexico visa-free.",
+    "tip": "ESTA + eTA together cost under ~$30 and typically take under an hour to apply for."
+  }
+}

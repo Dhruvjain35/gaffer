@@ -1,0 +1,153 @@
+{
+  "_meta": {
+    "description": "FIFA World Cup 2026 venues. FIFA mandates sponsor-free tournament names. All 16 venues had natural/hybrid grass (synthetic-fiber reinforced) installed per FIFA requirement.",
+    "verified": "2026-06-11",
+    "capacity_note": "Approximate World Cup configurations as reported by FIFA/host sources."
+  },
+  "venues": [
+    {
+      "fifa_name": "Estadio Ciudad de Mexico (Mexico City Stadium)",
+      "stadium_name": "Estadio Azteca (renamed Estadio Banorte for sponsorship in 2025)",
+      "city": "Mexico City",
+      "country": "Mexico",
+      "capacity_approx": 87523,
+      "transit": "Metro Line 2 to Tasquena, then Tren Ligero light rail to Estadio Azteca station. From airport: Metro Line 5 -> Pantitlan -> Line 9 -> Chabacano -> Line 2; ~90 min, ~25 pesos.",
+      "quirks": "Altitude ~7,200 ft (2,200 m). First stadium to host three WC opening matches (1970, 1986, 2026); hosted 1970 and 1986 finals. Renovated; expected near 90,000 for the tournament."
+    },
+    {
+      "fifa_name": "Estadio Guadalajara (Guadalajara Stadium)",
+      "stadium_name": "Estadio Akron",
+      "city": "Zapopan (Guadalajara metro), Jalisco",
+      "country": "Mexico",
+      "capacity_approx": 48000,
+      "transit": "No direct rail. Mi Macro Periferico BRT to 'Estadio Chivas' station + 15-20 min walk. Mi Tren Line 3 reaches Zapopan (BRT connection at Periferico Belenes). FIFA 'Ride al Estadio' shuttles from 10 pickup points (advance reservation; ~15 min walk from drop-off). Unified fare 11 pesos; Mi Movilidad card (30 pesos) required, many stations cashless.",
+      "quirks": "Home of Chivas; some sources list 49,000 capacity."
+    },
+    {
+      "fifa_name": "Estadio Monterrey (Monterrey Stadium)",
+      "stadium_name": "Estadio BBVA",
+      "city": "Guadalupe (Monterrey metro), Nuevo Leon",
+      "country": "Mexico",
+      "capacity_approx": 53500,
+      "transit": "Metrorrey Line 1 to Exposicion station, ~10 min walk. Buses 214, 223, TME, 093 also serve the venue.",
+      "quirks": "Among the four highest heat-risk host cities; June-July highs low-to-mid 90s F, rare 110s."
+    },
+    {
+      "fifa_name": "Dallas Stadium",
+      "stadium_name": "AT&T Stadium",
+      "city": "Arlington, Texas",
+      "country": "USA",
+      "capacity_approx": 92967,
+      "transit": "No rail in Arlington. Official route: Trinity Railway Express from Victory Station (Dallas) or Central Station (Fort Worth) to CentrePort, then free matchday shuttle (match ticket required) + ~0.5 mile walk.",
+      "quirks": "Largest WC26 venue. Retractable roof + air conditioning. Hosts a semifinal (July 14)."
+    },
+    {
+      "fifa_name": "New York New Jersey Stadium",
+      "stadium_name": "MetLife Stadium",
+      "city": "East Rutherford, New Jersey",
+      "country": "USA",
+      "capacity_approx": 82500,
+      "transit": "NJ Transit via Secaucus Junction, then matchday-only train/bus (ticket holders only). Round trip $105, capped at 40,000/match, pre-purchase on NJ Transit app; physical wristband required for return. Penn Station NY <-> Secaucus restricted to WC ticket holders from 4 hours pre-kickoff.",
+      "quirks": "Hosts the FINAL, July 19, 2026, 3:00 PM EDT. Open-air, no AC."
+    },
+    {
+      "fifa_name": "Atlanta Stadium",
+      "stadium_name": "Mercedes-Benz Stadium",
+      "city": "Atlanta, Georgia",
+      "country": "USA",
+      "capacity_approx": 75000,
+      "transit": "MARTA rail, two adjacent stations (Vine City / GWCC side). Standard fares kept for WC; ~$5 round trip.",
+      "quirks": "Retractable roof + air conditioning. Hosts a semifinal (July 15)."
+    },
+    {
+      "fifa_name": "Kansas City Stadium",
+      "stadium_name": "GEHA Field at Arrowhead Stadium",
+      "city": "Kansas City, Missouri",
+      "country": "USA",
+      "capacity_approx": 73000,
+      "transit": "No rail. RideKC buses get near the stadium but service is limited with a walk remaining - the most car/shuttle-dependent US venue.",
+      "quirks": "Open-air; hot and humid (upper 80s-90 F). Hosts a quarterfinal (July 11)."
+    },
+    {
+      "fifa_name": "Houston Stadium",
+      "stadium_name": "NRG Stadium",
+      "city": "Houston, Texas",
+      "country": "USA",
+      "capacity_approx": 72000,
+      "transit": "METRORail Red Line direct from downtown to NRG Park (Stadium Park/Astrodome station).",
+      "quirks": "Retractable roof + air conditioning - heat a concern outside, not during matches. Houston has the most dangerous June-July heat+humidity of all host cities."
+    },
+    {
+      "fifa_name": "San Francisco Bay Area Stadium",
+      "stadium_name": "Levi's Stadium",
+      "city": "Santa Clara, California",
+      "country": "USA",
+      "capacity_approx": 71000,
+      "transit": "VTA light rail stop directly at the stadium. From SF: Caltrain + VTA; from East Bay: BART + VTA.",
+      "quirks": "Open-air; mild Bay Area summers."
+    },
+    {
+      "fifa_name": "Los Angeles Stadium",
+      "stadium_name": "SoFi Stadium",
+      "city": "Inglewood, California",
+      "country": "USA",
+      "capacity_approx": 70000,
+      "transit": "LA Metro C or K Line light rail + short SoFi Shuttle bus ride.",
+      "quirks": "Fixed translucent canopy with open sides (no AC). Hosts a quarterfinal (July 10). USA opens here June 12."
+    },
+    {
+      "fifa_name": "Philadelphia Stadium",
+      "stadium_name": "Lincoln Financial Field",
+      "city": "Philadelphia, Pennsylvania",
+      "country": "USA",
+      "capacity_approx": 69000,
+      "transit": "SEPTA Broad Street Line to NRG Station at the sports complex; $2.90 fare and FREE rides leaving after WC matches.",
+      "quirks": "Open-air; Philly averages ~26 days of 90 F+ across June-July."
+    },
+    {
+      "fifa_name": "Seattle Stadium",
+      "stadium_name": "Lumen Field",
+      "city": "Seattle, Washington",
+      "country": "USA",
+      "capacity_approx": 69000,
+      "transit": "Sound Transit Link 1 Line (Stadium / International District stations). ORCA 3-Day World Cup Pass: $18 unlimited regional rides.",
+      "quirks": "Mild Pacific Northwest summer."
+    },
+    {
+      "fifa_name": "Miami Stadium",
+      "stadium_name": "Hard Rock Stadium",
+      "city": "Miami Gardens, Florida",
+      "country": "USA",
+      "capacity_approx": 65000,
+      "transit": "No nearby rail. Brightline to Aventura + Hard Rock Stadium Connect shuttle (departs ~10 min after train); Game Day Express shuttles link Metrorail, Metrobus, Tri-Rail, Brightline; or Metrorail to Golden Glades / Dr. MLK Jr. + Metrobus Route 297.",
+      "quirks": "~15 mi north of downtown Miami. Open-air canopy. Hosts a quarterfinal (July 11) and third-place match (July 18). Avg heat index ~102 F mid-June to mid-July."
+    },
+    {
+      "fifa_name": "Boston Stadium",
+      "stadium_name": "Gillette Stadium",
+      "city": "Foxborough, Massachusetts",
+      "country": "USA",
+      "capacity_approx": 65000,
+      "transit": "14 express 'Boston Stadium Trains' per match between South Station and Foxboro Station (no intermediate stops). Round trip $80 via MBTA mTicket.",
+      "quirks": "~28 mi from Boston. Open-air. Hosts a quarterfinal (July 9)."
+    },
+    {
+      "fifa_name": "Vancouver Stadium",
+      "stadium_name": "BC Place",
+      "city": "Vancouver, British Columbia",
+      "country": "Canada",
+      "capacity_approx": 54000,
+      "transit": "SkyTrain via Expo Line (Stadium-Chinatown) or Canada Line (Yaletown-Roundhouse).",
+      "quirks": "Retractable roof but effectively open-air, no AC. Alcohol-free seating sections offered. Mildest host-city weather."
+    },
+    {
+      "fifa_name": "Toronto Stadium",
+      "stadium_name": "BMO Field",
+      "city": "Toronto, Ontario",
+      "country": "Canada",
+      "capacity_approx": 45000,
+      "transit": "GO Transit Exhibition Station adjacent; TTC streetcars to Exhibition Place; UP Express + TTC from Pearson Airport.",
+      "quirks": "Smallest WC26 venue (expanded for tournament). Canada opens here June 12 vs Bosnia and Herzegovina."
+    }
+  ]
+}

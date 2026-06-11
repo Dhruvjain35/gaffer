@@ -1,0 +1,23 @@
+{
+  "_meta": {
+    "description": "Final 48-team field, FIFA World Cup 2026. Draw held December 2025; remaining six slots filled by March 2026 playoff winners.",
+    "verified": "2026-06-11",
+    "note": "Six teams entered via the March 2026 play-offs (UEFA play-offs + FIFA Play-Off Tournament). By UEFA arithmetic (16 UEFA teams, 12 direct slots) the UEFA playoff winners are Czechia, Bosnia and Herzegovina, Sweden, and Turkiye; Iraq and DR Congo filled the two inter-confederation slots. Exact playoff paths not independently re-verified this session."
+  },
+  "groups": {
+    "A": ["Mexico", "South Africa", "South Korea", "Czechia"],
+    "B": ["Canada", "Bosnia and Herzegovina", "Qatar", "Switzerland"],
+    "C": ["Brazil", "Haiti", "Morocco", "Scotland"],
+    "D": ["United States", "Australia", "Paraguay", "Turkiye"],
+    "E": ["Germany", "Curacao", "Ecuador", "Ivory Coast"],
+    "F": ["Netherlands", "Japan", "Sweden", "Tunisia"],
+    "G": ["Belgium", "Egypt", "Iran", "New Zealand"],
+    "H": ["Spain", "Cape Verde", "Saudi Arabia", "Uruguay"],
+    "I": ["France", "Iraq", "Norway", "Senegal"],
+    "J": ["Argentina", "Algeria", "Austria", "Jordan"],
+    "K": ["Portugal", "Colombia", "DR Congo", "Uzbekistan"],
+    "L": ["England", "Croatia", "Ghana", "Panama"]
+  },
+  "hosts": ["Canada", "Mexico", "United States"],
+  "format": "12 groups of 4; top two per group plus 8 best third-placed teams advance to a Round of 32 (new for 2026)."
+}

@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "description": "FIFA World Cup 2026 - opening match, full matchday-1 fixtures (June 11-17), knockout structure, final. 104 matches total, June 11 - July 19, 2026.",
+    "verified": "2026-06-11",
+    "times_note": "Kickoffs in US Eastern Time (EDT). Mexico City is UTC-6 year-round (2 hours behind EDT)."
+  },
+  "opening_match": {
+    "date": "2026-06-11",
+    "match": "Mexico vs South Africa",
+    "group": "A",
+    "venue": "Estadio Azteca (Mexico City Stadium)",
+    "city": "Mexico City",
+    "kickoff_et": "15:00",
+    "kickoff_local": "13:00 Mexico City",
+    "broadcast_us": "FOX (English), Telemundo (Spanish), free stream on Tubi; opening ceremony ~13:30 ET",
+    "note": "Azteca becomes the first stadium to host three World Cup opening matches (1970, 1986, 2026)."
+  },
+  "first_week_fixtures": [
+    {"date": "2026-06-11", "group": "A", "match": "Mexico vs South Africa", "venue": "Estadio Azteca", "city": "Mexico City", "kickoff_et": "15:00"},
+    {"date": "2026-06-11", "group": "A", "match": "South Korea vs Czechia", "venue": "Estadio Akron", "city": "Guadalajara", "kickoff_et": "22:00"},
+    {"date": "2026-06-12", "group": "B", "match": "Canada vs Bosnia and Herzegovina", "venue": "BMO Field", "city": "Toronto", "kickoff_et": "15:00"},
+    {"date": "2026-06-12", "group": "D", "match": "United States vs Paraguay", "venue": "SoFi Stadium", "city": "Inglewood (LA)", "kickoff_et": "21:00"},
+    {"date": "2026-06-13", "group": "B", "match": "Qatar vs Switzerland", "venue": "Levi's Stadium", "city": "Santa Clara (SF Bay Area)", "kickoff_et": "15:00"},
+    {"date": "2026-06-13", "group": "C", "match": "Brazil vs Morocco", "venue": "MetLife Stadium", "city": "East Rutherford (NY/NJ)", "kickoff_et": "18:00"},
+    {"date": "2026-06-13", "group": "C", "match": "Haiti vs Scotland", "venue": "Gillette Stadium", "city": "Foxborough (Boston)", "kickoff_et": "21:00"},
+    {"date": "2026-06-13", "group": "D", "match": "Australia vs Turkiye", "venue": "BC Place", "city": "Vancouver", "kickoff_et": "00:00 (Jun 14)"},
+    {"date": "2026-06-14", "group": "E", "match": "Germany vs Curacao", "venue": "NRG Stadium", "city": "Houston", "kickoff_et": "13:00"},
+    {"date": "2026-06-14", "group": "F", "match": "Netherlands vs Japan", "venue": "AT&T Stadium", "city": "Arlington (Dallas)", "kickoff_et": "16:00"},
+    {"date": "2026-06-14", "group": "E", "match": "Ivory Coast vs Ecuador", "venue": "Lincoln Financial Field", "city": "Philadelphia", "kickoff_et": "19:00"},
+    {"date": "2026-06-14", "group": "F", "match": "Sweden vs Tunisia", "venue": "Estadio BBVA", "city": "Guadalupe (Monterrey)", "kickoff_et": "22:00"},
+    {"date": "2026-06-15", "group": "H", "match": "Spain vs Cape Verde", "venue": "Mercedes-Benz Stadium", "city": "Atlanta", "kickoff_et": "13:00"},
+    {"date": "2026-06-15", "group": "G", "match": "Belgium vs Egypt", "venue": "Lumen Field", "city": "Seattle", "kickoff_et": "18:00"},
+    {"date": "2026-06-15", "group": "H", "match": "Saudi Arabia vs Uruguay", "venue": "Hard Rock Stadium", "city": "Miami Gardens", "kickoff_et": "18:00"},
+    {"date": "2026-06-15", "group": "G", "match": "Iran vs New Zealand", "venue": "SoFi Stadium", "city": "Inglewood (LA)", "kickoff_et": "00:00 (Jun 16)"},
+    {"date": "2026-06-16", "group": "I", "match": "France vs Senegal", "venue": "MetLife Stadium", "city": "East Rutherford (NY/NJ)", "kickoff_et": "15:00"},
+    {"date": "2026-06-16", "group": "I", "match": "Iraq vs Norway", "venue": "Gillette Stadium", "city": "Foxborough (Boston)", "kickoff_et": "18:00"},
+    {"date": "2026-06-16", "group": "J", "match": "Argentina vs Algeria", "venue": "GEHA Field at Arrowhead Stadium", "city": "Kansas City", "kickoff_et": "21:00"},
+    {"date": "2026-06-16", "group": "J", "match": "Austria vs Jordan", "venue": "Levi's Stadium", "city": "Santa Clara (SF Bay Area)", "kickoff_et": "00:00 (Jun 17)"},
+    {"date": "2026-06-17", "group": "K", "match": "Portugal vs DR Congo", "venue": "NRG Stadium", "city": "Houston", "kickoff_et": "13:00"},
+    {"date": "2026-06-17", "group": "L", "match": "England vs Croatia", "venue": "AT&T Stadium", "city": "Arlington (Dallas)", "kickoff_et": "16:00"},
+    {"date": "2026-06-17", "group": "L", "match": "Ghana vs Panama", "venue": "BMO Field", "city": "Toronto", "kickoff_et": "19:00"},
+    {"date": "2026-06-17", "group": "K", "match": "Uzbekistan vs Colombia", "venue": "Estadio Azteca", "city": "Mexico City", "kickoff_et": "22:00"}
+  ],
+  "knockout_structure": {
+    "group_stage": "2026-06-11 to 2026-06-27",
+    "round_of_32": "2026-06-28 to 2026-07-03 (16 matches; new round for 48-team format)",
+    "round_of_16": "2026-07-04 to 2026-07-07 (all matches from this round onward in the USA)",
+    "quarterfinals": [
+      {"date": "2026-07-09", "venue": "Gillette Stadium", "city": "Foxborough (Boston)"},
+      {"date": "2026-07-10", "venue": "SoFi Stadium", "city": "Inglewood (LA)"},
+      {"date": "2026-07-11", "venue": "Hard Rock Stadium", "city": "Miami Gardens"},
+      {"date": "2026-07-11", "venue": "GEHA Field at Arrowhead Stadium", "city": "Kansas City"}
+    ],
+    "semifinals": [
+      {"date": "2026-07-14", "venue": "AT&T Stadium", "city": "Arlington (Dallas)"},
+      {"date": "2026-07-15", "venue": "Mercedes-Benz Stadium", "city": "Atlanta"}
+    ],
+    "third_place_match": {"date": "2026-07-18", "venue": "Hard Rock Stadium", "city": "Miami Gardens"}
+  },
+  "final": {
+    "date": "2026-07-19",
+    "venue": "MetLife Stadium (New York New Jersey Stadium)",
+    "city": "East Rutherford, New Jersey",
+    "kickoff_et": "15:00 EDT (afternoon kickoff, confirmed)"
+  }
+}
