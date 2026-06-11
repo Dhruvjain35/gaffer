@@ -4,128 +4,179 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GAFFER — the concierge that coaches itself</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308130c'/%3E%3Ctext x='16' y='24' font-family='Arial Black' font-size='22' fill='%23d8ff3e' text-anchor='middle'%3EG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pitch:#08130c; --pitch-2:#0c1a11; --line:#1d3325; --chalk:#f2f5ef;
-  --chalk-dim:#9fb3a4; --acid:#d8ff3e; --goal:#3eff8b; --miss:#ff5d4f;
+  --pitch:#070f0a; --pitch-2:#0b1710; --pitch-3:#0e1d13; --line:#16271b; --line-2:#22402c;
+  --chalk:#eef3ea; --chalk-dim:#8aa392; --chalk-faint:#54705e;
+  --acid:#d8ff3e; --acid-dim:#9db82c; --goal:#3eff8b; --miss:#ff5d4f;
   --mono:"IBM Plex Mono",monospace; --body:"Archivo",sans-serif; --display:"Anton",sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{
-  background:var(--pitch); color:var(--chalk); font-family:var(--body);
-  background-image:
-    linear-gradient(var(--line) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size:72px 72px; background-position:center top;
-}
-header{
-  display:flex; align-items:center; gap:18px; padding:14px 22px;
-  border-bottom:2px solid var(--line); background:rgba(8,19,12,.92); backdrop-filter:blur(6px);
-  position:sticky; top:0; z-index:10;
-}
-.crest{
-  font-family:var(--display); font-size:34px; letter-spacing:.04em; line-height:1;
-  color:var(--acid); text-transform:uppercase;
-}
-.crest small{display:block; font-family:var(--mono); font-size:10px; letter-spacing:.28em; color:var(--chalk-dim)}
+body{background:var(--pitch); color:var(--chalk); font-family:var(--body); overflow:hidden}
+
+/* ---------- field: grid + pitch markings + grain + vignette ---------- */
+.field{position:fixed;inset:0;pointer-events:none;z-index:0}
+.field .grid{position:absolute;inset:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;opacity:.55}
+.field svg{position:absolute;inset:0;width:100%;height:100%}
+.field .vignette{position:absolute;inset:0;background:radial-gradient(ellipse 120% 90% at 50% 0%,transparent 55%,rgba(0,0,0,.5))}
+.field .grain{position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ---------- scorebug header ---------- */
+header{position:relative;z-index:5;display:flex;align-items:stretch;gap:0;height:76px;
+  border-bottom:1px solid var(--line-2);background:linear-gradient(180deg,#0b1710f2,#070f0aee);backdrop-filter:blur(8px)}
+.crest{display:flex;flex-direction:column;justify-content:center;padding:0 26px;border-right:1px solid var(--line);min-width:230px}
+.crest .word{font-family:var(--display);font-size:34px;line-height:.95;letter-spacing:.045em;color:var(--acid);text-transform:uppercase}
+.crest small{font-family:var(--mono);font-size:8.5px;letter-spacing:.32em;color:var(--chalk-dim);margin-top:5px;white-space:nowrap}
+.scorebug{display:flex;align-items:center;gap:0;border-right:1px solid var(--line)}
+.scorebug .cell{display:flex;flex-direction:column;align-items:center;justify-content:center;width:86px;height:100%;position:relative}
+.scorebug .cell .num{font-family:var(--display);font-size:34px;line-height:1}
+.scorebug .cell .lab{font-family:var(--mono);font-size:8px;letter-spacing:.3em;color:var(--chalk-dim);margin-top:3px}
+.scorebug .cell.g .num{color:var(--goal)} .scorebug .cell.m .num{color:var(--miss)}
+.scorebug .cell.g{box-shadow:inset 0 -3px 0 var(--goal)} .scorebug .cell.m{box-shadow:inset 0 -3px 0 var(--miss)}
+.scorebug .vs{font-family:var(--mono);color:var(--chalk-faint);font-size:14px;padding:0 4px}
 .spacer{flex:1}
-.chip{
-  font-family:var(--mono); font-size:11px; padding:6px 10px; border:1px solid var(--line);
-  border-radius:3px; color:var(--chalk-dim); white-space:nowrap; max-width:340px; overflow:hidden; text-overflow:ellipsis;
-}
-.chip b{color:var(--acid); font-weight:500}
-.scoreline{font-family:var(--display); font-size:22px; letter-spacing:.06em; display:flex; gap:10px; align-items:baseline}
-.scoreline .g{color:var(--goal)} .scoreline .m{color:var(--miss)}
-.scoreline small{font-family:var(--mono); font-size:9px; letter-spacing:.2em; color:var(--chalk-dim)}
-button.coach{
-  font-family:var(--display); font-size:16px; letter-spacing:.08em; text-transform:uppercase;
-  background:var(--acid); color:#0a130b; border:0; padding:12px 20px; cursor:pointer; border-radius:3px;
-  transition:transform .08s ease, box-shadow .08s ease;
-}
-button.coach:hover{transform:translateY(-1px); box-shadow:0 4px 0 #5d7a17}
-button.coach:disabled{background:#3a4a2a; color:#7c8a6a; cursor:wait; box-shadow:none; transform:none}
-main{display:grid; grid-template-columns:minmax(0,1.15fr) minmax(0,1fr); gap:0; height:calc(100vh - 67px)}
-section{display:flex; flex-direction:column; min-height:0}
-.pitch{border-right:2px solid var(--line)}
-.panel-head{
-  font-family:var(--mono); font-size:11px; letter-spacing:.3em; color:var(--chalk-dim);
-  padding:12px 22px; border-bottom:1px solid var(--line); display:flex; gap:10px; align-items:center;
-  text-transform:uppercase; background:var(--pitch-2);
-}
-.panel-head .dot{width:8px;height:8px;border-radius:50%;background:var(--goal);box-shadow:0 0 8px var(--goal)}
-.panel-head .dot.off{background:var(--miss);box-shadow:none}
-.feed{flex:1; overflow-y:auto; padding:22px; display:flex; flex-direction:column; gap:16px}
-.msg{max-width:92%}
-.msg .who{font-family:var(--mono); font-size:9px; letter-spacing:.25em; color:var(--chalk-dim); margin-bottom:6px; text-transform:uppercase}
-.msg .bubble{
-  padding:14px 16px; border:1px solid var(--line); border-radius:3px; background:var(--pitch-2);
-  font-size:14.5px; line-height:1.65; word-wrap:break-word;
-}
-.msg .bubble b{color:var(--acid); font-weight:700}
-.li{padding-left:6px}
-.msg.fan{align-self:flex-end}
-.msg.fan .bubble{background:#132418; border-color:#2a4534}
-.toolrow{
-  font-family:var(--mono); font-size:11px; color:var(--chalk-dim);
-  display:flex; gap:8px; align-items:flex-start; padding:2px 0 2px 12px; border-left:2px solid var(--line);
-}
-.toolrow .tname{color:var(--acid)}
-.verdict{
-  display:flex; gap:10px; align-items:flex-start; margin-top:8px; padding:10px 12px;
-  border-radius:3px; font-family:var(--mono); font-size:11.5px; line-height:1.5;
-}
-.verdict.GOAL{border:1px solid #1d5c38; background:#0c2417; color:#bdf5d4}
-.verdict.MISS{border:1px solid #6e2a23; background:#2a120e; color:#ffd0ca}
-.verdict .badge{font-family:var(--display); font-size:15px; letter-spacing:.06em}
-.verdict.GOAL .badge{color:var(--goal)} .verdict.MISS .badge{color:var(--miss)}
-.composer{display:flex; gap:10px; padding:16px 22px; border-top:1px solid var(--line); background:var(--pitch-2)}
-.composer input{
-  flex:1; background:var(--pitch); border:1px solid var(--line); color:var(--chalk);
-  font-family:var(--body); font-size:14px; padding:13px 14px; border-radius:3px; outline:none;
-}
-.composer input:focus{border-color:var(--acid)}
-.composer button{
-  font-family:var(--display); letter-spacing:.06em; background:var(--chalk); color:#0a130b; border:0;
-  padding:0 22px; cursor:pointer; border-radius:3px; font-size:15px; text-transform:uppercase;
-}
-.suggest{display:flex; gap:8px; padding:10px 22px 14px; flex-wrap:wrap; background:var(--pitch-2)}
-.suggest button{
-  font-family:var(--mono); font-size:10.5px; background:transparent; color:var(--chalk-dim);
-  border:1px solid var(--line); padding:6px 10px; border-radius:99px; cursor:pointer;
-}
-.suggest button:hover{color:var(--acid); border-color:var(--acid)}
-.filmroom .feed{font-size:13px}
-.coach-step{border-left:2px solid var(--acid); padding:4px 0 4px 14px}
-.coach-step .who{font-family:var(--mono); font-size:9px; letter-spacing:.25em; color:var(--acid); margin-bottom:4px}
-.coach-step .txt{font-size:13.5px; line-height:1.65; white-space:pre-wrap}
-.promo{
-  border:1px solid var(--acid); background:#1a2410; padding:14px 16px; border-radius:3px;
-  font-family:var(--display); font-size:17px; letter-spacing:.05em; color:var(--acid); text-transform:uppercase;
-}
-.empty{color:var(--chalk-dim); font-family:var(--mono); font-size:12px; line-height:1.9; padding:10px}
-.empty b{color:var(--chalk)}
-@media (max-width:980px){ main{grid-template-columns:1fr; height:auto} .pitch{border-right:0} }
+.tag{display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 22px;border-left:1px solid var(--line)}
+.tag .lab{font-family:var(--mono);font-size:8px;letter-spacing:.3em;color:var(--chalk-faint);text-transform:uppercase}
+.tag .val{font-family:var(--mono);font-size:11.5px;color:var(--acid);max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.coachwrap{display:flex;align-items:center;padding:0 22px;border-left:1px solid var(--line)}
+button.coach{font-family:var(--display);font-size:16px;letter-spacing:.09em;text-transform:uppercase;
+  background:var(--acid);color:#0a130b;border:0;padding:14px 24px;cursor:pointer;border-radius:2px;
+  box-shadow:4px 4px 0 #36430f;transition:transform .1s,box-shadow .1s}
+button.coach:hover{transform:translate(-1px,-1px);box-shadow:6px 6px 0 #36430f}
+button.coach:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #36430f}
+button.coach:disabled{background:#2c3a23;color:#6d7d60;box-shadow:none;cursor:wait;animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.55}}
+
+/* ---------- panels ---------- */
+main{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);height:calc(100vh - 76px)}
+section{display:flex;flex-direction:column;min-height:0;position:relative}
+.pitch{border-right:1px solid var(--line-2)}
+.filmroom{background:linear-gradient(180deg,#081008,#070d09)}
+.filmroom::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.16;
+  background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.65) 3px 4px)}
+.panel-head{display:flex;gap:12px;align-items:center;padding:13px 24px;border-bottom:1px solid var(--line);
+  background:rgba(7,15,10,.65);font-family:var(--mono);font-size:10px;letter-spacing:.34em;color:var(--chalk-dim);text-transform:uppercase}
+.panel-head .ix{color:var(--chalk-faint)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--goal);box-shadow:0 0 10px var(--goal);animation:blink 2.2s infinite}
+.dot.off{background:#5c2a25;box-shadow:none;animation:none}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.45}}
+
+.feed{flex:1;overflow-y:auto;padding:26px 26px 18px;display:flex;flex-direction:column;gap:18px;scrollbar-width:thin;scrollbar-color:var(--line-2) transparent}
+.feed::-webkit-scrollbar{width:4px}.feed::-webkit-scrollbar-thumb{background:var(--line-2)}
+
+/* ---------- messages ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.msg{max-width:94%;animation:rise .26s ease both}
+.msg .who{font-family:var(--mono);font-size:8.5px;letter-spacing:.3em;color:var(--chalk-faint);margin-bottom:7px;text-transform:uppercase}
+.msg.fan{align-self:flex-end;text-align:right}
+.msg.fan .bubble{display:inline-block;text-align:left;background:var(--pitch-3);border:1px solid var(--line-2);
+  padding:13px 16px;border-radius:2px;font-size:14px;line-height:1.6;font-weight:500}
+.msg.player .bubble{background:linear-gradient(180deg,#0c1a11,#0a1610);border:1px solid var(--line-2);border-left:3px solid var(--acid);
+  padding:16px 18px;border-radius:2px;font-size:14.5px;line-height:1.7;word-wrap:break-word;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.msg .bubble b{color:var(--acid);font-weight:600}
+.li{padding:1px 0 1px 4px}
+
+.toolrow{font-family:var(--mono);font-size:10.5px;color:var(--chalk-dim);display:flex;gap:8px;align-items:baseline;
+  padding:3px 0 3px 12px;border-left:2px solid var(--line-2);margin:2px 0;animation:rise .2s ease both}
+.toolrow .tname{color:var(--acid);font-weight:600}
+.toolrow span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:62ch}
+
+/* referee cards */
+@keyframes stamp{0%{opacity:0;transform:scale(.7) rotate(-4deg)}60%{transform:scale(1.06) rotate(1deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+.verdict{display:flex;gap:14px;align-items:center;margin-top:10px;padding:11px 14px;border-radius:2px;
+  font-family:var(--mono);font-size:11px;line-height:1.55;animation:stamp .35s ease both}
+.verdict .badge{font-family:var(--display);font-size:17px;letter-spacing:.05em;display:flex;align-items:center;gap:8px;white-space:nowrap}
+.verdict .badge::before{content:"";display:inline-block;width:13px;height:18px;border-radius:2px;transform:rotate(-6deg)}
+.verdict.GOAL{border:1px solid #1d5c38;background:linear-gradient(180deg,#0c2417,#0a1f14);color:#bdf5d4}
+.verdict.GOAL .badge{color:var(--goal)} .verdict.GOAL .badge::before{background:var(--goal);box-shadow:0 0 12px #3eff8b66}
+.verdict.MISS{border:1px solid #6e2a23;background:linear-gradient(180deg,#2a120e,#23100c);color:#ffd0ca}
+.verdict.MISS .badge{color:var(--miss)} .verdict.MISS .badge::before{background:var(--miss);box-shadow:0 0 12px #ff5d4f66}
+
+/* ---------- composer ---------- */
+.suggest{display:flex;gap:8px;padding:12px 24px 4px;flex-wrap:wrap;background:linear-gradient(180deg,transparent,#0b1710d9 30%)}
+.suggest button{font-family:var(--mono);font-size:10px;background:transparent;color:var(--chalk-dim);
+  border:1px solid var(--line-2);padding:7px 12px;border-radius:999px;cursor:pointer;transition:all .15s;letter-spacing:.02em}
+.suggest button:hover{color:#0a130b;background:var(--acid);border-color:var(--acid);font-weight:600}
+.composer{display:flex;gap:10px;padding:14px 24px 20px;background:#0b1710d9}
+.composer input{flex:1;background:var(--pitch);border:1px solid var(--line-2);color:var(--chalk);
+  font-family:var(--body);font-size:14px;font-weight:500;padding:15px 16px;border-radius:2px;outline:none;transition:border .15s}
+.composer input:focus{border-color:var(--acid);box-shadow:0 0 0 1px var(--acid)}
+.composer input::placeholder{color:var(--chalk-faint)}
+.composer button{font-family:var(--display);letter-spacing:.08em;background:var(--chalk);color:#0a130b;border:0;
+  padding:0 26px;cursor:pointer;border-radius:2px;font-size:15px;text-transform:uppercase;box-shadow:3px 3px 0 #2a3528}
+.composer button:active{transform:translate(2px,2px);box-shadow:0 0 0}
+
+/* ---------- film room ---------- */
+.filmroom .feed{font-size:13px;position:relative;z-index:1}
+.coach-step{border-left:2px solid var(--acid);padding:6px 0 6px 16px;animation:rise .26s ease both}
+.coach-step .who{font-family:var(--mono);font-size:8.5px;letter-spacing:.3em;color:var(--acid);margin-bottom:5px}
+.coach-step .txt{font-size:13px;line-height:1.7;color:#d9e4d4;word-wrap:break-word}
+.coach-step .txt b{color:var(--acid);font-weight:600}
+.filmroom .toolrow{border-left-color:#2e3d22}
+.promo{position:relative;border:1px solid var(--acid);padding:18px 20px;border-radius:2px;overflow:hidden;
+  font-family:var(--display);font-size:19px;letter-spacing:.06em;color:var(--acid);text-transform:uppercase;
+  background:repeating-linear-gradient(-45deg,#141d09 0 14px,#0d1408 14px 28px);animation:stamp .4s ease both;text-align:center}
+
+/* ---------- empty states ---------- */
+.empty{color:var(--chalk-dim);font-family:var(--mono);font-size:11.5px;line-height:2.05;padding:14px 4px;max-width:60ch}
+.empty b{color:var(--chalk)} .empty .k{color:var(--acid)}
+.empty .kick{font-family:var(--display);font-size:21px;letter-spacing:.05em;color:var(--chalk);display:block;margin-bottom:8px;text-transform:uppercase}
+
+@media (max-width:980px){body{overflow:auto} main{grid-template-columns:1fr;height:auto} .pitch{border-right:0} .crest{min-width:0}}
 </style>
 </head>
 <body>
+<div class="field">
+  <div class="grid"></div>
+  <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMin slice" fill="none" stroke="#22402c" stroke-width="1.5" opacity=".34">
+    <circle cx="720" cy="450" r="190"/>
+    <circle cx="720" cy="450" r="4" fill="#22402c"/>
+    <line x1="0" y1="450" x2="1440" y2="450"/>
+    <path d="M 0 250 L 130 250 L 130 650 L 0 650"/>
+    <path d="M 1440 250 L 1310 250 L 1310 650 L 1440 650"/>
+    <path d="M 130 360 A 110 110 0 0 1 130 540"/>
+    <path d="M 1310 360 A 110 110 0 0 0 1310 540"/>
+  </svg>
+  <div class="vignette"></div>
+  <div class="grain"></div>
+</div>
+
 <header>
-  <div class="crest">Gaffer<small>WC26 MATCHDAY CONCIERGE · COACHES ITSELF</small></div>
+  <div class="crest">
+    <div class="word">Gaffer</div>
+    <small>WC26 MATCHDAY CONCIERGE · COACHES ITSELF</small>
+  </div>
+  <div class="scorebug">
+    <div class="cell g"><div class="num" id="goals">0</div><div class="lab">GOALS</div></div>
+    <div class="vs">:</div>
+    <div class="cell m"><div class="num" id="misses">0</div><div class="lab">MISSES</div></div>
+  </div>
   <div class="spacer"></div>
-  <div class="scoreline"><span class="g" id="goals">0</span><small>GOALS</small><span style="color:var(--chalk-dim)">–</span><span class="m" id="misses">0</span><small>MISSES</small></div>
-  <div class="chip" id="playbook">playbook: …</div>
-  <button class="coach" id="coachBtn">▸ Coaching session</button>
+  <div class="tag">
+    <div class="lab">Active playbook · Phoenix registry</div>
+    <div class="val" id="playbook">connecting…</div>
+  </div>
+  <div class="coachwrap"><button class="coach" id="coachBtn">▸ Coaching session</button></div>
 </header>
+
 <main>
   <section class="pitch">
-    <div class="panel-head"><span class="dot" id="pxdot"></span>THE PITCH — ask the player</div>
+    <div class="panel-head"><span class="dot" id="pxdot"></span>THE PITCH <span class="ix">/ ASK THE PLAYER</span></div>
     <div class="feed" id="chatFeed">
-      <div class="empty"><b>Matchday one. Ask anything about World Cup 2026.</b><br>
-      Every answer is traced to Arize Phoenix and scored live by the Referee (Gemini LLM-as-judge).<br>
-      When the Player misses, hit <b>▸ COACHING SESSION</b> and watch the Gaffer fix him — with evidence.</div>
+      <div class="empty">
+        <span class="kick">Matchday one.</span>
+        Ask anything about World Cup 2026 — venues, fixtures, policies, travel.<br>
+        Every answer is traced to <b>Arize Phoenix</b> and scored live by <span class="k">the Referee</span> (Gemini LLM-as-judge).<br>
+        When the Player misses, hit <span class="k">▸ COACHING SESSION</span> — and watch him get fixed, with evidence.
+      </div>
     </div>
     <div class="suggest" id="suggest"></div>
     <div class="composer">
@@ -134,14 +185,19 @@ section{display:flex; flex-direction:column; min-height:0}
     </div>
   </section>
   <section class="filmroom">
-    <div class="panel-head"><span class="dot off" id="frdot"></span>THE FILM ROOM — the gaffer's bench</div>
+    <div class="panel-head"><span class="dot off" id="frdot"></span>THE FILM ROOM <span class="ix">/ THE GAFFER'S BENCH</span></div>
     <div class="feed" id="coachFeed">
-      <div class="empty">The Gaffer reviews the game tape in Phoenix: failed answers → drills in the
-      <b>training-ground</b> dataset → rewritten playbook → scrimmage (Phoenix experiment) →
-      promotion <b>only if the new playbook wins</b>. His every move is a live Phoenix MCP call — watch them here.</div>
+      <div class="empty">
+        <span class="kick">Game tape rolls here.</span>
+        The Gaffer reviews the Player's traces in Phoenix: failed answers → drills in the
+        <b>regression dataset</b> → rewritten playbook → <span class="k">scrimmage</span> (two Phoenix experiments,
+        judge-scored) → promotion <b>only if the new playbook wins</b>.<br>
+        Every move is a live <span class="k">Phoenix MCP</span> call — you'll see each one.
+      </div>
     </div>
   </section>
 </main>
+
 <script>
 const $=id=>document.getElementById(id);
 const sessionId = Math.random().toString(36).slice(2);
@@ -158,7 +214,7 @@ const SUGGESTIONS=[
 SUGGESTIONS.forEach(q=>{const b=document.createElement('button');b.textContent=q;b.onclick=()=>{$('input').value=q;send();};$('suggest').appendChild(b);});
 
 fetch('/api/state').then(r=>r.json()).then(s=>{
-  $('playbook').innerHTML='playbook: <b>'+esc(s.playbook)+'</b>';
+  $('playbook').textContent=s.playbook;
   if(!s.phoenix)$('pxdot').classList.add('off');
 });
 
@@ -196,11 +252,11 @@ async function send(){
   try{
     const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,session_id:sessionId})});
     await consumeSSE(resp, ev=>{
-      if(ev.type==='meta'){$('playbook').innerHTML='playbook: <b>'+esc(ev.playbook)+'</b>';}
+      if(ev.type==='meta'){$('playbook').textContent=ev.playbook;}
       if(ev.type==='tool_call'){tools.appendChild(el(`<div class="toolrow">▸ <span class="tname">${esc(ev.name)}</span><span>${esc(JSON.stringify(ev.args))}</span></div>`));}
       if(ev.type==='text'){bubble.innerHTML=md(ev.text);}
       if(ev.type==='eval'){
-        const v=el(`<div class="verdict ${ev.label}"><span class="badge">${ev.label==='GOAL'?'⚽ GOAL':'✕ MISS'}</span><span>${(ev.score??0).toFixed(2)} — ${esc(ev.explanation)}${ev.annotated?' · filed to Phoenix':''}</span></div>`);
+        const v=el(`<div class="verdict ${ev.label}"><span class="badge">${ev.label==='GOAL'?'GOAL':'MISS'}&nbsp;${(ev.score??0).toFixed(2)}</span><span>${esc(ev.explanation)}${ev.annotated?' · filed to Phoenix':''}</span></div>`);
         holder.appendChild(v);
         if(ev.label==='GOAL'){goals++;$('goals').textContent=goals;}else{misses++;$('misses').textContent=misses;}
       }
@@ -221,12 +277,12 @@ $('coachBtn').onclick=async()=>{
     await consumeSSE(resp, ev=>{
       if(ev.type==='tool_call'){
         feed.appendChild(el(`<div class="toolrow">▸ <span class="tname">${esc(ev.name)}</span><span>${esc(JSON.stringify(ev.args).slice(0,220))}</span></div>`));
-        if(ev.name==='add-prompt-version-tag'){feed.appendChild(el(`<div class="promo">⚽ PLAYBOOK PROMOTED TO PRODUCTION</div>`));}
+        if(ev.name==='add-prompt-version-tag'){feed.appendChild(el(`<div class="promo">⚽ Playbook promoted to production</div>`));}
       }
-      if(ev.type==='tool_result'){feed.appendChild(el(`<div class="toolrow" style="opacity:.65">◂ <span class="tname">${esc(ev.name)}</span><span>${esc(ev.preview.slice(0,180))}</span></div>`));}
+      if(ev.type==='tool_result'){feed.appendChild(el(`<div class="toolrow" style="opacity:.6">◂ <span class="tname">${esc(ev.name)}</span><span>${esc(ev.preview.slice(0,180))}</span></div>`));}
       if(ev.type==='text'){feed.appendChild(el(`<div class="coach-step"><div class="who">The Gaffer</div><div class="txt">${md(ev.text)}</div></div>`));}
       if(ev.type==='error'){feed.appendChild(el(`<div class="coach-step"><div class="txt">⚠ ${esc(ev.message)}</div></div>`));}
-      if(ev.type==='done'){fetch('/api/state').then(r=>r.json()).then(s=>{$('playbook').innerHTML='playbook: <b>'+esc(s.playbook)+'</b>';});}
+      if(ev.type==='done'){fetch('/api/state').then(r=>r.json()).then(s=>{$('playbook').textContent=s.playbook;});}
       scroll(feed);
     });
   }catch(e){feed.appendChild(el(`<div class="coach-step"><div class="txt">⚠ ${esc(e.message)}</div></div>`));}
