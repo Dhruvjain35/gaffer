@@ -27,9 +27,15 @@ Python ADK agents on `gemini-3.5-flash` (Vertex AI, global endpoint); `arize-pho
 - Judging the judge: the Referee needs tool evidence, not just Q&A, so the server threads every tool result into the eval — letting it distinguish *grounded* from *correct-by-luck*.
 - Running Phoenix experiments from inside an agent tool call: scrimmages run in worker threads with isolated event loops so the Gaffer can await its own experiment results.
 
-## Accomplishments
+## Accomplishments — with receipts (all reproducible in our Phoenix workspace)
 
-A complete, working self-improvement loop — not a mockup: real failures, mined through MCP, fixed by prompt v2, proven by experiments, promoted by tag. Watch the scoreboard change between two identical questions asked 90 seconds apart.
+A complete, working self-improvement loop — not a mockup:
+
+- **Scrimmage, judge-scored over the regression dataset: old playbook 0.38 → coached playbook 0.60.** Two Phoenix experiments per session, promotion gated on the win.
+- **Live failures coached into perfection**: "which cities have rail to the stadium" MISS 0.00 → GOAL 1.00; same arc for Houston weather, MetLife transit, and power-bank policy questions.
+- **11 playbook versions in the Phoenix prompt registry** — every production promotion made by the Gaffer itself, through `add-prompt-version-tag`, only after a winning experiment.
+- The demo video shows the full arc happening live on the hosted URL: three misses on opening day → coaching session → promotion banner → same questions scoring GOAL 1.00.
+- Knowledge base of 16 venues, 48 teams, fixtures and FIFA fan policies — every fact verified against primary sources, all cited in-repo, doubling as eval ground truth.
 
 ## What we learned
 

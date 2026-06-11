@@ -2,6 +2,10 @@
 
 **A World Cup 2026 fan concierge that gets measurably better while you watch — because its coach is also an agent, and its film room is Arize Phoenix.**
 
+![GAFFER — THE PITCH and THE FILM ROOM](docs/media/hero.png)
+
+**Live:** https://gaffer-734868402447.us-central1.run.app
+
 Built for the Google Cloud Rapid Agent Hackathon (Arize track). Submitted on opening day of the 2026 FIFA World Cup.
 
 ## The idea
