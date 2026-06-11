@@ -63,8 +63,10 @@ section{display:flex; flex-direction:column; min-height:0}
 .msg .who{font-family:var(--mono); font-size:9px; letter-spacing:.25em; color:var(--chalk-dim); margin-bottom:6px; text-transform:uppercase}
 .msg .bubble{
   padding:14px 16px; border:1px solid var(--line); border-radius:3px; background:var(--pitch-2);
-  font-size:14.5px; line-height:1.65; white-space:pre-wrap; word-wrap:break-word;
+  font-size:14.5px; line-height:1.65; word-wrap:break-word;
 }
+.msg .bubble b{color:var(--acid); font-weight:700}
+.li{padding-left:6px}
 .msg.fan{align-self:flex-end}
 .msg.fan .bubble{background:#132418; border-color:#2a4534}
 .toolrow{
@@ -161,6 +163,12 @@ fetch('/api/state').then(r=>r.json()).then(s=>{
 });
 
 function esc(s){return (s??'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function md(s){ // escape first, then minimal markdown: bold, italic, bullets
+  let h=esc(s);
+  h=h.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|\s)\*([^*\n]+)\*(?=\s|$)/g,'$1<i>$2</i>');
+  h=h.split('\n').map(l=>{const m=l.match(/^\s*[*•-]\s+(.*)/);return m?'<div class="li">• '+m[1]+'</div>':l;}).join('\n');
+  return h.replace(/\n{2,}/g,'<br><br>').replace(/\n(?!<)/g,'<br>');
+}
 function el(html){const d=document.createElement('div');d.innerHTML=html;return d.firstElementChild}
 function scroll(feed){feed.scrollTop=feed.scrollHeight}
 
@@ -190,7 +198,7 @@ async function send(){
     await consumeSSE(resp, ev=>{
       if(ev.type==='meta'){$('playbook').innerHTML='playbook: <b>'+esc(ev.playbook)+'</b>';}
       if(ev.type==='tool_call'){tools.appendChild(el(`<div class="toolrow">▸ <span class="tname">${esc(ev.name)}</span><span>${esc(JSON.stringify(ev.args))}</span></div>`));}
-      if(ev.type==='text'){bubble.textContent=ev.text;}
+      if(ev.type==='text'){bubble.innerHTML=md(ev.text);}
       if(ev.type==='eval'){
         const v=el(`<div class="verdict ${ev.label}"><span class="badge">${ev.label==='GOAL'?'⚽ GOAL':'✕ MISS'}</span><span>${(ev.score??0).toFixed(2)} — ${esc(ev.explanation)}${ev.annotated?' · filed to Phoenix':''}</span></div>`);
         holder.appendChild(v);
@@ -216,7 +224,7 @@ $('coachBtn').onclick=async()=>{
         if(ev.name==='add-prompt-version-tag'){feed.appendChild(el(`<div class="promo">⚽ PLAYBOOK PROMOTED TO PRODUCTION</div>`));}
       }
       if(ev.type==='tool_result'){feed.appendChild(el(`<div class="toolrow" style="opacity:.65">◂ <span class="tname">${esc(ev.name)}</span><span>${esc(ev.preview.slice(0,180))}</span></div>`));}
-      if(ev.type==='text'){feed.appendChild(el(`<div class="coach-step"><div class="who">The Gaffer</div><div class="txt">${esc(ev.text)}</div></div>`));}
+      if(ev.type==='text'){feed.appendChild(el(`<div class="coach-step"><div class="who">The Gaffer</div><div class="txt">${md(ev.text)}</div></div>`));}
       if(ev.type==='error'){feed.appendChild(el(`<div class="coach-step"><div class="txt">⚠ ${esc(ev.message)}</div></div>`));}
       if(ev.type==='done'){fetch('/api/state').then(r=>r.json()).then(s=>{$('playbook').innerHTML='playbook: <b>'+esc(s.playbook)+'</b>';});}
       scroll(feed);
