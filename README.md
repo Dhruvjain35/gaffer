@@ -45,12 +45,19 @@ No human in the loop. No redeploy. The next fan question runs on the improved pl
 
 ## Run it
 
+Prerequisites: Python 3.11+ with [uv](https://docs.astral.sh/uv/), **Node.js 18+** (the Gaffer
+spawns the Phoenix MCP server via `npx`), a GCP project with Vertex AI enabled
+(`gcloud auth application-default login`), and a free [Phoenix Cloud](https://app.phoenix.arize.com) account.
+
 ```bash
 uv sync
 cp .env.example .env       # add your GCP project + Phoenix Cloud key/endpoint
 uv run python -m scripts.seed_playbook   # playbook v1 → Phoenix, tagged "production"
 make dev                   # http://localhost:8080
 ```
+
+> Note: `openai`/`anthropic` appear in `uv.lock` only as unused transitive dependencies of
+> `arize-phoenix` itself. The runtime calls Google models exclusively (Gemini on Vertex AI).
 
 Ask questions on **THE PITCH**. Watch verdicts land. Then hit **▸ COACHING SESSION** and watch the Gaffer work the film room — every Phoenix MCP call streams live.
 
@@ -63,3 +70,8 @@ Swap the corpus and the Player becomes any customer-facing agent. The loop — *
 ## License
 
 MIT
+
+---
+
+*Fan-made demo for the Google Cloud Rapid Agent Hackathon. Not affiliated with, sponsored or
+endorsed by FIFA. World Cup data compiled from public sources cited in `data/sources.md`.*

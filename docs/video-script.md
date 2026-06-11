@@ -58,5 +58,7 @@ Back to THE PITCH. Re-ask the SAME two questions → both come back ⚽ GOAL 1.0
 
 ---
 
-**Checklist after recording:** ≤3:00 length · English audio · upload YouTube (public/unlisted) ·
-no third-party logos beyond product UIs · no music you don't have rights to.
+**Checklist after recording:** target ≤2:50 (hard cap 3:00 — judges stop watching there) ·
+English audio · upload YouTube as **PUBLIC** (rules require publicly visible) ·
+no third-party logos beyond product UIs · no music you don't have rights to ·
+never show FIFA imagery — word marks in our own UI only.

@@ -28,7 +28,7 @@ def _fetch_from_phoenix(tag: str) -> tuple[str, str] | None:
 
         client = Client()
         prompt = client.prompts.get(prompt_identifier=PLAYER_PROMPT_NAME, tag=tag)
-        # PromptVersion -> openai/google format dict; extract the system message text.
+        # Extract the system message text from the prompt version template.
         version_id = getattr(prompt, "id", "unknown")
         # Read the raw template: provider-agnostic (format() breaks on GOOGLE-provider
         # prompts by importing the deprecated google.generativeai SDK).

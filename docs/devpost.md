@@ -42,5 +42,6 @@ Auto-triggered coaching sessions on MISS-rate thresholds; annotation configs for
 ---
 
 **Track:** Arize
+**Disclaimer:** Fan-made demo; not affiliated with, sponsored or endorsed by FIFA. Data compiled from public sources (cited in repo).
 **Data sources:** FIFA.com, host-city transit authorities, official venue sites (full citation list in repo: data/sources.md)
 **Built with:** google-adk, gemini-3.5-flash, vertex-ai, arize-phoenix, phoenix-mcp, openinference, fastapi, cloud-run
