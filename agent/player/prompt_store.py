@@ -31,7 +31,7 @@ def _fetch_from_phoenix(tag: str) -> tuple[str, str] | None:
         # PromptVersion -> openai/google format dict; extract the system message text.
         version_id = getattr(prompt, "id", "unknown")
         fmt = prompt.format()
-        messages = fmt.get("messages") if isinstance(fmt, dict) else None
+        messages = fmt.get("messages") if isinstance(fmt, dict) else getattr(fmt, "messages", None)
         if messages:
             for m in messages:
                 if m.get("role") == "system":

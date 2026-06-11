@@ -29,6 +29,8 @@ MODEL = os.environ.get("GAFFER_MODEL", os.environ.get("GEMINI_MODEL", "gemini-3.
 
 PHOENIX_TOOLS = [
     "list-projects",
+    "list-traces",
+    "get-trace",
     "get-spans",
     "get-span-annotations",
     "list-prompts",

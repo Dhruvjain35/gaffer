@@ -33,7 +33,10 @@ def setup_tracing() -> Optional[Any]:
     return _provider
 
 
-class _RootSpanRecorder:
+from opentelemetry.sdk.trace import SpanProcessor
+
+
+class _RootSpanRecorder(SpanProcessor):
     """Span processor that remembers recent root (parentless) spans so the
     server can annotate the exact span a judge verdict belongs to and deep-link
     each answer to its Phoenix trace."""
