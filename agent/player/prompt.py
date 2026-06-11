@@ -7,7 +7,9 @@ those weaknesses in the game tape and coach them out — every later version liv
 in Phoenix's prompt registry, not in this file.
 """
 
-PLAYER_PROMPT_NAME = "gaffer-player"
+# No hyphens: the Phoenix MCP upsert-prompt tool slugs names, and the Gaffer's
+# upserts must land on the same prompt identifier the Player fetches from.
+PLAYER_PROMPT_NAME = "gafferplayer"
 PRODUCTION_TAG = "production"
 
 BASELINE_INSTRUCTION = """You are the Matchday Concierge for the FIFA World Cup 2026 \

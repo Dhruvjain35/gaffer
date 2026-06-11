@@ -114,12 +114,7 @@ def _run_scrimmage_sync(candidate_instruction: str) -> dict[str, Any]:
         )
         return verdict  # {label, score, explanation}
 
-    results: dict[str, Any] = {}
-    for side, instruction in (
-        ("current", current_instruction),
-        ("candidate", candidate_instruction),
-    ):
-
+    def _play_side(side: str, instruction: str) -> dict[str, Any]:
         def task(input):  # noqa: A002
             return _answer_once_sync(instruction, _question_text(input))
 
@@ -129,31 +124,41 @@ def _run_scrimmage_sync(candidate_instruction: str) -> dict[str, Any]:
             evaluators=[referee],
             experiment_name=f"scrimmage-{side}-{secrets.token_hex(3)}",
             print_summary=False,
-            concurrency=1,  # stay under fresh-account Vertex burst quotas
+            timeout=120,
         )
         scores: list[float] = []
         per_example: list[dict[str, Any]] = []
-        try:
-            runs = experiment.get("task_runs") if isinstance(experiment, dict) else None
-            evals = None
-            if runs is None and hasattr(experiment, "as_dataframe"):
-                df = experiment.as_dataframe()
-                runs = df.to_dict("records")
-            if hasattr(experiment, "get_evaluations"):
-                evals = experiment.get_evaluations()
-                if hasattr(evals, "to_dict"):
-                    for rec in evals.to_dict("records"):
-                        if rec.get("score") is not None:
-                            scores.append(float(rec["score"]))
-                            per_example.append(
-                                {"label": rec.get("label"), "score": rec.get("score")}
-                            )
-        except Exception as exc:  # noqa: BLE001
-            logger.warning("experiment result parsing fallback: %s", exc)
-        results[side] = {
+        for run in experiment.get("evaluation_runs", []):
+            result = getattr(run, "result", None)
+            if result is None:
+                per_example.append({"error": getattr(run, "error", "no result")})
+                continue
+            score = result.get("score")
+            if score is not None:
+                scores.append(float(score))
+            per_example.append(
+                {
+                    "label": result.get("label"),
+                    "score": score,
+                    "explanation": (result.get("explanation") or "")[:160],
+                }
+            )
+        return {
             "avg_score": round(sum(scores) / len(scores), 3) if scores else None,
             "n": len(scores),
+            "experiment_id": experiment.get("experiment_id"),
             "per_example": per_example,
+        }
+
+    # Both sides play at the same time — independent experiments, half the wall clock.
+    from concurrent.futures import ThreadPoolExecutor
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        fut_current = pool.submit(_play_side, "current", current_instruction)
+        fut_candidate = pool.submit(_play_side, "candidate", candidate_instruction)
+        results: dict[str, Any] = {
+            "current": fut_current.result(),
+            "candidate": fut_candidate.result(),
         }
 
     cur, cand = results["current"]["avg_score"], results["candidate"]["avg_score"]
