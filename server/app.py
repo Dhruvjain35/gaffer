@@ -83,9 +83,9 @@ async def _stream_run(runner, user_id: str, session_id: str, message: str):
                 yield {"type": "tool_call", "name": fc.name, "args": fc.args or {}}, final_text, evidence
             fr = getattr(part, "function_response", None)
             if fr:
-                preview = json.dumps(fr.response, ensure_ascii=False, default=str)[:600]
-                evidence.append(f"[{fr.name}] {preview}")
-                yield {"type": "tool_result", "name": fr.name, "preview": preview}, final_text, evidence
+                full = json.dumps(fr.response, ensure_ascii=False, default=str)
+                evidence.append(f"[{fr.name}] {full[:4000]}")  # judge sees full evidence
+                yield {"type": "tool_result", "name": fr.name, "preview": full[:600]}, final_text, evidence
             text = getattr(part, "text", None)
             if text and not getattr(event, "partial", False):
                 final_text = text

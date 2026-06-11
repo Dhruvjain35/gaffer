@@ -30,18 +30,19 @@ def _fetch_from_phoenix(tag: str) -> tuple[str, str] | None:
         prompt = client.prompts.get(prompt_identifier=PLAYER_PROMPT_NAME, tag=tag)
         # PromptVersion -> openai/google format dict; extract the system message text.
         version_id = getattr(prompt, "id", "unknown")
-        fmt = prompt.format()
-        messages = fmt.get("messages") if isinstance(fmt, dict) else getattr(fmt, "messages", None)
-        if messages:
-            for m in messages:
-                if m.get("role") == "system":
-                    content = m.get("content")
-                    if isinstance(content, str) and content.strip():
-                        return content, version_id
-                    if isinstance(content, list):
-                        text = "".join(p.get("text", "") for p in content if isinstance(p, dict))
-                        if text.strip():
-                            return text, version_id
+        # Read the raw template: provider-agnostic (format() breaks on GOOGLE-provider
+        # prompts by importing the deprecated google.generativeai SDK).
+        template = getattr(prompt, "_template", None) or {}
+        for m in template.get("messages", []):
+            content = m.get("content")
+            if isinstance(content, str) and content.strip():
+                return content, version_id
+            if isinstance(content, list):
+                text = "\n".join(
+                    p.get("text", "") for p in content if isinstance(p, dict) and p.get("text")
+                )
+                if text.strip():
+                    return text, version_id
         return None
     except Exception as exc:  # noqa: BLE001 — any Phoenix failure must not take the Player down
         logger.warning("Phoenix prompt fetch failed (%s); using fallback", exc)
