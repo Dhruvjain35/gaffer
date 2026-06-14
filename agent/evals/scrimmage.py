@@ -19,11 +19,14 @@ logger = logging.getLogger(__name__)
 DATASET_NAME = "training-ground-wc26"
 
 
-def _answer_once_sync(instruction: str, question: str) -> str:
+def _answer_once_sync(instruction: str, question: str) -> dict[str, str]:
     """Run one Player turn with the given instruction in a private event loop.
+    Returns {answer, evidence} — the evidence is the tool output the candidate
+    actually retrieved, captured exactly as production captures it so the
+    scrimmage can grade grounding the same way the live Referee does.
     Used inside experiment tasks (each task call runs in a worker thread)."""
 
-    async def _run() -> str:
+    async def _run() -> dict[str, str]:
         from google.adk.agents import Agent
         from google.adk.runners import InMemoryRunner
         from google.adk.tools import FunctionTool
@@ -44,6 +47,7 @@ def _answer_once_sync(instruction: str, question: str) -> str:
             app_name="gaffer_scrimmage", user_id="scrimmage", session_id=sid
         )
         final = ""
+        evidence: list[str] = []
         # Scrimmage turns get their own project: only real fan turns belong in "gaffer".
         with dangerously_using_project("gaffer-scrimmage"):
             async for event in runner.run_async(
@@ -53,9 +57,13 @@ def _answer_once_sync(instruction: str, question: str) -> str:
             ):
                 if event.content and event.content.parts:
                     for part in event.content.parts:
+                        fr = getattr(part, "function_response", None)
+                        if fr is not None:
+                            full = json.dumps(fr.response, ensure_ascii=False, default=str)
+                            evidence.append(f"[{fr.name}] {full[:4000]}")
                         if getattr(part, "text", None) and not getattr(event, "partial", False):
                             final = part.text
-        return final
+        return {"answer": final, "evidence": "\n".join(evidence)}
 
     import time
 
@@ -67,7 +75,7 @@ def _answer_once_sync(instruction: str, question: str) -> str:
                 time.sleep(15 * (attempt + 1))
                 continue
             raise
-    return ""
+    return {"answer": "", "evidence": ""}
 
 
 def _expected_text(expected: Any) -> str:
@@ -109,10 +117,19 @@ def _run_scrimmage_sync(candidate_instruction: str) -> dict[str, Any]:
     current_instruction, current_source = get_player_instruction()
 
     def referee(input, output, expected):  # noqa: A002 — names bound by phoenix
+        # Grade grounding against the evidence the candidate actually retrieved
+        # (same standard as the live Referee) AND consistency with ground truth.
+        # A scrimmage win now predicts live behaviour — it can no longer be won
+        # by reciting facts the Player can't actually retrieve.
+        if isinstance(output, dict):
+            answer = output.get("answer", "")
+            evidence = output.get("evidence", "") or "(no tool calls were made)"
+        else:
+            answer, evidence = str(output or ""), "(no tool calls were made)"
         verdict = judge_answer(
             question=_question_text(input),
-            answer=str(output or ""),
-            evidence="(scrimmage: judge against ground truth)",
+            answer=str(answer or ""),
+            evidence=evidence,
             expected=_expected_text(expected),
         )
         return verdict  # {label, score, explanation}

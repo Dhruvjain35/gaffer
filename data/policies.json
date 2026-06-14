@@ -17,10 +17,12 @@
     "Selfie sticks, monopods, tripods, professional photography gear",
     "Pocket knives, screwdrivers, multi-tools and other work tools",
     "Weapons of any kind, including firearms, mace, pepper spray",
-    "Reusable water bottles and tumblers"
+    "Reusable water bottles and tumblers",
+    "Outside or personal alcohol of any kind, and all outside beverages except one factory-sealed water bottle up to 20 oz (590 ml) at US and Canada matches"
   ],
   "re_entry": "No re-entry. Ticket holders who leave the stadium will not be readmitted except in exceptional circumstances such as a medical emergency.",
   "alcohol": {
+    "bring_your_own": "You may NOT bring your own or any outside alcohol into the stadiums or fan zones. Only alcohol bought inside the venue may be consumed. The single permitted outside beverage is one factory-sealed, soft-plastic, disposable water bottle up to 20 oz (590 ml) at US and Canada matches; all other outside drinks are prohibited.",
     "availability": "Beer sold at all US, Mexico and Canada venues, consumption restricted to designated areas and official fan zones.",
     "alcohol_free_options": "Some venues (e.g. BC Place, Vancouver) offer alcohol-free seating sections.",
     "prices": "Large domestic beer ~$16.75, premium ~$18 at US venues (LA/SF and MetLife most expensive); Mexico City venues markedly cheaper (about 4 beers for ~GBP 8)."
