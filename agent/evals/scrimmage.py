@@ -18,6 +18,37 @@ logger = logging.getLogger(__name__)
 
 DATASET_NAME = "training-ground-wc26"
 
+# Rapid gate: bound the promotion scrimmage to a diverse, capped sample so a
+# coaching session stays fast even as the regression dataset grows. The full
+# dataset still accumulates every drilled failure; the gate samples it evenly.
+# Set SCRIMMAGE_MAX_EXAMPLES=0 to score the entire dataset (slower, exhaustive).
+def _env_int(name: str, default: int) -> int:
+    raw = (os.environ.get(name) or "").strip()
+    return int(raw) if raw.lstrip("-").isdigit() else default
+
+
+SCRIMMAGE_MAX_EXAMPLES = _env_int("SCRIMMAGE_MAX_EXAMPLES", 8)
+
+
+def _cap_dataset(dataset: Any, limit: int) -> tuple[Any, str]:
+    """Down-sample to an evenly-spaced (diverse) subset of <= limit examples via
+    the public to_dict/from_dict round-trip. Returns (dataset, human note)."""
+    from phoenix.client.resources.datasets import Dataset
+
+    total = len(dataset.examples)
+    if limit <= 0 or total <= limit:
+        return dataset, f"{total} examples (full dataset)"
+    # Evenly-spaced sample that includes BOTH endpoints (linspace), so the most
+    # recently drilled failure (appended last) is never silently skipped. Yields
+    # at most `limit` distinct, ascending indices.
+    if limit == 1:
+        keep = [0]
+    else:
+        keep = sorted({round(i * (total - 1) / (limit - 1)) for i in range(limit)})
+    payload = dataset.to_dict()
+    payload["examples"] = [payload["examples"][i] for i in keep]
+    return Dataset.from_dict(payload), f"{len(keep)} of {total} (rapid gate sample)"
+
 
 def _answer_once_sync(instruction: str, question: str) -> dict[str, str]:
     """Run one Player turn with the given instruction in a private event loop.
@@ -114,6 +145,8 @@ def _run_scrimmage_sync(candidate_instruction: str) -> dict[str, Any]:
             "Add the failed cases as drills first (add-dataset-examples), then scrimmage.",
         }
 
+    dataset, sample_note = _cap_dataset(dataset, SCRIMMAGE_MAX_EXAMPLES)
+
     current_instruction, current_source = get_player_instruction()
 
     def referee(input, output, expected):  # noqa: A002 — names bound by phoenix
@@ -183,6 +216,7 @@ def _run_scrimmage_sync(candidate_instruction: str) -> dict[str, Any]:
 
     cur, cand = results["current"]["avg_score"], results["candidate"]["avg_score"]
     results["current"]["instruction_source"] = current_source
+    results["dataset_sample"] = sample_note
     results["verdict"] = (
         "CANDIDATE WINS — promotion justified"
         if cand is not None and cur is not None and cand > cur

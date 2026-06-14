@@ -7,6 +7,7 @@ The corpus lives in data/*.json and doubles as eval ground truth.
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 from typing import Any
 
@@ -44,17 +45,40 @@ def _units(obj: Any, key: str = "") -> list[tuple[str, Any]]:
     return units
 
 
+def _term_scores(text: str, term: str) -> tuple[int, int, int]:
+    """(whole-word hits, prefix-boundary hits, substring hits) for one term.
+
+    Whole-word ranks highest so 'visa' favours the travel record over 'Visa' the
+    card brand, and 'esta'/'eta' don't get hijacked by 'Estadio'/'detachable'.
+    Prefix-boundary still matches plurals/stems ('visa' -> 'visas'); substring is
+    the last-resort fallback so nothing that used to match silently stops matching."""
+    esc = re.escape(term)
+    ww = len(re.findall(rf"\b{esc}\b", text))
+    pre = len(re.findall(rf"\b{esc}", text))
+    return ww, pre, text.count(term)
+
+
 def _search(obj: Any, terms: list[str]) -> list[Any]:
-    """Rank flattened records by matched-term count; all-term matches first."""
+    """Rank flattened records: records matching all terms first, then by whole-word
+    frequency, then prefix-boundary, then substring — kills coincidental substring
+    hits (e.g. 'sign' inside 'designated') without dropping legitimate stem matches."""
     if not terms:
         return []
     scored = []
-    for text, record in _units(obj):
-        hits = sum(1 for t in terms if t in text)
-        if hits:
-            scored.append((hits == len(terms), hits, scored.__len__(), record))
-    scored.sort(key=lambda s: (not s[0], -s[1], s[2]))
-    return [record for _, _, _, record in scored]
+    for i, (text, record) in enumerate(_units(obj)):
+        ww = pre = sub = matched = 0
+        for t in terms:
+            w, p, s = _term_scores(text, t)
+            ww += w
+            pre += p
+            sub += s
+            if s:
+                matched += 1
+        if matched:
+            all_terms = matched == len(terms)
+            scored.append((all_terms, ww, pre, sub, matched, i, record))
+    scored.sort(key=lambda s: (not s[0], -s[1], -s[2], -s[3], -s[4], s[5]))
+    return [record for *_, record in scored]
 
 
 def _result(matches: list[Any], topic: str, query: str) -> str:

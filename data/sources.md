@@ -60,6 +60,26 @@
 - https://footballgroundguide.com/news/can-you-drink-in-stadiums-at-the-2026-world-cup.html
 - https://openthemagazine.com/sports/18-for-a-beer-875-for-water-the-fifa-2026-world-cups-ugly-price-tag
 
+## policies.json — Stadium Code of Conduct + expanded policies (added 2026-06-14)
+Primary source for smoking/vaping, cameras/drones, flags/banners, bags, outside food, gates:
+the official FIFA World Cup 2026 Stadium Code of Conduct (effective 2 June 2026), clause numbers cited inline.
+- https://digitalhub.fifa.com/m/50ebae81c412b7d5/original/FIFA-World-Cup-2026-Stadium-Code-of-Conduct.pdf
+- https://www.faa.gov/newsroom/faa-establishes-no-drone-zones-fifa-world-cup-2026-stadiums-fan-events-and-base-camps
+- https://www.gtlaw.com/en/insights/2026/6/faa-declares-no-drone-zones-for-2026-fifa-world-cup
+- https://www.lumenfield.com/plan-your-visit-stadium-guide/prohibited-items
+- https://footballgroundguide.com/news/are-football-shirts-flags-or-chants-restricted-at-the-2026-world-cup.html
+- https://footballgroundguide.com/news/world-cup-stadium-banned-items-list-what-you-can-and-cant-bring.html
+- https://footballgroundguide.com/news/will-world-cup-2026-stadiums-accept-cash-how-to-pay-at-all-16-venues.html
+- https://gpcustomersupportfwc2026.tickets.fifa.com/hc/en-gb/articles/29171894214045 (child/baby-in-arms tickets)
+- https://www.fox26houston.com/news/fifa-world-cup-2026-security-bag-policy-houston-stadium (outside food + exceptions)
+- https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/articles/accessibility-tickets-information
+- https://inside.fifa.com/news/accessibility-world-cup-2026-disability-social-inclusion
+- https://levisstadium.com/guest-services/ada-services/ (service animals)
+- https://kansascityfwc26.com/ , https://www.kc2026.com/info/frequently-asked-questions/ (service animals, fan-festival cashless, Dog Days)
+- https://www.united-2026.com/travel/currency (host-country currencies)
+- https://www.foxnews.com/travel/tourists-may-face-steep-fines-jail-time-vapes-vacation-hot-spot (Mexico vape import ban)
+- https://www.cdc.gov/importation/dogs/faqs.html (service dog US import rules)
+
 ## fan_info.json
 - https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026/fifa-fan-festival
 - https://inside.fifa.com/organisation/media-releases/biggest-selection-host-city-fan-events-tournament-history-world-cup-2026-celebrations

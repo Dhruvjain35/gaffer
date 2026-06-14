@@ -1,24 +1,34 @@
 {
-  "_meta": {"description": "Fan-relevant rules for FIFA World Cup 2026.", "verified": "2026-06-11"},
+  "_meta": {"description": "Fan-relevant rules for FIFA World Cup 2026. Stadium rules follow the official FIFA WC2026 Stadium Code of Conduct (effective 2 June 2026) and host-venue guidance.", "verified": "2026-06-14"},
   "ticketing": {
     "format": "Mobile-only via the official FWC2026 Mobile Tickets app. Tickets cannot be printed, downloaded as PDF, or shown as screenshots/photos - these are NOT accepted for entry.",
     "fifa_id": "Every attendee aged 13+ must have a registered FIFA ID linked to their match ticket.",
     "id_at_gate": "Bring passport or government-issued photo ID matching the name on your FIFA ID."
   },
   "bag_policy": {
-    "allowed_bags": "Clear plastic/vinyl/PVC bags only, max 12 x 12 x 6 in (30x30x15 cm). Small non-clear wallets/purses up to 4.5 x 6.5 in also permitted.",
+    "allowed_bags": "Clear plastic/vinyl/PVC bags only, max 12 x 12 x 6 in (30x30x15 cm). A small non-clear wallet/purse/clutch up to 4.5 x 6.5 in (11 x 16.5 cm) is also permitted. Backpacks, rucksacks, non-transparent/opaque bags, regular purses/handbags, fanny packs/waist bags, crossbody bags, tote/drawstring/cinch/duffel/gym bags and camera bags are NOT allowed unless they are clear and within the size limit (FIFA Stadium Code of Conduct 3.1.16).",
     "water": "One factory-sealed, soft plastic, disposable water bottle up to 20 oz (590 ml) allowed at US and Canada matches. Reusable bottles and tumblers of any kind BANNED (FIFA reversed its refill policy in early June 2026, citing player safety).",
+    "medical_items": "Necessary prescription medication, EpiPens/auto-injectors and essential medical devices/equipment are allowed after security screening - bring them in original/labelled packaging. Required medical liquids (e.g. medication) up to 500 ml / 16.9 oz are allowed only with a medical certificate in English, French or Spanish AND the person they are for present at security.",
+    "diaper_bag": "Diaper/baby bags get no special size exception - use a CLEAR bag within the 12 x 12 x 6 in (30x30x15 cm) limit. Baby milk, infant formula and sterilised water are allowed in containers up to 1 litre / 33.8 oz per child (glass permitted for baby milk and sterilised water), plus baby food up to 1 litre / 33.8 oz per child.",
     "toiletries": "Makeup, sunscreen, hand sanitizer allowed if 100 ml or less.",
     "power_banks": "Allowed if no larger than 4.7 x 6.7 in."
   },
   "prohibited_items": [
     "Noisemakers: vuvuzelas, whistles, air horns, loudspeakers, any device producing excessively loud sound",
     "Umbrellas (any size)",
-    "Selfie sticks, monopods, tripods, professional photography gear",
+    "Selfie sticks, monopods, tripods, gimbals and other camera mounts; professional photography gear",
     "Pocket knives, screwdrivers, multi-tools and other work tools",
     "Weapons of any kind, including firearms, mace, pepper spray",
     "Reusable water bottles and tumblers",
-    "Outside or personal alcohol of any kind, and all outside beverages except one factory-sealed water bottle up to 20 oz (590 ml) at US and Canada matches"
+    "Outside or personal alcohol of any kind, and all outside beverages except one factory-sealed water bottle up to 20 oz (590 ml) at US and Canada matches",
+    "Lighters, matches, fireworks, flares, smoke bombs and any flame- or smoke-producing items (Code of Conduct 3.1.7)",
+    "Drones, unmanned aircraft systems (UAS) and any remote-controlled aircraft (Code of Conduct 3.1.35)",
+    "Professional video/recording equipment capable of recording sound and video (Code of Conduct 3.1.32); large detachable lenses and action cameras are restricted and often refused (venue-specific)",
+    "Backpacks, rucksacks and non-transparent bags or purses larger than the hand-sized clutch exception",
+    "Outside food of any kind (snacks, packed meals, picnics, sandwiches, coolers) except baby food and medically required food",
+    "Animals other than service animals (no pets; no emotional support, comfort or therapy animals)",
+    "Flagpoles and banner poles (except a flexible non-flammable pole up to 1 m long and 1 cm thick), and any political, offensive, discriminatory, commercial or promotional flags, banners or signs",
+    "Strollers, prams and pushchairs, bicycles, skateboards, rollerblades, kick scooters and electric scooters (Code of Conduct 3.1.14)"
   ],
   "re_entry": "No re-entry. Ticket holders who leave the stadium will not be readmitted except in exceptional circumstances such as a medical emergency.",
   "alcohol": {
@@ -26,6 +36,56 @@
     "availability": "Beer sold at all US, Mexico and Canada venues, consumption restricted to designated areas and official fan zones.",
     "alcohol_free_options": "Some venues (e.g. BC Place, Vancouver) offer alcohol-free seating sections.",
     "prices": "Large domestic beer ~$16.75, premium ~$18 at US venues (LA/SF and MetLife most expensive); Mexico City venues markedly cheaper (about 4 beers for ~GBP 8)."
+  },
+  "smoking_vaping": {
+    "inside_stadium": "Smoking, vaping, e-cigarettes and any tobacco products or electronic smoking devices may NOT be used inside FIFA World Cup 2026 stadiums. You may only smoke or vape in an outdoor designated smoking area IF the stadium provides one (Code of Conduct 4.2.18); not every venue has one, so check your specific stadium.",
+    "carry_vs_use": "You CAN carry cigarettes and electronic smoking devices (vapes, including heat-not-burn) into the stadium but may NOT use them inside (Code of Conduct 3.1.7). Lighters, matches, flares and smoke bombs cannot be brought in at all.",
+    "mexico_vape_ban": "Separately, bringing vapes, e-cigarettes or e-liquids INTO Mexico (host cities Mexico City, Guadalajara, Monterrey) is illegal nationwide - a January 2026 General Health Law reform now enforces Mexico's constitutional vape ban with criminal penalties: customs confiscation, fines reported in the 11,314-226,280 peso range (about $600-$12,400) and possible prison. Leave vapes at home if travelling to Mexico."
+  },
+  "cameras_and_drones": {
+    "personal_cameras": "Phone cameras and small personal cameras for personal use are allowed - FIFA's Code of Conduct (3.1.36) explicitly permits 'photographic camera lenses for non-professional purposes'. A smartphone or a compact camera without a detachable lens is fine; a DSLR/mirrorless with a detachable lens may be refused at many host venues, so check your specific stadium.",
+    "banned_camera_gear": "Professional recording equipment is banned: Code of Conduct 3.1.32 prohibits 'any type of television and telecommunication equipment (including professional video cameras) or other professional equipment that is capable of recording sound and video'. Camera mounts - tripods, monopods and selfie sticks (and similar mounts) - are also banned (3.1.34). GoPro/action cameras and large detachable lenses are restricted and often refused, but the exact limit is venue-specific, so confirm with your stadium. Any camera bag must follow the clear-bag rule.",
+    "binoculars": "Small/compact personal binoculars are allowed; large binoculars and other optical magnifying equipment are prohibited except for partially-sighted ticket holders (Code of Conduct 3.1.36).",
+    "drones": "Drones, unmanned aircraft systems and remote-controlled aircraft are banned from the stadium (Code of Conduct 3.1.35). All US WC2026 stadiums are FAA 'No Drone Zones': on match days flying a drone within 3 nautical miles and up to 3,000 ft of the stadium is prohibited (1 nm / 1,000 ft around Fan Festivals), with civil and criminal penalties."
+  },
+  "flags_banners_signs": {
+    "size_and_material": "Flags, banners, posters and signs are allowed up to 2 m x 1.5 m (about 6.5 ft x 5 ft / 78 in x 60 in) and must be non-flammable (fire-resistant); larger items need advance written approval via FIFA's Fan Materials Request Portal. All such items are inspected at the entrance.",
+    "poles": "Flagpoles, banner poles and stick handles are banned, except a flexible/double non-flammable plastic pole no longer than 1 m (39.3 in) and no thicker than 1 cm.",
+    "content_rules": "Political, offensive or discriminatory banners, flags, signs or apparel are banned (including hate symbols or messages targeting race, ethnicity, gender identity, religion, politics or sexual orientation), as are commercial/promotional/advertising flags. Rainbow/Pride flags are permitted if they meet the size and material rules. National, cultural or religious headwear is allowed. Flags may be used only in a festive, friendly way and not hung on stadium structures."
+  },
+  "children_and_families": {
+    "child_ticket": "Every child needs their own valid match ticket regardless of age, with the only exception being a 'baby in arms' (lap infant).",
+    "baby_in_arms": "A baby in arms enters without a ticket only if 2 years old or under on matchday, no more than 34 in (86 cm) tall, and sitting on the ticket holder's lap (one baby per ticket holder, not allowed in standing sections). Proof of the baby's age may be requested.",
+    "minimum_age": "There is no minimum age to attend a match, but minors under 16 must be accompanied by an adult aged 18 or over. You must be at least 18 to purchase tickets.",
+    "strollers": "Strollers, prams and pushchairs are prohibited items and are NOT allowed inside the stadium (Code of Conduct 3.1.14, alongside bicycles, skateboards and scooters). Many venues offer storage for restricted items outside the stadium (may carry a fee, first-come). A body-worn baby carrier or sling is the practical alternative for carrying an infant inside.",
+    "baby_supplies": "Baby food, infant formula, baby milk and sterilised water are allowed up to 1 litre / 33.8 oz per child, but a diaper bag must still be a clear bag within the size limit. Host stadiums provide nursing/feeding rooms and baby-changing facilities (exact locations vary by venue)."
+  },
+  "outside_food": {
+    "general": "Outside food is NOT allowed into the stadium - no snacks, packed meals, picnics, sandwiches, candy, coolers or homemade food; concessions are sold inside. The only exceptions are baby/infant food and medically required food.",
+    "baby_exception": "Baby food and food for young infants are allowed up to 1 litre / 33.8 oz per child, along with baby milk and sterilised water in containers (glass containers are permitted for baby milk and sterilised water) up to 1 litre / 33.8 oz per child (Code of Conduct 3.1.21).",
+    "medical_exception": "Medically required food, and liquids up to 500 ml / 16.9 oz needed for medical reasons, are allowed only with a medical certificate in English, French or Spanish and the person it is for present at security."
+  },
+  "service_animals": {
+    "allowed": "Service animals are welcome and are the only animals allowed inside the stadium (Code of Conduct 3.1.19, which permits 'service animals'). At US host venues a service animal is, per ADA, a dog (or miniature horse) individually trained to do work or tasks for a person with a disability; no certification, papers, ID or vest is required - staff may only ask whether it is a service animal and what task it performs.",
+    "rules": "The service animal must stay leashed/harnessed and under your control throughout. Service-animal relief areas are provided at host venues; ask venue staff for the location. As ADA practice, the animal accompanies its handler to their ticketed seat (you are not limited to accessible sections), but confirm with your venue.",
+    "pets_banned": "Pets and all other animals are prohibited inside the stadium, and emotional support, comfort or therapy animals do NOT qualify as service animals and are not admitted. (Some host-city Fan Festivals hold special pet-friendly days outside the stadium, e.g. Kansas City's 'Dog Days'.)",
+    "bringing_dog_to_us": "A service dog entering the USA from abroad gets no exemption from CDC import rules: it must appear healthy, be at least 6 months old, have an ISO-compatible microchip and a CDC Dog Import Form receipt submitted in advance (extra rabies documentation from high-risk-rabies countries)."
+  },
+  "accessibility": {
+    "tickets": "Accessibility tickets are sold for every match in categories Wheelchair User, Easy Access Standard and Easy Access Amenity, bought through the same FIFA ticketing process (no separate portal). You can add up to three companion/carer tickets within a four-ticket household limit (for matches in Mexico, only one companion ticket per accessibility ticket), seated as close as possible to you (exact adjacent seating not guaranteed).",
+    "in_stadium_services": "Every one of the 16 host stadiums has a sensory/quiet (calming) room for all matches; free sensory bags/kits (noise-cancelling headphones, fidget tools, communication cards) can be borrowed at Fan Info Points. Mobility assistance and wheelchair escorts are provided at every match.",
+    "deaf_and_blind_services": "WC2026 is the first World Cup with sign-language interpretation for every match (ASL in the US/Canada, LSM in Mexico) via the FIFA app, plus audio-descriptive commentary for blind/low-vision fans (FIFA Audio Description app), in-stadium captioning, and haptic devices at select matches in Dallas, NY/NJ, Seattle and Vancouver."
+  },
+  "payment": {
+    "cashless": "Most WC2026 stadiums are cashless: cash is not accepted at concessions, bars or merchandise - pay by credit/debit card or a mobile wallet (Apple Pay, Google Pay, tap-to-pay contactless). Accepted brands vary by venue but typically include Visa, Mastercard and American Express (some also Discover or gift/prepaid cards). The FIFA Fan Festival is also cashless.",
+    "cash_to_card": "If you have cash, most cashless stadiums have reverse-ATM / cash-to-card kiosks that load it onto a prepaid card (a Visa prepaid card at some venues, a generic prepaid debit/gift card at others), typically with no fee, to spend anywhere inside.",
+    "mexico_venues": "Mexico differs: the Mexico City Stadium (Estadio Azteca) and Guadalajara Stadium (Estadio Akron) accept both cash and card; Monterrey's Estadio BBVA is fully cashless.",
+    "currency_and_tickets": "Local currency is USD in the USA, CAD in Canada, and MXN (pesos) in Mexico (all use the '$' symbol). Visa is FIFA's Official Payment Technology Partner and was the exclusive/preferred way to pay in the early ticket-sales phases, so a Visa card is the safest for buying tickets and hospitality. At terminals choose the local currency and decline dynamic currency conversion to avoid extra fees."
+  },
+  "gates_and_arrival": {
+    "gates_open": "Stadium gates open three hours before kickoff for standard matches; FIFA recommends arriving early to allow time for security screening and mobile-ticket scanning before kickoff.",
+    "opening_and_final": "For the opening matches (Los Angeles, Mexico City, Toronto) and the final (New York/New Jersey), gates open four hours before kickoff for pre-match entertainment and activations.",
+    "parking": "Parking lots open about one hour before the gates (roughly four hours before kickoff for standard matches) - arrive early to park, walk the 'last mile' and clear security."
   },
   "travel_entry": {
     "general": "There is NO special World Cup visa. USA, Canada and Mexico each apply normal entry rules - qualify separately for each country you visit.",
