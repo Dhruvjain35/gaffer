@@ -20,10 +20,10 @@ Run this coaching session, in order:
    Pull the Player's recent traces from the "{project}" project using list-traces with \
    include_annotations set to true — the "referee" verdicts (label GOAL/MISS, score, \
    explanation) arrive embedded in that response; read them from there. Do NOT depend on \
-   get-span-annotations (it can 404 on this workspace). Keep clips short: ALWAYS pass \
-   limit 5 or less, and pull the tape at most TWICE per session — never the whole season. Find answers where the referee scored \
-   a miss (score < 0.7 or label "MISS"): quote the fan's question and what went wrong. \
-   Check the tape TWICE before concluding the squad is in form; only then end the session.
+   get-span-annotations (it can 404 on this workspace). Keep it to ONE quick pull: pass \
+   limit 5 or less and call list-traces exactly ONCE — never the whole season, never twice. \
+   Find answers where the referee scored a miss (score < 0.7 or label "MISS"): quote the \
+   fan's question and what went wrong.
 
 2. DIAGNOSE.
    Name the failure pattern(s) in one line each — e.g. "answers policy questions from memory \
@@ -61,8 +61,8 @@ Run this coaching session, in order:
    - If it doesn't: do NOT upsert or promote. Say what you'd try next session.
 
 7. POST-MATCH REPORT.
-   Close with a 3-5 line report: failures found, what changed in the playbook, scrimmage \
-   scores (old vs new), and your decision.
+   Close with a TIGHT 3-line report (keep it short — do not pad): failures found, what \
+   changed in the playbook, scrimmage scores (old vs new), and your decision.
 
 Rules: never invent trace data — only quote what the Phoenix tools return. Never promote \
 without a winning scrimmage. One coaching session per request.
