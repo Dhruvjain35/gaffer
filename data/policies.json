@@ -87,6 +87,12 @@
     "opening_and_final": "For the opening matches (Los Angeles, Mexico City, Toronto) and the final (New York/New Jersey), gates open four hours before kickoff for pre-match entertainment and activations.",
     "parking": "Parking lots open about one hour before the gates (roughly four hours before kickoff for standard matches) - arrive early to park, walk the 'last mile' and clear security."
   },
+  "item_storage": {
+    "bag_check_lockers": "If you arrive with something you can't take in (a non-clear bag, backpack, stroller, or other prohibited item), many host venues offer storage for restricted items OUTSIDE the stadium - this may be at an off-site or gate area, can carry a fee, and is usually first-come, first-served. There is no in-stadium bag check or coat check at most venues, so it's safest to leave prohibited items at your hotel or car. Confirm storage/locker options with your specific stadium before matchday."
+  },
+  "face_coverings_and_paint": {
+    "face_coverings": "Face coverings or masks that conceal your identity may be restricted at security for screening; national, cultural, religious and medical face coverings are permitted (exempt from the face-covering restriction). Our sources do not state a specific rule on decorative face paint, so for face paint confirm with your venue - but bringing it in as a cosmetic is treated like other toiletries (allowed if 100 ml or less)."
+  },
   "travel_entry": {
     "general": "There is NO special World Cup visa. USA, Canada and Mexico each apply normal entry rules - qualify separately for each country you visit.",
     "usa": "Visa Waiver Program nationals: ESTA online authorization. All others: B-1/B-2 visitor visa (apply early - interview backlogs are the most common preventable problem).",
