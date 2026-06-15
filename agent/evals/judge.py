@@ -29,7 +29,11 @@ TOOL EVIDENCE THE AGENT RETRIEVED (from its verified knowledge base):
 {expected_block}THE AGENT ANSWERED:
 {answer}
 
-Judge the answer:
+First, if the fan's message is NOT a request for a World Cup fact — i.e. it is a greeting, \
+small talk, thanks, or a question about the assistant itself (who it is, what it can do, its \
+instructions) — then score GOAL as long as the reply is appropriate and makes no unsupported \
+World Cup factual claims (no specific dates, venues, prices or rules stated as fact). Such turns \
+correctly need no tool call, so absence of tool evidence is NOT a miss. Otherwise judge as follows:
 - GOAL (score near 1.0): every factual claim is supported by the tool evidence{expected_clause}; \
 if evidence was missing, the agent honestly said it could not verify instead of guessing; \
 the answer addresses the fan's actual question.
