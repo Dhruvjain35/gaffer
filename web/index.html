@@ -26,15 +26,16 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;background:var(--bg);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-body{font-family:var(--sans);color:var(--fg);background:var(--bg);font-size:17px;line-height:1.5}
+body{font-family:var(--sans);color:var(--fg);background:transparent;font-size:17px;line-height:1.5}
 a{color:inherit;text-decoration:none}
 :focus-visible{outline:none;box-shadow:0 0 0 3px rgba(79,180,114,.4)}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;scroll-behavior:auto}.reveal,.stagger>*{opacity:1!important;transform:none!important}.btn::after,.spark{animation:none!important}}
 
 /* ===== global background: grid + aura + stars ===== */
 .sitebg{position:fixed;inset:0;z-index:-2;pointer-events:none;background:var(--bg);overflow:hidden}
-.sitebg .grid{position:absolute;inset:-2px;background-image:linear-gradient(rgba(79,180,114,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(79,180,114,.05) 1px,transparent 1px);background-size:48px 48px;
-  -webkit-mask:radial-gradient(ellipse 90% 70% at 50% -5%,#000 35%,transparent 78%);mask:radial-gradient(ellipse 90% 70% at 50% -5%,#000 35%,transparent 78%)}
+.sitebg .grid{position:absolute;inset:-2px;background-image:linear-gradient(rgba(79,180,114,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(79,180,114,.06) 1px,transparent 1px);background-size:46px 46px;
+  -webkit-mask:radial-gradient(circle at 50% 26%,#000 68%,rgba(0,0,0,.5) 100%);mask:radial-gradient(circle at 50% 26%,#000 68%,rgba(0,0,0,.5) 100%)}
+.bgfx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .sitebg .aura{position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:min(1500px,150vw);height:1100px;
   background:radial-gradient(ellipse 38% 42% at 50% 50%,rgba(110,214,150,.46),rgba(60,170,100,.22) 38%,rgba(47,107,63,.10) 58%,transparent 72%);filter:blur(6px)}
 .sitebg .aura.b{top:auto;bottom:-520px;width:1100px;height:1000px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(47,107,63,.14),transparent 70%);filter:blur(8px)}
@@ -143,14 +144,31 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .wall .item svg{height:24px;width:auto;fill:currentColor}.wall .item .wm{font-weight:500;font-size:1.05rem;color:var(--fg)}
 
 /* ASK */
-.screen.ask.on{display:flex;flex-direction:column;height:calc(100dvh - var(--nav-h));background:transparent}
-.ask .conv{flex:1;overflow-y:auto}.ask .conv .in{max-width:820px;margin:0 auto;padding:38px 24px 52px}
-.askintro{min-height:calc(100dvh - var(--nav-h) - 188px);display:flex;flex-direction:column;justify-content:center}
-.pixwrap{position:relative;border:1px solid var(--border-2);border-radius:var(--r-lg);overflow:hidden;background:rgba(13,16,14,.5);margin-bottom:34px;
-  background-image:linear-gradient(rgba(79,180,114,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(79,180,114,.06) 1px,transparent 1px);background-size:26px 26px}
-.pixwrap canvas{display:block;width:100%;height:170px}
-.pixwrap .pl{position:absolute;left:16px;bottom:12px;font-family:var(--pixel);font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2)}
+.screen.ask.on{display:flex;flex-direction:row;height:calc(100dvh - var(--nav-h));background:transparent}
+.ask-main{flex:1;display:flex;flex-direction:column;min-width:0}
+.ask .conv{flex:1;overflow-y:auto}.ask .conv .in{max-width:820px;margin:0 auto;padding:40px 24px 52px}
+.askintro{min-height:calc(100dvh - var(--nav-h) - 180px);display:flex;flex-direction:column;justify-content:center}
 .askintro .eyebrow{margin-bottom:16px}.askintro h2{max-width:22ch;margin-bottom:clamp(28px,4vh,38px)}
+/* live coaching side panel */
+.ask-side{width:336px;flex:none;display:flex;flex-direction:column;border-left:1px solid var(--border-2);padding:26px 24px;overflow-y:auto;background:rgba(8,11,9,.45);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.as-head{display:flex;align-items:center;gap:9px;font-family:var(--pixel);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--green-lum);margin-bottom:22px}
+.as-head .as-dot{width:8px;height:8px;border-radius:50%;background:var(--green-lum);box-shadow:0 0 8px var(--green-lum);animation:pixelPulse 1.6s infinite}
+.as-rec{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:26px}
+.as-rec>div{background:var(--card);border:1px solid var(--border-2);border-radius:var(--r-sm);padding:13px 12px}
+.as-rec b{display:block;font-family:var(--serif);font-size:1.55rem;color:var(--fg);line-height:1}
+.as-rec span{font-size:.68rem;color:var(--muted-2);margin-top:5px;display:block}
+.as-loop{display:flex;flex-direction:column;margin-bottom:8px}
+.as-step{display:flex;align-items:center;gap:13px;padding:11px 0;font-size:.95rem;color:var(--muted-2);position:relative;transition:color .3s}
+.as-step i{width:12px;height:12px;border-radius:50%;border:2px solid #333;background:transparent;flex:none;transition:all .3s}
+.as-step+.as-step::before{content:'';position:absolute;left:5px;top:-13px;width:2px;height:15px;background:#26302a}
+.as-step.done{color:var(--muted)}.as-step.done i{border-color:var(--green);background:var(--green)}
+.as-step.on{color:var(--fg)}.as-step.on i{border-color:var(--green-lum);background:var(--green-lum);box-shadow:0 0 10px var(--green-lum);animation:pixelPulse 1s infinite}
+.as-verdict{margin-top:auto;padding-top:22px;border-top:1px solid var(--border-2)}
+.as-empty{font-size:.9rem;color:var(--muted-2);line-height:1.5}
+.asv{display:flex;gap:12px;align-items:center}
+.asv .ast{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--tint-2);color:var(--green-soft);font-weight:700;flex:none}.asv.miss .ast{background:rgba(224,168,90,.16);color:#e0a85a}
+.asv b{display:block;color:var(--fg)}.asv span{font-size:.85rem;color:var(--muted)}
+@media(max-width:900px){.ask-side{display:none}}
 .suggest{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .suggest button{font-family:var(--sans);text-align:left;background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:18px 20px;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:border-color .22s var(--ease-io),background-color .22s,transform .22s}
 .suggest button:hover{border-color:var(--tint-2);background:#111513;transform:translateY(-2px)}
@@ -285,11 +303,10 @@ footer{border-top:1px solid var(--border-2)}
 </style>
 </head>
 <body>
-<div class="sitebg" id="sitebg"><div class="grid"></div><div class="aura"></div><div class="aura b"></div></div>
+<div class="sitebg" id="sitebg"><div class="grid"></div><canvas class="bgfx" id="bgfx"></canvas><div class="aura"></div><div class="aura b"></div></div>
 <header class="gnav" id="gnav"><div class="gnav-in">
   <a class="brand" href="#home"><span class="bmark"></span>GAFFER</a>
   <nav class="links" id="navLinks">
-    <a href="#ask" data-nav="ask">Ask</a>
     <a href="#team" data-nav="team">Follow Your Team</a>
     <a href="#loop" data-nav="loop">How It Works</a>
     <a href="#venues" data-nav="venues">Venues</a>
@@ -334,18 +351,30 @@ footer{border-top:1px solid var(--border-2)}
 
 <!-- ASK -->
 <section class="screen ask" id="screen-ask">
-  <div class="conv" id="conv"><div class="in" id="convInner">
-    <div class="askintro" id="askintro">
-      <div class="pixwrap"><canvas id="askfield"></canvas><span class="pl">// gaffer pitch</span></div>
-      <span class="eyebrow">Ask Gaffer</span>
-      <h2 class="h2">Ask anything. The referee checks every answer before you see it.</h2>
-      <div class="suggest" id="suggest"></div>
+  <div class="ask-main">
+    <div class="conv" id="conv"><div class="in" id="convInner">
+      <div class="askintro" id="askintro">
+        <span class="eyebrow">Ask Gaffer</span>
+        <h2 class="h2">Ask anything. The referee checks every answer before you see it.</h2>
+        <div class="suggest" id="suggest"></div>
+      </div>
+    </div></div>
+    <div class="composer">
+      <div class="in"><div class="box"><textarea id="input" rows="1" placeholder="Ask about venues, fixtures, policies or travel"></textarea><button class="send" id="send" aria-label="Send"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button></div></div>
+      <p class="hint">Every answer is checked by the referee before you see it.</p>
     </div>
-  </div></div>
-  <div class="composer">
-    <div class="in"><div class="box"><textarea id="input" rows="1" placeholder="Ask about venues, fixtures, policies or travel"></textarea><button class="send" id="send" aria-label="Send"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button></div></div>
-    <p class="hint">Every answer is checked by the referee before you see it.</p>
   </div>
+  <aside class="ask-side" id="askSide">
+    <div class="as-head"><span class="as-dot"></span> Live coaching</div>
+    <div class="as-rec"><div><b id="asN">0</b><span>graded</span></div><div><b id="asG">·</b><span>goal rate</span></div><div><b id="asGr">·</b><span>grounded</span></div></div>
+    <div class="as-loop">
+      <div class="as-step" data-s="play"><i></i>Player answers, grounded</div>
+      <div class="as-step" data-s="ref"><i></i>Referee grades it</div>
+      <div class="as-step" data-s="coach"><i></i>Gaffer coaches a fix</div>
+      <div class="as-step" data-s="prove"><i></i>Re-answered &amp; verified</div>
+    </div>
+    <div class="as-verdict" id="asVerdict"><span class="as-empty">Ask a question and watch the referee grade it in real time. If it isn’t fully verified, Gaffer coaches itself here.</span></div>
+  </aside>
 </section>
 
 <!-- TEAM -->
@@ -358,7 +387,7 @@ footer{border-top:1px solid var(--border-2)}
     <h2 class="h1 reveal">The referee that coaches <span class="g">itself.</span></h2>
     <p class="lead reveal">Four steps, no human in the loop. Each one runs on real infrastructure.</p>
   </div></section>
-  <div class="steps"><canvas class="bgfield" id="loopfield"></canvas><div class="container">
+  <div class="steps"><div class="container">
 
     <div class="stepblock reveal">
       <div class="stxt"><div class="n">Step 01 · Play</div><h3 class="h2">It answers, grounded.</h3><p class="lead">The Player pulls only from a verified knowledge base and cites the records it used. No memory, no guessing.</p></div>
@@ -433,59 +462,74 @@ function observeScreen(s){const sc=$('screen-'+s);sc.querySelectorAll('.reveal,.
 (function stars(){const bg=$('sitebg');const pts=[[8,14,13,3.1],[20,40,9,4],[33,9,11,2.7],[46,30,16,3.6],[60,16,10,3.2],[72,44,13,4.2],[84,12,12,2.9],[91,33,9,3.7],[13,66,11,3.3],[27,80,14,4],[42,60,9,2.8],[57,74,12,3.9],[69,63,10,3.4],[80,82,13,3.1],[88,58,11,4.1],[4,46,10,3.6]];
   pts.forEach(([l,t,s,d])=>{const e=document.createElement('span');e.className='spark';e.style.cssText=`left:${l}%;top:${t}%;width:${s}px;height:${s}px;--d:${d}s;--dl:${(l%5)/4}s`;bg.appendChild(e);});})();
 
-/* pixel two-player soccer animation on a grid */
+/* per-page pixel soccer animation, drawn faint along the bottom of the viewport */
 const _resizers=[];
-function pixelSoccer(cv,opt={}){
-  if(!cv)return;const ctx=cv.getContext('2d');const DPR=Math.min(2,window.devicePixelRatio||1);
-  let W=1,H=1;function resize(){const r=cv.getBoundingClientRect();if(!r.width)return;cv.width=W=Math.round(r.width*DPR);cv.height=H=Math.round(r.height*DPR);}
+const BG_MODE={home:'pass',ask:'dribble',team:'rondo',loop:'orbit',venues:'goal'};
+function makeBgFx(cv){
+  if(!cv)return{set(){},resize(){}};
+  const ctx=cv.getContext('2d');const DPR=Math.min(2,window.devicePixelRatio||1);
+  let W=1,H=1,mode='pass',t0=performance.now();
+  function resize(){W=cv.width=Math.round(window.innerWidth*DPR);H=cv.height=Math.round(window.innerHeight*DPR);}
   resize();_resizers.push(resize);
-  const C=opt.color||'#4fb472',BALL=opt.ball||'#ecebea',DUR=opt.dur||1150;let dir=1,start=performance.now();
-  const snap=(v,s)=>Math.round(v/s)*s;
-  function fig(x,gy,s,kick,face){
-    ctx.fillStyle=C;const lean=Math.round(kick*face*s);
-    // head
-    ctx.fillRect(snap(x-s+lean,s),gy-s*9,s*2,s*2);
-    // torso
-    ctx.fillRect(snap(x-s+lean*0.7,s),gy-s*7,s*2,s*4);
-    // arms
-    ctx.fillRect(snap(x-s*2+lean*0.7,s),gy-s*7,s,s*3);ctx.fillRect(snap(x+s+lean*0.7,s),gy-s*7,s,s*3);
-    // standing leg
-    ctx.fillRect(snap(x-s,s),gy-s*3,s,s*3);
-    // kicking leg reaches toward the ball
-    const reach=Math.round(face*kick*s*2.6);
-    ctx.fillRect(snap(x+reach,s),gy-s*3,s,s*2);
-    ctx.fillRect(snap(x+reach+face*s,s),gy-s*1-Math.round(kick*s),s,s*2);
+  const rnd=(v,s)=>Math.round(v/s)*s,G=a=>'rgba(79,180,114,'+a+')';
+  function fig(x,gy,s,kick,face,a){
+    ctx.fillStyle=G(a);const ln=Math.round(kick*face*s);
+    ctx.fillRect(rnd(x-s+ln,s),gy-s*9,s*2,s*2);
+    ctx.fillRect(rnd(x-s+ln*0.7,s),gy-s*7,s*2,s*4);
+    ctx.fillRect(rnd(x-s*2+ln*0.7,s),gy-s*7,s,s*3);ctx.fillRect(rnd(x+s+ln*0.7,s),gy-s*7,s,s*3);
+    ctx.fillRect(rnd(x-s,s),gy-s*3,s,s*3);
+    const r=Math.round(face*kick*s*2.4);
+    ctx.fillRect(rnd(x+r,s),gy-s*3,s,s*2);ctx.fillRect(rnd(x+r+face*s,s),gy-s-Math.round(kick*s),s,s*2);
   }
+  function ball(x,y,s,a){ctx.fillStyle='rgba(236,235,234,'+a+')';ctx.fillRect(rnd(x-s,s),rnd(y-s,s),s*2,s*2);ctx.fillStyle=G(a);ctx.fillRect(rnd(x-s,s),rnd(y-s,s),s,s);ctx.fillRect(rnd(x,s),rnd(y,s),s,s);}
   function frame(now){
     if(W<2){requestAnimationFrame(frame);return;}
     ctx.clearRect(0,0,W,H);
-    const s=Math.max(3,Math.round((opt.px||5)*DPR));const gy=Math.round(H*0.72);
-    const lx=Math.round(W*0.22),rx=Math.round(W*0.78);
-    let tt=(now-start)/DUR;if(tt>=1){tt=0;start=now;dir*=-1;}
-    // faint pitch midline + circle
-    ctx.strokeStyle='rgba(79,180,114,.18)';ctx.lineWidth=Math.max(1,DPR);
-    ctx.beginPath();ctx.moveTo(W/2,gy-H*0.5);ctx.lineTo(W/2,gy+s);ctx.stroke();
-    ctx.beginPath();ctx.arc(W/2,gy-H*0.22,Math.min(W,H)*0.12,0,Math.PI*2);ctx.stroke();
-    ctx.strokeStyle='rgba(79,180,114,.28)';ctx.beginPath();ctx.moveTo(0,gy+s);ctx.lineTo(W,gy+s);ctx.stroke();
-    const from=dir>0?lx:rx,to=dir>0?rx:lx;
-    const bx=from+(to-from)*tt,by=gy-s*3-Math.sin(tt*Math.PI)*H*0.40;
-    let kL=dir>0?Math.max(0,1-tt*7):Math.max(0,(tt-0.857)*7);
-    let kR=dir>0?Math.max(0,(tt-0.857)*7):Math.max(0,1-tt*7);
-    kL=Math.min(1,kL);kR=Math.min(1,kR);
-    fig(lx,gy,s,kL,1);fig(rx,gy,s,kR,-1);
-    // ball: pixel square with a quartered pattern
-    ctx.fillStyle=BALL;ctx.fillRect(snap(bx-s,s),snap(by-s,s),s*2,s*2);
-    ctx.fillStyle=C;ctx.fillRect(snap(bx-s,s),snap(by-s,s),s,s);ctx.fillRect(snap(bx,s),snap(by,s),s,s);
+    const T=(now-t0)/1000,s=Math.max(5,Math.round(8*DPR)),gy=Math.round(H*0.9),A=.42,BA=.72;
+    if(mode==='pass'){
+      const lx=W*0.05,rx=W*0.95,D=1.5;let tt=(T/D)%2;const dir=tt<1?1:-1;tt%=1;
+      const fr=dir>0?lx:rx,to=dir>0?rx:lx,bx=fr+(to-fr)*tt,by=gy-s*3-Math.sin(tt*Math.PI)*H*0.56;
+      fig(lx,gy,s,Math.min(1,dir>0?Math.max(0,1-tt*7):Math.max(0,(tt-.857)*7)),1,A);
+      fig(rx,gy,s,Math.min(1,dir>0?Math.max(0,(tt-.857)*7):Math.max(0,1-tt*7)),-1,A);ball(bx,by,s,BA);
+    } else if(mode==='dribble'){
+      const per=7;let tt=(T/per)%1;const right=tt<.5,f=right?1:-1;
+      const x=right?W*0.06+W*0.88*(tt*2):W*0.94-W*0.88*((tt-.5)*2);
+      fig(x,gy,s,Math.abs(Math.sin(T*9))*0.35,f,A);ball(x+f*s*3,gy-s-Math.abs(Math.sin(T*7))*s*1.4,s,BA);
+    } else if(mode==='rondo'){
+      const N=6,cx=W/2,cy=gy-H*0.2,rx=W*0.42,ry=H*0.16,seg=0.95;
+      const pos=i=>[cx+Math.cos(i/N*6.283-1.57)*rx,cy+Math.sin(i/N*6.283-1.57)*ry];
+      const g=T/seg,i=Math.floor(g)%N,fc=g%1,a=pos(i),b=pos((i+1)%N);
+      for(let k=0;k<N;k++){const p=pos(k);fig(p[0],p[1]+s*9,Math.round(s*0.85),k===((i+1)%N)?Math.max(0,1-fc*5):0,p[0]<cx?1:-1,A*0.85);}
+      ball(a[0]+(b[0]-a[0])*fc,(a[1]+(b[1]-a[1])*fc)-Math.sin(fc*Math.PI)*H*0.04,s,BA);
+    } else if(mode==='orbit'){
+      const cx=W/2,cy=gy-H*0.18,rr=Math.min(W,H)*0.15,ang=T*1.3;
+      for(let k=10;k>=1;k--)ball(cx+Math.cos(ang-k*0.1)*rr,cy+Math.sin(ang-k*0.1)*rr*0.55,Math.round(s*0.85),0.014*k);
+      ball(cx+Math.cos(ang)*rr,cy+Math.sin(ang)*rr*0.55,s,BA);
+      fig(cx,cy+rr*0.55+s*9,s,0,Math.cos(ang)>0?1:-1,A);
+    } else if(mode==='goal'){
+      const gx=W*0.82,gt=gy-s*9,gw=s*8,gh=s*9;
+      ctx.fillStyle=G(.16);ctx.fillRect(rnd(gx,s),gt,s,gh);ctx.fillRect(rnd(gx+gw,s),gt,s,gh);ctx.fillRect(rnd(gx,s),gt,gw+s,s);
+      ctx.strokeStyle=G(.08);ctx.lineWidth=Math.max(1,DPR);for(let nx=gx+s*2;nx<gx+gw;nx+=s*2){ctx.beginPath();ctx.moveTo(nx,gt);ctx.lineTo(nx,gt+gh);ctx.stroke();}
+      const per=2.6;let tt=(T/per)%1;const sx=W*0.1,sy=gy-s*2,ex=gx+gw*0.5,ey=gy-s*5;
+      ball(sx+(ex-sx)*tt,sy+(ey-sy)*tt-Math.sin(tt*Math.PI)*H*0.26,s,tt<0.95?BA:0.04);
+      fig(sx-s*2,gy,s,tt<0.12?1:0,1,A);
+    }
     requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
+  return {set(m){if(m&&m!==mode){mode=m;t0=performance.now();}},resize};
 }
+const _bg=makeBgFx($('bgfx'));
+/* live coaching side panel */
+function asSet(st){['play','ref','coach','prove'].forEach(o=>{const e=document.querySelector('.as-step[data-s="'+o+'"]');if(!e)return;e.classList.remove('on','done');if(st[o])e.classList.add(st[o]);});}
+function asRecord(r){if(!r)return;$('asN').textContent=r.total??0;$('asG').textContent=r.goal_rate!=null?Math.round(r.goal_rate*100)+'%':'·';$('asGr').textContent=r.avg_grounding!=null?Math.round(r.avg_grounding*100)+'%':'·';}
+function asVerdict(ev){const goal=ev.label==='GOAL',gp=ev.grounding==null?null:Math.round(ev.grounding*100);$('asVerdict').innerHTML=`<div class="asv ${goal?'':'miss'}"><span class="ast">${goal?'✓':'!'}</span><div><b>${goal?'Verified by the referee':'Not fully verified'}</b>${gp!=null?`<span>${gp}% grounded in sources</span>`:''}</div></div>`;}
 
 function route(){let h=(location.hash||'#home').slice(1);if(!SCREENS.includes(h))h='home';
   SCREENS.forEach(s=>$('screen-'+s).classList.toggle('on',s===h));
   document.querySelectorAll('.gnav .links a').forEach(a=>a.classList.toggle('on',a.dataset.nav===h));
   $('navLinks').classList.remove('open');$('menuBtn').classList.remove('open');
-  window.scrollTo(0,0);observeScreen(h);requestAnimationFrame(()=>_resizers.forEach(f=>f()));
+  window.scrollTo(0,0);observeScreen(h);_bg.set(BG_MODE[h]);requestAnimationFrame(()=>_resizers.forEach(f=>f()));
   if(h==='ask')setTimeout(()=>$('input').focus(),80);if(h==='team'&&!$('teamWrap').dataset.loaded)loadTeams();}
 addEventListener('hashchange',route);
 addEventListener('resize',()=>_resizers.forEach(f=>f()));
@@ -515,19 +559,19 @@ function evidenceItems(evid){const items=[],seen=new Set();const f=s=>esc(String
     if(seen.has(key))continue;seen.add(key);items.push({kind,title});}return items.slice(0,6);}
 async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.height='auto';if($('askintro'))$('askintro').remove();
   const inner=$('convInner');const turn=el(`<div class="turn"><div class="q">${esc(q)}</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);
-  inner.appendChild(turn);turn.scrollIntoView({block:'start',behavior:'smooth'});const body=turn.querySelector('.body');
+  inner.appendChild(turn);turn.scrollIntoView({block:'start',behavior:'smooth'});const body=turn.querySelector('.body');asSet({play:'on'});
   const evid=[],revEvid=[];let answered=false,strip=null,revWrap=null,revBody=null;
   try{const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,session_id:sessionId})});
     await consumeSSE(resp,ev=>{
       if(ev.type==='tool_result'&&ev.data&&ev.data.matches&&ev.data.matches.length){(ev.revision?revEvid:evid).push(ev.data);}
       if(ev.type==='text'){answered=true;body.innerHTML=md(ev.text);}
-      if(ev.type==='recoach'){strip=el(`<div class="recoach"><span class="rcd"></span><div class="rct"><b>The referee sent this back.</b> Not fully verified, so Gaffer is coaching itself and answering again.</div></div>`);turn.appendChild(strip);
+      if(ev.type==='recoach'){asSet({play:'done',ref:'done',coach:'on'});strip=el(`<div class="recoach"><span class="rcd"></span><div class="rct"><b>The referee sent this back.</b> Not fully verified, so Gaffer is coaching itself and answering again.</div></div>`);turn.appendChild(strip);
         revWrap=el(`<div class="revision"><div class="revlabel">Coached answer</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);turn.appendChild(revWrap);revBody=revWrap.querySelector('.body');revWrap.scrollIntoView({block:'nearest',behavior:'smooth'});}
       if(ev.type==='revision'){if(revBody)revBody.innerHTML=md(ev.text);}
       if(ev.type==='eval'){
-        if(ev.revision){if(strip){strip.classList.add('done');strip.querySelector('.rct').innerHTML='<b>Coached itself.</b> Re-answered using only verified evidence.';}renderTrust(revWrap||turn,ev,revEvid);}
-        else{renderTrust(turn,ev,evid);}
-        if(ev.record)window._rec=ev.record;}
+        if(ev.revision){if(strip){strip.classList.add('done');strip.querySelector('.rct').innerHTML='<b>Coached itself.</b> Re-answered using only verified evidence.';}renderTrust(revWrap||turn,ev,revEvid);asSet({play:'done',ref:'done',coach:'done',prove:'done'});asVerdict(ev);}
+        else{renderTrust(turn,ev,evid);asVerdict(ev);asSet(ev.label==='GOAL'?{play:'done',ref:'done'}:{play:'done',ref:'done',coach:'on'});}
+        if(ev.record){window._rec=ev.record;asRecord(ev.record);}}
       if(ev.type==='error'){(revBody||body).innerHTML='<p>'+esc(ev.message)+'</p>';}});
     if(!answered)body.innerHTML='<p>I couldn’t find a verified answer for that one. Try rephrasing it.</p>';
   }catch(e){body.innerHTML='<p>'+esc(e.message)+'</p>';}}
@@ -567,10 +611,8 @@ async function loadVenues(){try{const d=await (await fetch('/api/venues')).json(
   const grid=$('vgrid');grid.innerHTML='';d.venues.forEach((v,i)=>{const c=el(`<div class="vc${i===0?' feat':''}"><div class="city">${esc(v.city||'')}</div>${v.stage?`<div class="stage">${esc(v.stage)}</div>`:''}<div class="nm">${esc(v.name||'')}</div><div class="cap"><div class="n">${v.capacity?Number(v.capacity).toLocaleString():'n/a'}</div><div class="l">capacity</div></div></div>`);
     c.onclick=()=>{location.hash='#ask';$('input').value=`Tell me about ${v.name}: capacity, how to get there, and what it hosts.`;send();};grid.appendChild(c);});}catch{}}
 
-fetch('/api/state').then(r=>r.json()).then(s=>{if(s.phoenix_url)$('pbLink').href=s.phoenix_url;$('pbLink').textContent=(s.playbook||'playbook').replace(/^phoenix:/,'');}).catch(()=>{});
+fetch('/api/state').then(r=>r.json()).then(s=>{if(s.phoenix_url)$('pbLink').href=s.phoenix_url;$('pbLink').textContent=(s.playbook||'playbook').replace(/^phoenix:/,'');if(s.record)asRecord(s.record);}).catch(()=>{});
 fetch('/diagnostics').then(r=>r.json()).then(d=>{const dot=$('trDot');if(d.tracing==='live'){dot.classList.remove('off');$('trLabel').textContent='tracing live · Phoenix';}else{dot.classList.add('off');$('trLabel').textContent='tracing · local mirror';}}).catch(()=>{});
-pixelSoccer($('askfield'),{px:5,color:'#5cc483'});
-pixelSoccer($('loopfield'),{px:6,color:'rgba(79,180,114,.5)',ball:'rgba(236,235,234,.5)'});
 loadVenues();route();
 </script>
 </body>
