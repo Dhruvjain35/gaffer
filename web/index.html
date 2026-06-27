@@ -59,19 +59,28 @@ h1,h2,h3{font-weight:700;letter-spacing:-.022em;line-height:1.06}
 .btn.lite{background:rgba(255,255,255,.1);color:#f5f5f7} .btn.lite:hover{background:rgba(255,255,255,.16)}
 
 /* HOME */
-.hero{min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  position:relative;overflow:hidden;background:var(--black);color:#f5f5f7;padding:80px 22px}
-.hero .glow{position:absolute;width:90vw;max-width:1100px;height:90vw;max-height:1100px;border-radius:50%;
-  background:radial-gradient(circle,rgba(47,107,63,.42),transparent 60%);filter:blur(40px);will-change:transform;z-index:0}
-.hero .glow.g2{background:radial-gradient(circle,rgba(72,165,95,.2),transparent 62%);width:60vw;height:60vw}
-.hero .in{position:relative;z-index:1;max-width:22ch}
-.hero .eyebrow{color:#86868b;margin-bottom:16px}
-.hero h1{font-size:clamp(2.4rem,6.4vw,5rem);font-weight:800;letter-spacing:-.04em;line-height:1.04}
-.hero .sub{font-size:clamp(1.15rem,2vw,1.5rem);color:#a1a1a6;margin:24px auto 0;max-width:30ch;font-weight:400;line-height:1.4}
-.hero .cta-row{margin-top:40px;display:flex;gap:24px;align-items:center;justify-content:center;flex-wrap:wrap}
-.hero .cta-row .chev{color:var(--green-bright);font-size:1.05rem}
-.scrolldown{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:#6e6e73;font-size:.8rem;z-index:1;animation:bob 2.4s var(--ease) infinite}
-@keyframes bob{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,7px)}}
+.hero{min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;text-align:center;
+  background:var(--white);color:var(--ink);padding:clamp(44px,7vh,84px) 22px 0;overflow:hidden}
+.hero .eyebrow{color:var(--ink-2);margin-bottom:14px}
+.hero h1{font-size:clamp(2.3rem,6vw,4.6rem);font-weight:800;letter-spacing:-.035em;line-height:1.05;max-width:19ch;text-wrap:balance}
+.hero .sub{font-size:clamp(1.1rem,1.7vw,1.35rem);color:var(--ink-2);max-width:36ch;margin:18px auto 0;line-height:1.42;font-weight:400}
+.hero .cta-row{margin-top:26px;display:flex;gap:22px;align-items:center;justify-content:center;flex-wrap:wrap}
+.hero .cta-row .chev{font-size:1.05rem}
+/* product shot */
+.mock{margin-top:clamp(40px,6vh,68px);width:min(840px,95vw)}
+.mock-win{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:16px;overflow:hidden;text-align:left;
+  box-shadow:0 50px 100px -45px rgba(0,0,0,.45),0 10px 30px -16px rgba(0,0,0,.15)}
+.mock-bar{display:flex;align-items:center;gap:8px;padding:13px 16px;background:#f5f5f7;border-bottom:1px solid rgba(0,0,0,.05)}
+.mock-bar i{width:11px;height:11px;border-radius:50%;background:#dcdcd2;display:block}.mock-bar i:nth-child(1){background:#ff5f57}.mock-bar i:nth-child(2){background:#febc2e}.mock-bar i:nth-child(3){background:#28c840}
+.mock-url{margin:0 auto;font-size:.8rem;color:var(--ink-2);background:#fff;border-radius:8px;padding:5px 44px}
+.mock-body{padding:clamp(26px,4vw,40px)}
+.mock-q{font-size:clamp(1.2rem,2vw,1.5rem);font-weight:700;letter-spacing:-.02em;margin-bottom:18px}
+.mock-a{font-size:clamp(1.02rem,1.5vw,1.18rem);line-height:1.62;color:var(--ink)}.mock-a b{font-weight:700}
+.mock-v{margin-top:22px;padding-top:18px;border-top:1px solid rgba(0,0,0,.08);font-size:.95rem;color:var(--ink-2);font-weight:500}
+.mock-v .v{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:rgba(47,107,63,.12);color:var(--green);font-size:11px;font-weight:700;margin-right:7px;vertical-align:-4px}
+.mock-chips{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.mock-chips b{font-size:.78rem;color:var(--ink-2);background:#f5f5f7;border-radius:980px;padding:6px 13px;font-weight:500}
+.mock-chips b em{font-style:normal;color:var(--green);font-weight:700}
 
 /* big stat band */
 .statband{text-align:center}
@@ -204,14 +213,22 @@ footer a{color:#d2d2d7}footer .sp{flex:1}
 <!-- HOME -->
 <section class="screen home" id="screen-home">
   <div class="hero">
-    <div class="glow" data-speed="-.12"></div><div class="glow g2" data-speed="-.05"></div>
-    <div class="in">
-      <p class="eyebrow reveal">FIFA World Cup 2026</p>
-      <h1 class="reveal">The concierge that <span class="g">referees</span> itself.</h1>
-      <p class="sub reveal">Ask anything about the World Cup. Every answer is graded for honesty — and when it slips, it coaches itself to do better.</p>
-      <div class="cta-row reveal"><a class="btn" href="#ask">Ask the Referee</a><a class="chev" href="#loop">See how it works</a></div>
+    <p class="eyebrow reveal">FIFA World Cup 2026</p>
+    <h1 class="reveal">The concierge that <span class="g">referees</span> itself.</h1>
+    <p class="sub reveal">Ask anything about the World Cup. Every answer is checked for honesty before it reaches you.</p>
+    <div class="cta-row reveal"><a class="btn" href="#ask">Ask the Referee</a><a class="chev" href="#loop">See how it works</a></div>
+    <div class="mock reveal" data-scale>
+      <div class="mock-win">
+        <div class="mock-bar"><i></i><i></i><i></i><div class="mock-url">gaffer · ask the referee</div></div>
+        <div class="mock-body">
+          <div class="mock-q">Can I bring my own water bottle into the stadium?</div>
+          <div class="mock-a">Yes — one factory-sealed, soft-plastic disposable bottle up to <b>500&nbsp;ml</b> is allowed at the US and Canada venues. Reusable bottles, metal cups and any glass are turned away at the gate.</div>
+          <div class="mock-v"><span class="v">✓</span> Verified by the referee · grounded in 2 sources
+            <div class="mock-chips"><b><em>Policy</em> · Permitted items</b><b><em>Policy</em> · Bag &amp; bottle</b></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="scrolldown">Scroll</div>
   </div>
   <section class="section fog statband"><div class="container">
     <h2 class="lead reveal">It doesn’t just answer. It grades every answer for honesty — on the record.</h2>
