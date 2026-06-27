@@ -268,8 +268,64 @@ main{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1
 .vcard .stage{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;color:var(--acid);text-transform:uppercase;font-weight:600;min-height:9px}
 .vcard.flag{border-color:color-mix(in oklch,var(--acid),transparent 72%)} .vcard.flag .bar i{background:var(--acid)}
 
+/* ---------------- live soccer ambience ---------------- */
+.floods{position:absolute;inset:0;pointer-events:none}
+.flood{position:absolute;width:46vw;height:46vw;border-radius:50%;filter:blur(60px);opacity:.12;
+  background:radial-gradient(circle,var(--acid),transparent 62%);animation:floodpulse 7s ease-in-out infinite}
+.flood.l{top:-16vw;left:-12vw} .flood.r{top:-16vw;right:-12vw;animation-delay:3.5s;background:radial-gradient(circle,var(--goal),transparent 62%)}
+@keyframes floodpulse{0%,100%{opacity:.08;transform:scale(1)}50%{opacity:.16;transform:scale(1.08)}}
+.field .play{opacity:.5}
+.field .play .node{fill:var(--line-2)} .field .play .lane{stroke:var(--line-2);stroke-width:1;stroke-dasharray:3 6;opacity:.6}
+.field .play .ball{fill:var(--acid);filter:drop-shadow(0 0 5px var(--acid))}
+
+/* GOAL stadium-roar shockwave */
+.roar{position:absolute;left:34px;top:50%;width:14px;height:14px;border-radius:50%;pointer-events:none;z-index:3}
+.roar i{position:absolute;inset:0;border-radius:50%;border:2px solid var(--goal);animation:shock 1.15s cubic-bezier(.16,1,.3,1) forwards}
+.roar i:nth-child(2){animation-delay:.13s} .roar i:nth-child(3){animation-delay:.26s}
+.roar.MISS i{border-color:var(--miss)}
+@keyframes shock{0%{transform:scale(.6);opacity:.9}100%{transform:scale(13);opacity:0}}
+
+/* ---------------- conic grounding dial (scorebar) ---------------- */
+.dial{display:flex;align-items:center;gap:var(--space-3);padding:0 var(--space-6);border-right:1px solid var(--line)}
+.dial .ring{position:relative;width:42px;height:42px}
+.dial svg{transform:rotate(-90deg)} .dial .bg{stroke:oklch(0.26 0.03 152);fill:none;stroke-width:5}
+.dial .fg{fill:none;stroke-width:5;stroke-linecap:round;stroke-dasharray:var(--circ);stroke-dashoffset:var(--circ);
+  transition:stroke-dashoffset .8s cubic-bezier(.16,1,.3,1),stroke .4s;stroke:var(--goal)}
+.dial .pct{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--disp);font-weight:800;font-size:13px;color:var(--ink);font-variant-numeric:tabular-nums}
+.dial .lab{display:flex;flex-direction:column;gap:3px}
+.dial .lab .l{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--ink-faint);text-transform:uppercase}
+.dial .lab .v{font-family:var(--mono);font-size:10.5px;color:var(--ink-dim)}
+
+/* live-tracing pill shimmer */
+.live .d.flow{position:relative}
+.live .d.flow::after{content:"";position:absolute;left:50%;top:50%;width:18px;height:1px;transform:translateY(-50%);
+  background:linear-gradient(90deg,var(--acid),transparent);opacity:.6;animation:flow 1.8s linear infinite}
+@keyframes flow{0%{transform:translate(0,-50%);opacity:0}30%{opacity:.6}100%{transform:translate(16px,-50%);opacity:0}}
+
+/* ---------------- turn pipeline strip ---------------- */
+.pipe{display:flex;align-items:center;gap:var(--space-2x);padding:9px var(--space-6);border-bottom:1px solid var(--line);
+  background:oklch(0.155 0.02 152 /.6);font-family:var(--mono);font-size:9px;letter-spacing:.16em;color:var(--ink-faint);text-transform:uppercase;
+  overflow:hidden;max-height:0;opacity:0;transition:max-height .35s cubic-bezier(.16,1,.3,1),opacity .25s,padding .35s}
+.pipe.on{max-height:40px;opacity:1}
+.pipe .st{display:flex;align-items:center;gap:7px;transition:color .3s}
+.pipe .st .n{width:8px;height:8px;border-radius:50%;background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line-2);transition:.3s}
+.pipe .st.act{color:var(--acid)} .pipe .st.act .n{background:var(--acid);box-shadow:0 0 9px var(--acid);animation:beat 1s infinite}
+.pipe .st.done{color:var(--ink-dim)} .pipe .st.done .n{background:var(--goal);box-shadow:0 0 7px var(--goal-deep);animation:none}
+.pipe .arr{color:var(--line-2)}
+
+/* ---------------- THE TRACE provenance card ---------------- */
+.trace{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;
+  font-family:var(--mono);font-size:10px;color:var(--ink-dim);animation:slidein .34s both}
+.trace .lab{font-size:8.5px;letter-spacing:.22em;color:var(--ink-faint);text-transform:uppercase}
+.trace .m{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:1px solid var(--line);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.trace .m b{color:var(--acid-deep);font-weight:600} .trace .m .k{color:var(--ink-faint)}
+.trace .m.ok{border-color:color-mix(in oklch,var(--goal),transparent 65%)} .trace .m.ok b{color:var(--goal)}
+.trace .m.gr b{color:var(--ink)}
+.trace .px{margin-left:auto;color:var(--ink-faint)} .trace .px a{color:var(--acid);text-decoration:none}
+
 @media (max-width:1040px){body{overflow:auto;font-size:14px}
   main{grid-template-columns:1fr;height:auto}
+  .dial,.floods{display:none}
   .scorebar{height:auto;flex-wrap:wrap}.crest{flex:1 0 100%;border-right:0;border-bottom:1px solid var(--line);height:58px}
   .form,.meta .blk:nth-child(2){display:none}.barspace{display:none}.meta{margin-left:auto}
   .zone{min-height:72vh}}
@@ -278,6 +334,7 @@ main{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1
 <body>
 <div class="field" aria-hidden="true">
   <div class="grid"></div>
+  <div class="floods"><div class="flood l"></div><div class="flood r"></div></div>
   <svg class="chalk" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
     <line x1="0" y1="450" x2="1440" y2="450" style="--len:1440"/>
     <circle cx="720" cy="450" r="172" style="--len:1081"/>
@@ -288,6 +345,11 @@ main{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1
     <path d="M1440 350 H1382 V550 H1440" style="--len:458"/>
     <path d="M150 372 A 96 96 0 0 1 150 528" style="--len:300"/>
     <path d="M1290 372 A 96 96 0 0 0 1290 528" style="--len:300"/>
+    <g class="play">
+      <path class="lane" d="M610 560 L720 360 L830 560 L610 560" fill="none"/>
+      <circle class="node" cx="610" cy="560" r="5"/><circle class="node" cx="720" cy="360" r="5"/><circle class="node" cx="830" cy="560" r="5"/>
+      <circle class="ball" r="6"><animateMotion dur="22s" repeatCount="indefinite" path="M610 560 L720 360 L830 560 L610 560" keyPoints="0;0.33;0.66;1" keyTimes="0;0.34;0.68;1" calcMode="linear"/></circle>
+    </g>
   </svg>
   <div class="vignette"></div>
   <div class="grain"></div>
@@ -306,6 +368,13 @@ main{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1
   <div class="form">
     <div class="l">FORM · LAST 7</div>
     <div class="pips" id="pips"></div>
+  </div>
+  <div class="dial" title="Share of answers the Referee scored GOAL">
+    <div class="ring">
+      <svg width="42" height="42" viewBox="0 0 42 42"><circle class="bg" cx="21" cy="21" r="17"/><circle class="fg" id="dialFg" cx="21" cy="21" r="17" style="--circ:106.8"/></svg>
+      <div class="pct" id="dialPct">—</div>
+    </div>
+    <div class="lab"><div class="l">Grounded rate</div><div class="v" id="dialSub">awaiting turns</div></div>
   </div>
   <div class="barspace"></div>
   <div class="meta">
@@ -330,6 +399,11 @@ main{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1
     <div class="head">
       <span class="tag"><b>THE PITCH</b><span class="sep">/</span>ask the player</span>
       <span class="sig"><span class="d" id="pdot"></span>graded live by the referee</span>
+    </div>
+    <div class="pipe" id="pipe">
+      <span class="st" data-s="retrieve"><span class="n"></span>Retrieve</span><span class="arr">→</span>
+      <span class="st" data-s="answer"><span class="n"></span>Answer</span><span class="arr">→</span>
+      <span class="st" data-s="grade"><span class="n"></span>Grade</span>
     </div>
     <div class="feed" id="chatFeed">
       <div class="empty" id="chatEmpty">
@@ -456,6 +530,39 @@ function recordForm(label){
   const wrap=$('pips'); wrap.innerHTML='';
   form.forEach((l,i)=>{const p=document.createElement('div');p.className='pip '+(l==='GOAL'?'g':'m');p.style.animationDelay=(i*40)+'ms';wrap.appendChild(p);});
   if(label==='GOAL'){goals++;$('goals').textContent=goals;}else{misses++;$('misses').textContent=misses;}
+  updateDial();
+}
+/* conic grounding dial — running share of GOAL verdicts */
+function updateDial(){
+  const n=goals+misses,r=n?goals/n:0,circ=106.8;
+  const fg=$('dialFg');if(fg)fg.style.strokeDashoffset=circ*(1-r);
+  if(fg)fg.style.stroke=r>=0.8?'var(--goal)':(r>=0.5?'var(--acid)':'var(--miss)');
+  const pct=$('dialPct');if(pct)pct.textContent=n?Math.round(r*100)+'%':'—';
+  const sub=$('dialSub');if(sub)sub.textContent=n?`${goals}/${n} graded GOAL`:'awaiting turns';
+}
+/* live turn pipeline: retrieve -> answer -> grade */
+const PIPE=['retrieve','answer','grade'];
+function setStage(s){
+  const pipe=$('pipe');if(!pipe)return;pipe.classList.add('on');const idx=PIPE.indexOf(s);
+  pipe.querySelectorAll('.st').forEach(e=>{const i=PIPE.indexOf(e.dataset.s);e.classList.toggle('act',i===idx);e.classList.toggle('done',i<idx);});
+}
+function endStages(){const pipe=$('pipe');if(!pipe)return;pipe.querySelectorAll('.st').forEach(e=>{e.classList.remove('act');e.classList.add('done');});setTimeout(()=>{pipe.classList.remove('on');pipe.querySelectorAll('.st').forEach(e=>e.classList.remove('done'));},1000);}
+/* GOAL/MISS stadium-roar shockwave on the answer */
+function roar(ans,label){const r=el(`<div class="roar ${label}"><i></i><i></i><i></i></div>`);ans.appendChild(r);setTimeout(()=>r.remove(),1500);}
+/* THE TRACE — per-answer provenance from the eval event */
+function renderTrace(ans,ev){
+  const gp=(ev.grounding==null)?null:Math.round(ev.grounding*100);
+  const tools=(ev.tools&&ev.tools.length)?ev.tools.join(' · '):'direct';
+  const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';
+  const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';
+  ans.appendChild(el(`<div class="trace">
+    <span class="lab">THE TRACE</span>
+    <span class="m"><span class="k">player</span> <b>${esc(ev.model||'gemini')}</b></span>
+    <span class="m"><span class="k">tools</span> <b>${esc(tools)}</b></span>
+    ${gp!=null?`<span class="m gr"><span class="k">grounding</span> <b>${gp}%</b></span>`:''}
+    <span class="m ok"><span class="k">referee</span> <b>${esc(ev.label)}</b></span>
+    ${lat?`<span class="m"><span class="k">latency</span> <b>${lat}</b></span>`:''}
+    ${tid?`<span class="px"><a href="#" onclick="return false">trace ${esc(tid)} ▸ phoenix</a></span>`:''}</div>`));
 }
 
 async function consumeSSE(resp,onEvent){
@@ -479,30 +586,33 @@ async function send(){
   const tools=ans.querySelector('.tools'),body=ans.querySelector('.body');let answered=false;
   const evid=[];let evRendered=false;
   const showEvidence=()=>{if(!evRendered&&evid.length){renderEvidence(ans,evid);evRendered=true;}};
+  setStage('retrieve');
   try{
     const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,session_id:sessionId})});
     await consumeSSE(resp,ev=>{
       if(ev.type==='meta'&&ev.playbook){$('playbook').textContent=ev.playbook;}
       if(ev.type==='tool_call'){tools.appendChild(el(`<span class="tool"><b>${esc(ev.name)}</b><span class="arg">${esc(fmtArgs(ev.args))}</span></span>`));}
       if(ev.type==='tool_result'&&ev.data&&ev.data.matches&&ev.data.matches.length){evid.push(ev.data);}
-      if(ev.type==='text'){answered=true;body.innerHTML=md(ev.text);showEvidence();}
+      if(ev.type==='text'){answered=true;setStage('answer');body.innerHTML=md(ev.text);showEvidence();}
       if(ev.type==='eval'){
-        showEvidence();
+        setStage('grade');showEvidence();
         const s=Math.max(0,Math.min(1,ev.score??0));
-        const px=ev.trace_id?` · <span class="px"><a href="#" onclick="return false">filed to phoenix</a></span>`:(ev.annotated?' · <span class="px">filed to phoenix</span>':'');
         const v=el(`<div class="verdict ${ev.label}">
           <div class="topline"><div class="badge"><span class="chev"></span>${ev.label}</div>
-            <div class="why">${esc(ev.explanation||'')}${px}</div>
+            <div class="why">${esc(ev.explanation||'')}</div>
             <div class="scoreNum">${s.toFixed(2)}</div></div>
           <div class="gauge"><i></i></div></div>`);
         ans.appendChild(v);requestAnimationFrame(()=>v.querySelector('.gauge i').style.setProperty('--s',s));
+        renderTrace(ans,ev);
         recordForm(ev.label);
+        roar(ans,ev.label);
+        endStages();
       }
-      if(ev.type==='error'){body.innerHTML='<b style="color:var(--miss)">⚠</b> '+esc(ev.message);}
+      if(ev.type==='error'){body.innerHTML='<b style="color:var(--miss)">⚠</b> '+esc(ev.message);endStages();}
       scroll(feed);
     });
-    if(!answered)body.textContent='(no response)';
-  }catch(e){body.innerHTML='<b style="color:var(--miss)">⚠</b> '+esc(e.message);}
+    if(!answered){body.textContent='(no response)';endStages();}
+  }catch(e){body.innerHTML='<b style="color:var(--miss)">⚠</b> '+esc(e.message);endStages();}
 }
 $('send').onclick=send;
 $('input').addEventListener('keydown',e=>{if(e.key==='Enter')send();});
@@ -558,15 +668,19 @@ fetch('/api/state').then(r=>r.json()).then(s=>{
   if(s.playbook)$('playbook').textContent=s.playbook;
   if(s.phoenix_url)$('playbook').href=s.phoenix_url;
   if(s.model)$('model').textContent=s.model+' · vertex';
-  if(s.phoenix){$('pxdot').classList.remove('off');$('pxlabel').textContent='Phoenix · live';}
-  else{$('pxlabel').textContent='Phoenix · offline';}
 }).catch(()=>{});
+fetch('/diagnostics').then(r=>r.json()).then(d=>{
+  const dot=$('pxdot');
+  if(d.tracing==='live'){dot.classList.remove('off');dot.classList.add('flow');$('pxlabel').textContent='Phoenix · live';}
+  else{dot.classList.add('off');$('pxlabel').textContent='Phoenix · local-mirror';}
+}).catch(()=>{});
+updateDial();
 renderVenues();
 
 /* ---- demo harness (?demo=1): populate states for screenshots, no backend ---- */
 if(new URLSearchParams(location.search).get('demo')){
   $('playbook').textContent='phoenix:gafferplayer@production (v…bjoyNQ==)';$('model').textContent='gemini-3.5-flash · vertex';
-  $('pxdot').classList.remove('off');$('pxlabel').textContent='Phoenix · live';
+  $('pxdot').classList.remove('off');$('pxdot').classList.add('flow');$('pxlabel').textContent='Phoenix · live';
   ['GOAL','GOAL','MISS','GOAL','GOAL','GOAL','GOAL'].forEach(recordForm);
   const feed=$('chatFeed');$('chatEmpty').remove();
   feed.appendChild(el(`<div class="turn"><div class="ask"><div class="k">YOU ASK</div><div class="q">Can I bring my own alcohol into the stadium?</div></div></div>`));
@@ -574,11 +688,13 @@ if(new URLSearchParams(location.search).get('demo')){
     <div class="body">No — you can't bring your own or any outside alcohol into the stadiums or fan zones. Only alcohol bought inside may be consumed. The one permitted outside beverage is a single factory-sealed water bottle up to <b>20 oz (590 ml)</b> at US and Canada matches.</div></div>`);
   feed.appendChild(a);
   renderEvidence(a,[{topic:'policies',matches:[{alcohol:{bring_your_own:'You may NOT bring your own or any outside alcohol into the stadiums or fan zones.'}},{prohibited_items:['Outside or personal alcohol of any kind']}]}]);
-  a.appendChild(el(`<div class="verdict GOAL"><div class="topline"><div class="badge"><span class="chev"></span>GOAL</div><div class="why">Every claim is supported by the retrieved policy evidence; the answer is grounded and direct. <span class="px"><a href="#" onclick="return false">filed to phoenix</a></span></div><div class="scoreNum">1.00</div></div><div class="gauge"><i style="--s:1"></i></div></div>`));
+  a.appendChild(el(`<div class="verdict GOAL"><div class="topline"><div class="badge"><span class="chev"></span>GOAL</div><div class="why">Every claim is supported by the retrieved policy evidence; the answer is grounded and direct.</div><div class="scoreNum">1.00</div></div><div class="gauge"><i style="--s:1"></i></div></div>`));
+  renderTrace(a,{model:'gemini-3.5-flash',tools:['get_policy'],grounding:0.93,label:'GOAL',latency_ms:1840,trace_id:'a1b2c3d4e5f6'});
   const a2=el(`<div class="ans"><div class="lt"><div class="who">The Player</div><div class="tools"><span class="tool"><b>get_fan_info</b><span class="arg">restaurants near sofi</span></span></div></div>
     <div class="body">I can't verify that from my sources — restaurant recommendations are outside the verified knowledge base. For dining near SoFi Stadium, check the official FIFA World Cup 2026 app or the venue's guest-services page.</div></div>`);
   feed.appendChild(a2);
   a2.appendChild(el(`<div class="verdict GOAL"><div class="topline"><div class="badge"><span class="chev"></span>GOAL</div><div class="why">Out of scope and correctly handled: an honest "can't verify" with no fabricated facts.</div><div class="scoreNum">0.95</div></div><div class="gauge"><i style="--s:.95"></i></div></div>`));
+  renderTrace(a2,{model:'gemini-3.5-flash',tools:['get_fan_info'],grounding:0.41,label:'GOAL',latency_ms:1320,trace_id:'f6e5d4c3b2a1'});
   const cf=$('coachFeed');$('coachEmpty').remove();$('fdot').classList.remove('off');$('fsig').textContent='session complete';
   cf.appendChild(el(`<div class="cstep"><div class="k">THE GAFFER</div><div class="t">Reviewing the game tape from the <b>gaffer-pitch</b> project. Two clips flagged by the Referee last session — let's see what went wrong.</div></div>`));
   cf.appendChild(el(`<div class="mcp"><span class="nm">▸ list-traces</span><span class="a">project: gaffer-pitch · limit 5 · annotations</span></div>`));

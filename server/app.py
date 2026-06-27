@@ -82,6 +82,30 @@ def _structured(response) -> dict | None:
     return None
 
 
+import re as _re
+
+_WORD = _re.compile(r"[a-z0-9]{3,}")
+_STOP = set(
+    "the and for you your can are not but with into only one all any from this that they them have "
+    "has had will may also when where what which while just like over under about within across "
+    "there here their our out off per get got use used bring your you a an of to in on at it is be as "
+    "or no yes do does did so if then than more most some such other each both".split()
+)
+
+
+def _grounding(answer: str, evidence_chunks: list[str]) -> dict:
+    """Cheap, reproducible grounding pre-screen run alongside the LLM Referee: the
+    fraction of the answer's distinct content words that appear in the retrieved
+    evidence (lexical overlap). Deterministic, zero-cost, identical every run — a
+    stable number to chart next to the LLM judge's nuanced verdict."""
+    ev_tokens = set(_WORD.findall(" ".join(evidence_chunks).lower()))
+    ans_tokens = {t for t in _WORD.findall((answer or "").lower()) if len(t) >= 4 and t not in _STOP}
+    if not ans_tokens:
+        return {"grounding": None}
+    supported = len(ans_tokens & ev_tokens)
+    return {"grounding": round(supported / len(ans_tokens), 3), "supported": supported, "total": len(ans_tokens)}
+
+
 async def _stream_run(runner, user_id: str, session_id: str, message: str):
     """Yields (event_dict, final_text, evidence) — final two only meaningful at end."""
     final_text = ""
@@ -118,14 +142,20 @@ async def chat(request: Request):
         return {"error": "empty message"}
 
     async def gen():
+        import time
+
         await _ensure_session(_player_runner, PLAYER_APP, "fan", session_id)
         instruction, source = get_player_instruction()
         yield _sse({"type": "meta", "session_id": session_id, "playbook": source})
         final_text, evidence = "", []
+        tools_used: list[str] = []
+        t0 = time.monotonic()
         try:
             async for event, final_text, evidence in _stream_run(
                 _player_runner, "fan", session_id, message
             ):
+                if event.get("type") == "tool_call" and event.get("name"):
+                    tools_used.append(event["name"])
                 yield _sse(event)
         except Exception as exc:  # noqa: BLE001
             yield _sse({"type": "error", "message": str(exc)[:300]})
@@ -141,12 +171,19 @@ async def chat(request: Request):
         annotated = False
         if span:
             annotated = await asyncio.to_thread(annotate_span, span["span_id"], verdict)
+        # A deterministic grounding pre-screen runs beside the LLM verdict, plus the
+        # turn's provenance — so every answer can show HOW it was produced.
         yield _sse(
             {
                 "type": "eval",
                 **verdict,
+                **_grounding(final_text, evidence),
                 "trace_id": span["trace_id"] if span else None,
                 "annotated": annotated,
+                "model": os.environ.get("GEMINI_MODEL", "gemini-3.5-flash"),
+                "latency_ms": int((time.monotonic() - t0) * 1000),
+                "tools": list(dict.fromkeys(tools_used)),
+                "sources": len(evidence),
             }
         )
         yield _sse({"type": "done", "playbook": source})
@@ -247,6 +284,19 @@ async def venues():
         "venues": out,
         "opening": sched.get("opening_match", {}),
         "final": sched.get("final", {}),
+    }
+
+
+@app.get("/diagnostics")
+async def diagnostics():
+    """Tracing health for the control-room 'LIVE TRACING' indicator. OTLP gives no
+    receipt, so a configured exporter reads as 'attempted' (honest, CellForge-style)."""
+    configured = bool(os.environ.get("PHOENIX_API_KEY"))
+    return {
+        "tracing": "live" if configured else "local-mirror",
+        "status": "attempted_unconfirmed" if configured else "local_only",
+        "project": os.environ.get("PHOENIX_PROJECT_NAME", "gaffer-pitch"),
+        "exporter": os.environ.get("PHOENIX_COLLECTOR_ENDPOINT", ""),
     }
 
 
