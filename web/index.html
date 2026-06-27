@@ -79,8 +79,20 @@ a{color:inherit;text-decoration:none}
 .gnav .links{margin-left:auto;display:flex;gap:2px;align-items:center}
 .gnav .links a{font-size:.82rem;font-weight:400;color:var(--ink-on-dark-2);padding:6px 12px;transition:color .2s var(--ease-io)}
 .gnav .links a:hover{color:var(--ink-on-dark-1)} .gnav .links a.on{color:var(--ink-on-dark-1)}
-.gnav .cta{margin-left:14px;background:var(--green);color:#fff;font-size:.82rem;font-weight:500;padding:7px 15px;border-radius:var(--r-pill);transition:background-color .2s var(--ease-io)}
+.gnav .cta{margin-left:14px;background:var(--green);color:#fff;font-size:.82rem;font-weight:500;padding:7px 15px;border-radius:var(--r-pill);transition:background-color .2s var(--ease-io);white-space:nowrap}
 .gnav .cta:hover{background:var(--green-hover)} .gnav .cta:active{transform:scale(.97)}
+.menu-btn{display:none;margin-left:auto;width:36px;height:36px;background:0;border:0;cursor:pointer;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+.menu-btn span{display:block;width:18px;height:1.5px;background:var(--ink-on-dark-1);transition:transform .25s var(--ease),opacity .2s}
+.menu-btn.open span:nth-child(1){transform:translateY(3.25px) rotate(45deg)}
+.menu-btn.open span:nth-child(2){transform:translateY(-3.25px) rotate(-45deg)}
+@media(max-width:760px){
+  .gnav .links{position:fixed;top:var(--nav-h);left:0;right:0;flex-direction:column;align-items:stretch;gap:0;margin-left:0;display:none;
+    background:rgba(22,22,23,.96);-webkit-backdrop-filter:var(--nav-blur);backdrop-filter:var(--nav-blur);border-bottom:1px solid var(--border-dark);padding:6px 0}
+  .gnav .links.open{display:flex}
+  .gnav .links a{padding:14px 22px;font-size:1.05rem;color:var(--ink-on-dark-1);opacity:.92}
+  .gnav .links a.on{color:var(--green-on-dark)}
+  .menu-btn{display:flex}
+}
 
 /* ---- sections / shells ---- */
 .screen{display:none}.screen.on{display:block}
@@ -140,8 +152,8 @@ a.inline{color:var(--green-on-dark)}a.inline:hover{text-decoration:underline}
 .suggest button:hover{border-color:rgba(255,255,255,.26);background:#16161a}
 .suggest .sc{font-size:.78rem;font-weight:600;color:var(--green-on-dark);letter-spacing:0}
 .suggest .sq{font-size:1.0625rem;font-weight:400;color:var(--ink-on-dark-1);letter-spacing:-.01em}
-@media(max-width:600px){.suggest{grid-template-columns:1fr}}
-.turn{margin-bottom:56px}
+@media(max-width:600px){.suggest{grid-template-columns:1fr}.askintro{min-height:auto;justify-content:flex-start;padding-top:8px}}
+.turn{margin-bottom:56px;scroll-margin-top:16px}
 .turn .q{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:600;letter-spacing:-.014em;line-height:1.14;color:var(--ink-on-dark-1);margin-bottom:22px}
 .turn .body{color:var(--ink-on-dark-1);line-height:1.6}
 .turn .body p{margin:0 0 16px}.turn .body p:last-child{margin-bottom:0}.turn .body b{font-weight:600}
@@ -159,6 +171,15 @@ a.inline{color:var(--green-on-dark)}a.inline:hover{text-decoration:underline}
 .more:hover{color:var(--ink-on-dark-1)}.more .car{transition:transform .25s var(--ease)}.more.open .car{transform:rotate(90deg)}
 .detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}.detail.open{grid-template-rows:1fr}.detail>.inn{overflow:hidden}
 .tr{display:flex;flex-wrap:wrap;gap:8px 24px;padding-top:16px;font-size:.82rem;color:var(--ink-on-dark-3)}.tr b{color:var(--ink-on-dark-2);font-weight:600}.tr a{color:var(--green-on-dark)}
+/* in-line self-coaching */
+.recoach{margin-top:22px;display:flex;gap:13px;align-items:flex-start;padding:16px 18px;border-radius:var(--r-md);background:var(--green-tint-dark)}
+.recoach .rct{font-size:1rem;color:var(--ink-on-dark-2);line-height:1.5}.recoach .rct b{color:var(--ink-on-dark-1);font-weight:600}
+.recoach .rcd{flex:none;width:18px;height:18px;margin-top:2px;border-radius:50%;border:2px solid var(--green-on-dark);border-top-color:transparent;animation:spin .8s linear infinite}
+.recoach.done .rcd{border:0;animation:none;display:grid;place-items:center;background:var(--green-on-dark);color:#06140b;font-size:11px;font-weight:700}
+.recoach.done .rcd::after{content:"✓"}
+@keyframes spin{to{transform:rotate(360deg)}}
+.revision{margin-top:22px;padding-top:24px;border-top:1px solid var(--border-dark)}
+.revision>.revlabel{font-size:.85rem;font-weight:600;color:var(--green-on-dark);margin-bottom:14px}
 .composer{border-top:1px solid var(--border-dark);background:rgba(0,0,0,.6);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 .composer .in{max-width:780px;margin:0 auto;padding:18px 22px;display:flex;gap:12px;align-items:flex-end}
 .composer textarea{flex:1;resize:none;font-family:var(--font);font-size:1.0625rem;line-height:1.5;color:var(--ink-on-dark-1);background:var(--bg-dark-soft);border:1px solid var(--border-dark);border-radius:var(--r-md);padding:14px 18px;outline:none;max-height:150px;transition:border-color .2s var(--ease-io)}
@@ -240,12 +261,13 @@ footer{background:var(--bg-dark);color:var(--ink-on-dark-3);border-top:1px solid
 <body>
 <header class="gnav" id="gnav"><div class="gnav-in">
   <a class="brand" href="#home">Gaffer</a>
-  <nav class="links">
+  <nav class="links" id="navLinks">
     <a href="#ask" data-nav="ask">Ask</a>
     <a href="#team" data-nav="team">Follow Your Team</a>
     <a href="#loop" data-nav="loop">How It Works</a>
     <a href="#venues" data-nav="venues">Venues</a>
   </nav>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
   <a class="cta" href="#ask">Ask the Referee</a>
 </div></header>
 
@@ -339,8 +361,10 @@ function observeScreen(s){const sc=$('screen-'+s);sc.querySelectorAll('.reveal,.
 function route(){let h=(location.hash||'#home').slice(1);if(!SCREENS.includes(h))h='home';
   SCREENS.forEach(s=>$('screen-'+s).classList.toggle('on',s===h));
   document.querySelectorAll('.gnav .links a').forEach(a=>a.classList.toggle('on',a.dataset.nav===h));
+  $('navLinks').classList.remove('open');$('menuBtn').classList.remove('open');
   window.scrollTo(0,0);observeScreen(h);if(h==='ask')setTimeout(()=>$('input').focus(),80);if(h==='team'&&!$('teamWrap').dataset.loaded)loadTeams();}
 addEventListener('hashchange',route);
+$('menuBtn').onclick=()=>{const o=$('navLinks').classList.toggle('open');$('menuBtn').classList.toggle('open',o);};
 
 /* shared scroll loop: parallax + sticky pin */
 let ticking=false;
@@ -388,12 +412,20 @@ function evidenceItems(evid){const items=[],seen=new Set();const f=s=>esc(String
     if(seen.has(key))continue;seen.add(key);items.push({kind,title});}return items.slice(0,6);}
 async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.height='auto';if($('askintro'))$('askintro').remove();
   const inner=$('convInner');const turn=el(`<div class="turn"><div class="q">${esc(q)}</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);
-  inner.appendChild(turn);turn.scrollIntoView({block:'start',behavior:'smooth'});const body=turn.querySelector('.body');const evid=[];let answered=false;
+  inner.appendChild(turn);turn.scrollIntoView({block:'start',behavior:'smooth'});const body=turn.querySelector('.body');
+  const evid=[],revEvid=[];let answered=false,strip=null,revWrap=null,revBody=null;
   try{const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,session_id:sessionId})});
-    await consumeSSE(resp,ev=>{if(ev.type==='tool_result'&&ev.data&&ev.data.matches&&ev.data.matches.length)evid.push(ev.data);
+    await consumeSSE(resp,ev=>{
+      if(ev.type==='tool_result'&&ev.data&&ev.data.matches&&ev.data.matches.length){(ev.revision?revEvid:evid).push(ev.data);}
       if(ev.type==='text'){answered=true;body.innerHTML=md(ev.text);}
-      if(ev.type==='eval'){renderTrust(turn,ev,evid);if(ev.record)window._rec=ev.record;}
-      if(ev.type==='error'){body.innerHTML='<p>'+esc(ev.message)+'</p>';}});
+      if(ev.type==='recoach'){strip=el(`<div class="recoach"><span class="rcd"></span><div class="rct"><b>The referee sent this back.</b> Not fully verified, so Gaffer is coaching itself and answering again.</div></div>`);turn.appendChild(strip);
+        revWrap=el(`<div class="revision"><div class="revlabel">Coached answer</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);turn.appendChild(revWrap);revBody=revWrap.querySelector('.body');revWrap.scrollIntoView({block:'nearest',behavior:'smooth'});}
+      if(ev.type==='revision'){if(revBody)revBody.innerHTML=md(ev.text);}
+      if(ev.type==='eval'){
+        if(ev.revision){if(strip){strip.classList.add('done');strip.querySelector('.rct').innerHTML='<b>Coached itself.</b> Re-answered using only verified evidence.';}renderTrust(revWrap||turn,ev,revEvid);}
+        else{renderTrust(turn,ev,evid);}
+        if(ev.record)window._rec=ev.record;}
+      if(ev.type==='error'){(revBody||body).innerHTML='<p>'+esc(ev.message)+'</p>';}});
     if(!answered)body.innerHTML='<p>I couldn’t find a verified answer for that one. Try rephrasing it.</p>';
   }catch(e){body.innerHTML='<p>'+esc(e.message)+'</p>';}}
 function renderTrust(turn,ev,evid){const goal=ev.label==='GOAL',gp=(ev.grounding==null)?null:Math.round(ev.grounding*100),items=evidenceItems(evid);

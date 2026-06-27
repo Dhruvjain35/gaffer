@@ -216,6 +216,52 @@ async def chat(request: Request):
                 "sources": len(evidence),
             }
         )
+
+        # When the Referee is not satisfied, the agent coaches itself in-line: it
+        # re-answers grounded only in the retrieved evidence, then the Referee re-grades.
+        if verdict.get("label") == "MISS":
+            yield _sse({"type": "recoach", "reason": verdict.get("explanation", "")[:240]})
+            correction = (
+                "The referee flagged your previous answer as not fully grounded in the verified "
+                f'evidence. Re-answer the fan\'s question — "{message}" — using ONLY facts your '
+                "knowledge-base tools return. Call the tools again if you need to. If a detail is "
+                "not in the evidence, say you cannot verify it instead of stating it."
+            )
+            f2, e2, tools2 = "", [], []
+            t1 = time.monotonic()
+            try:
+                async for event, f2, e2 in _stream_run(_player_runner, "fan", session_id, correction):
+                    if event.get("type") == "tool_call" and event.get("name"):
+                        tools2.append(event["name"])
+                    if event.get("type") == "text":
+                        yield _sse({"type": "revision", "text": event["text"]})
+                    elif event.get("type") == "tool_result":
+                        yield _sse({**event, "revision": True})
+            except Exception as exc:  # noqa: BLE001
+                yield _sse({"type": "error", "message": str(exc)[:300]})
+            else:
+                span2 = latest_root_span()
+                verdict2 = await asyncio.to_thread(
+                    judge_answer, message, f2, "\n".join(e2) or "(no tool calls were made)"
+                )
+                ann2 = await asyncio.to_thread(annotate_span, span2["span_id"], verdict2) if span2 else False
+                grounding2 = _grounding(f2, e2)
+                _record_verdict(verdict2["label"], grounding2.get("grounding"))
+                yield _sse(
+                    {
+                        "type": "eval",
+                        "revision": True,
+                        **verdict2,
+                        **grounding2,
+                        "record": _record_summary(),
+                        "trace_id": span2["trace_id"] if span2 else None,
+                        "annotated": ann2,
+                        "model": os.environ.get("GEMINI_MODEL", "gemini-3.5-flash"),
+                        "latency_ms": int((time.monotonic() - t1) * 1000),
+                        "tools": list(dict.fromkeys(tools2)),
+                        "sources": len(e2),
+                    }
+                )
         yield _sse({"type": "done", "playbook": source})
 
     return StreamingResponse(gen(), media_type="text/event-stream")
