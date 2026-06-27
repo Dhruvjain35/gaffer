@@ -44,12 +44,12 @@ a{color:inherit;text-decoration:none}
   opacity:.5;animation:pixelPulse var(--d,3.4s) ease-in-out infinite var(--dl,0s)}
 
 /* type */
-.display{font-family:var(--serif);font-weight:400;font-size:clamp(3.2rem,1.4rem+8vw,7.4rem);line-height:.98;letter-spacing:-.018em}
-.h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,1.6rem+4vw,4.6rem);line-height:1.04}
-.h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,1.4rem+2.8vw,3.3rem);line-height:1.07}
-.h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,1.2rem+1.1vw,2.1rem);line-height:1.15}
+.display{font-family:var(--serif);font-weight:400;font-size:clamp(3.4rem,9.6vw,10.5rem);line-height:.94;letter-spacing:-.022em}
+.h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,1.6rem + 4vw,4.6rem);line-height:1.04}
+.h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,1.4rem + 2.8vw,3.3rem);line-height:1.07}
+.h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,1.2rem + 1.1vw,2.1rem);line-height:1.15}
 .g{color:var(--green-lum);font-style:italic}
-.lead{font-family:var(--sans);font-size:clamp(1.12rem,1rem+0.5vw,1.35rem);color:var(--muted);font-weight:400;line-height:1.5}
+.lead{font-family:var(--sans);font-size:clamp(1.12rem,1rem + 0.5vw,1.35rem);color:var(--muted);font-weight:400;line-height:1.5}
 .body{font-family:var(--sans);font-size:1.0625rem;line-height:1.62;color:var(--fg)}
 .small{font-family:var(--sans);font-size:.95rem;color:var(--muted)}
 .caption{font-family:var(--sans);font-size:.82rem;color:var(--muted-2)}
@@ -113,9 +113,9 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
   background:linear-gradient(90deg,#1f5c39,#2f6b3f,#1f5c39);border-bottom:1px solid rgba(255,255,255,.08)}
 .annbar b{font-weight:600;margin-left:6px}.annbar:hover b{text-decoration:underline}
 .hero{min-height:calc(92vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(48px,9vh,120px) 24px clamp(40px,7vh,80px);position:relative}
-.hero-copy{max-width:1100px;position:relative;z-index:1}
-.hero h1{max-width:18ch;margin:0 auto}
-.hero .lead{max-width:46ch;margin:30px auto 0;font-size:clamp(1.15rem,1rem+0.6vw,1.45rem);line-height:1.5}
+.hero-copy{max-width:min(1340px,94vw);position:relative;z-index:1}
+.hero h1{max-width:15ch;margin:0 auto;text-wrap:balance}
+.hero .lead{max-width:46ch;margin:30px auto 0;font-size:clamp(1.15rem,1rem + 0.6vw,1.45rem);line-height:1.5}
 .hero .cta-row{margin-top:44px;display:flex;gap:24px;align-items:center;justify-content:center;flex-wrap:wrap}
 .hero .cta-row .ar{transition:transform .2s}.hero .btn:hover .ar{transform:translateX(3px)}
 .plink{font-size:1.05rem;font-weight:500;color:var(--fg);transition:color .2s}.plink:hover{color:var(--green-soft)}
@@ -325,7 +325,7 @@ footer{border-top:1px solid var(--border-2)}
 <section class="screen home" id="screen-home">
   <div class="hero">
     <div class="hero-copy">
-      <h1 class="display reveal">The concierge<br>that <span class="g">referees</span> itself.</h1>
+      <h1 class="display reveal">The concierge that <span class="g">referees</span> itself.</h1>
       <p class="lead reveal">Ask anything about the World Cup. Every answer is<br>checked for honesty before it ever reaches you.</p>
       <div class="cta-row reveal"><a class="btn" href="#ask">Ask the Referee <span class="ar">→</span></a><a class="plink" href="#loop">See how it works</a></div>
       <p class="rating reveal"><span class="stars">★★★★★</span> Graded by an LLM referee · grounded in a verified knowledge base</p>
@@ -495,7 +495,7 @@ function makeBgFx(cv){
   function frame(now){
     if(W<2){requestAnimationFrame(frame);return;}
     ctx.clearRect(0,0,W,H);
-    const T=(now-t0)/1000,s=Math.max(5,Math.round(8*DPR)),gy=Math.round(H*0.9),A=.42,BA=.72;
+    const T=(now-t0)/1000,s=Math.max(8,Math.round(14*DPR)),gy=Math.round(H*0.92),A=.46,BA=.78;
     if(mode==='pass'){
       const lx=W*0.05,rx=W*0.95,D=1.5;let tt=(T/D)%2;const dir=tt<1?1:-1;tt%=1;
       const fr=dir>0?lx:rx,to=dir>0?rx:lx,bx=fr+(to-fr)*tt,by=gy-s*3-Math.sin(tt*Math.PI)*H*0.56;
