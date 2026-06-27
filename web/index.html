@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gaffer — the World Cup concierge that referees itself</title>
+<title>Gaffer · the World Cup concierge that referees itself</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232f6b3f'/%3E%3Cpath d='M9 23 V9 h6 a4.6 4.6 0 0 1 0 9 h-2.6' stroke='%23f5f5f7' stroke-width='2.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -100,11 +100,13 @@ h1,h2,h3{font-weight:700;letter-spacing:-.022em;line-height:1.06}
 
 /* ASK */
 .screen.ask.on{display:flex;flex-direction:column;height:calc(100dvh - var(--nav-h));background:var(--black);color:#f5f5f7}
-.ask .conv{flex:1;overflow-y:auto}.ask .conv .in{max-width:740px;margin:0 auto;padding:64px 22px 48px}
-.askintro h2{font-size:clamp(2.2rem,5vw,3.4rem);font-weight:700;letter-spacing:-.03em;margin-bottom:28px}
-.suggest{display:flex;flex-direction:column;gap:4px;align-items:flex-start}
-.suggest button{font-family:var(--font);font-size:1.05rem;color:#a1a1a6;background:0;border:0;padding:7px 0;cursor:pointer;transition:color .2s}
-.suggest button:hover{color:var(--green-bright)}
+.ask .conv{flex:1;overflow-y:auto}.ask .conv .in{max-width:780px;margin:0 auto;padding:40px 22px 60px}
+.askintro{min-height:calc(100dvh - var(--nav-h) - 152px);display:flex;flex-direction:column;justify-content:center}
+.askintro h2{font-size:clamp(2.4rem,5vw,3.7rem);font-weight:800;letter-spacing:-.035em;margin-bottom:8px;text-wrap:balance}
+.askintro .hint{font-size:1.1rem;color:#86868b;margin-bottom:34px}
+.suggest{display:flex;flex-wrap:wrap;gap:12px}
+.suggest button{font-family:var(--font);font-size:1rem;font-weight:450;color:#e3e3e6;background:#1a1a1c;border:1px solid rgba(255,255,255,.11);border-radius:980px;padding:13px 21px;cursor:pointer;transition:border-color .22s,color .22s,transform .22s,background .22s}
+.suggest button:hover{border-color:var(--green-bright);color:#fff;background:#242427;transform:translateY(-2px)}
 .turn{margin-bottom:52px}
 .turn .q{font-size:1.6rem;font-weight:600;letter-spacing:-.02em;margin-bottom:22px}
 .turn .body{font-size:1.18rem;line-height:1.6;color:#f5f5f7}
@@ -213,7 +215,6 @@ footer a{color:#d2d2d7}footer .sp{flex:1}
 <!-- HOME -->
 <section class="screen home" id="screen-home">
   <div class="hero">
-    <p class="eyebrow reveal">FIFA World Cup 2026</p>
     <h1 class="reveal">The concierge that <span class="g">referees</span> itself.</h1>
     <p class="sub reveal">Ask anything about the World Cup. Every answer is checked for honesty before it reaches you.</p>
     <div class="cta-row reveal"><a class="btn" href="#ask">Ask the Referee</a><a class="chev" href="#loop">See how it works</a></div>
@@ -222,7 +223,7 @@ footer a{color:#d2d2d7}footer .sp{flex:1}
         <div class="mock-bar"><i></i><i></i><i></i><div class="mock-url">gaffer · ask the referee</div></div>
         <div class="mock-body">
           <div class="mock-q">Can I bring my own water bottle into the stadium?</div>
-          <div class="mock-a">Yes — one factory-sealed, soft-plastic disposable bottle up to <b>500&nbsp;ml</b> is allowed at the US and Canada venues. Reusable bottles, metal cups and any glass are turned away at the gate.</div>
+          <div class="mock-a">Yes. One factory-sealed, soft-plastic disposable bottle up to <b>500&nbsp;ml</b> is allowed at the US and Canada venues. Reusable bottles, metal cups and any glass are turned away at the gate.</div>
           <div class="mock-v"><span class="v">✓</span> Verified by the referee · grounded in 2 sources
             <div class="mock-chips"><b><em>Policy</em> · Permitted items</b><b><em>Policy</em> · Bag &amp; bottle</b></div>
           </div>
@@ -231,7 +232,7 @@ footer a{color:#d2d2d7}footer .sp{flex:1}
     </div>
   </div>
   <section class="section fog statband"><div class="container">
-    <h2 class="lead reveal">It doesn’t just answer. It grades every answer for honesty — on the record.</h2>
+    <h2 class="lead reveal">It doesn’t just answer. It grades every answer for honesty and keeps it on the record.</h2>
     <div class="stats stagger" id="stats">
       <div class="stat"><div class="num"><span class="count" data-to="16">0</span></div><div class="lab">host stadiums, three nations</div></div>
       <div class="stat"><div class="num"><span class="count" data-to="104">0</span></div><div class="lab">matches, all in the knowledge base</div></div>
@@ -259,12 +260,12 @@ footer a{color:#d2d2d7}footer .sp{flex:1}
 <section class="screen loop" id="screen-loop">
   <div class="pin-outer" id="pinOuter">
     <div class="pin-inner">
-      <div class="pin-title" id="pinTitle"><span class="e">The idea</span><h2>The referee that coaches <span class="g">itself.</span></h2></div>
+      <div class="pin-title" id="pinTitle"><h2>The referee that coaches <span class="g">itself.</span></h2></div>
       <div class="pin-stage" id="pinStage">
-        <div class="step"><div class="n">01 — PLAY</div><h3>It answers, grounded.</h3><p>The Player pulls only from a verified knowledge base and cites what it used.</p></div>
-        <div class="step"><div class="n">02 — REFEREE</div><h3>Every answer is graded.</h3><p>A referee scores it for honesty against the evidence and files it to Arize Phoenix.</p></div>
-        <div class="step"><div class="n">03 — COACH</div><h3>It rewrites the playbook.</h3><p>The Gaffer reads its own misses through the Phoenix MCP and fixes exactly what failed.</p></div>
-        <div class="step"><div class="n">04 — PROVE</div><h3>Only a winner ships.</h3><p>Old and new play a scrimmage — two Phoenix experiments. The winner is promoted. No human.</p></div>
+        <div class="step"><div class="n">01 PLAY</div><h3>It answers, grounded.</h3><p>The Player pulls only from a verified knowledge base and cites what it used.</p></div>
+        <div class="step"><div class="n">02 REFEREE</div><h3>Every answer is graded.</h3><p>A referee scores it for honesty against the evidence and files it to Arize Phoenix.</p></div>
+        <div class="step"><div class="n">03 COACH</div><h3>It rewrites the playbook.</h3><p>The Gaffer reads its own misses through the Phoenix MCP and fixes exactly what failed.</p></div>
+        <div class="step"><div class="n">04 PROVE</div><h3>Only a winner ships.</h3><p>Old and new play a scrimmage of two Phoenix experiments. The winner is promoted, with no human in the loop.</p></div>
       </div>
       <div class="pin-rail" id="pinRail"></div>
     </div>
@@ -277,7 +278,7 @@ footer a{color:#d2d2d7}footer .sp{flex:1}
 
 <!-- VENUES -->
 <section class="screen venues" id="screen-venues">
-  <section class="section dark"><div class="container head2"><p class="eyebrow reveal" id="vctx" style="color:#86868b">16 stadiums · 3 nations</p><h2 class="reveal">Sixteen cathedrals.</h2><p class="reveal">From the Azteca at altitude to MetLife for the final. Swipe through every host venue.</p></div>
+  <section class="section dark"><div class="container head2"><h2 class="reveal">Sixteen cathedrals.</h2><p class="reveal">From the Azteca at altitude to MetLife for the final. Swipe through every host venue.</p></div>
     <div class="gallery" id="vgrid"></div>
   </section>
   <footer><div class="in"><span>Google ADK · Gemini · Vertex AI · Arize Phoenix · Cloud Run</span><span class="sp"></span><span class="tracing"><span class="d" id="trDot"></span><span id="trLabel">tracing</span></span><a id="pbLink" href="#" target="_blank" rel="noopener">playbook</a></div></footer>
@@ -350,7 +351,7 @@ async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.
       if(ev.type==='text'){answered=true;body.innerHTML=md(ev.text);}
       if(ev.type==='eval'){renderTrust(turn,ev,evid);if(ev.record)window._rec=ev.record;}
       if(ev.type==='error'){body.innerHTML='<p>'+esc(ev.message)+'</p>';}});
-    if(!answered)body.innerHTML='<p>—</p>';
+    if(!answered)body.innerHTML='<p>I couldn’t find a verified answer for that one. Try rephrasing it.</p>';
   }catch(e){body.innerHTML='<p>'+esc(e.message)+'</p>';}}
 function renderTrust(turn,ev,evid){const goal=ev.label==='GOAL',gp=(ev.grounding==null)?null:Math.round(ev.grounding*100),items=evidenceItems(evid);
   const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';
@@ -361,7 +362,7 @@ function renderTrust(turn,ev,evid){const goal=ev.label==='GOAL',gp=(ev.grounding
   const more=box.querySelector('.more'),detail=box.querySelector('.detail');more.onclick=()=>{more.classList.toggle('open');detail.classList.toggle('open');};turn.appendChild(box);}
 
 async function loadTeams(){const wrap=$('teamWrap');wrap.dataset.loaded='1';
-  wrap.innerHTML=`<div class="head2"><h2 class="reveal">Follow your team.</h2><p class="reveal">Pick a side — get its group, opening match, and the road to the final.</p></div><div class="groups" id="groups"></div>`;observeScreen('team');
+  wrap.innerHTML=`<div class="head2"><h2 class="reveal">Follow your team.</h2><p class="reveal">Pick any side to see its group, opening match, and the road to the final.</p></div><div class="groups" id="groups"></div>`;observeScreen('team');
   try{const d=await (await fetch('/api/teams')).json();const g=$('groups');g.innerHTML='';Object.entries(d.groups).forEach(([k,ms])=>{const c=el(`<div class="grp"><div class="gl">Group ${esc(k)}</div></div>`);ms.forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>showTeam(t);c.appendChild(b);});g.appendChild(c);});}catch{}}
 async function showTeam(name){const wrap=$('teamWrap');window.scrollTo(0,0);wrap.innerHTML=`<div class="plan"><button class="back">‹ all teams</button><div class="thinking" style="margin-top:40px"><i></i><i></i><i></i></div></div>`;
   wrap.querySelector('.back').onclick=()=>{wrap.dataset.loaded='';loadTeams();};
@@ -371,13 +372,13 @@ async function showTeam(name){const wrap=$('teamWrap');window.scrollTo(0,0);wrap
       <div class="row"><div class="rl">Group rivals</div><div class="opp">${(d.opponents||[]).map(o=>`<span>${esc(o)}</span>`).join('')}</div></div>
       <div class="row"><div class="rl">Opening match</div><div>${fx}</div></div>
       <div class="row"><div class="rl">The road ahead</div><div class="road">${(d.road||[]).map(r=>`<div class="r"><b>${esc(r.stage)}</b>${esc(r.window||'')}</div>`).join('')}<div class="r"><b>Final</b>${esc([d.final.date,(d.final.venue||''),d.final.city].filter(Boolean).join(' · '))}</div></div></div>
-      <p class="note">${esc(d.note||'')}</p><div class="cta2"><button class="btn" onclick="location.hash='#ask';document.getElementById('input').value='Give me a matchday plan for following ${esc(d.team)} — fixtures, venues and travel.';send();">Ask for a full matchday plan</button></div></div>`;
+      <p class="note">${esc(d.note||'')}</p><div class="cta2"><button class="btn" onclick="location.hash='#ask';document.getElementById('input').value='Give me a matchday plan for following ${esc(d.team)}: fixtures, venues and travel.';send();">Ask for a full matchday plan</button></div></div>`;
     wrap.querySelector('.back').onclick=()=>{wrap.dataset.loaded='';loadTeams();};}catch(e){wrap.querySelector('.plan').innerHTML='<p>'+esc(e.message)+'</p>';}}
 
 function parseScrim(p){try{const c=p.match(/current[\\"\s:{]*avg_score[\\"\s:]*([0-9.]+)/i),d=p.match(/candidate[\\"\s:{]*avg_score[\\"\s:]*([0-9.]+)/i);if(c&&d)return{current:+c[1],candidate:+d[1]};}catch{}return null;}
-function renderScrim(out,s){const win=s.candidate>s.current?'cand':(s.current>s.candidate?'cur':'tie');const n=el(`<div class="scrim2"><div class="top"><span>Scrimmage · Phoenix experiments</span><span>avg score</span></div><div class="rw ${win==='cur'?'win':''}"><span class="side">Production</span><div class="track"><i></i></div><span class="val">${s.current.toFixed(3)}</span></div><div class="rw ${win==='cand'?'win':''}"><span class="side">Candidate</span><div class="track"><i></i></div><span class="val">${s.candidate.toFixed(3)}</span></div><div class="dec">${win==='cand'?'Candidate wins — promotion justified':(win==='cur'?'Candidate does not beat production':'Dead heat')}</div></div>`);out.appendChild(n);requestAnimationFrame(()=>{const t=n.querySelectorAll('.track i');t[0].style.setProperty('--s',Math.min(1,s.current));t[1].style.setProperty('--s',Math.min(1,s.candidate));});}
+function renderScrim(out,s){const win=s.candidate>s.current?'cand':(s.current>s.candidate?'cur':'tie');const n=el(`<div class="scrim2"><div class="top"><span>Scrimmage · Phoenix experiments</span><span>avg score</span></div><div class="rw ${win==='cur'?'win':''}"><span class="side">Production</span><div class="track"><i></i></div><span class="val">${s.current.toFixed(3)}</span></div><div class="rw ${win==='cand'?'win':''}"><span class="side">Candidate</span><div class="track"><i></i></div><span class="val">${s.candidate.toFixed(3)}</span></div><div class="dec">${win==='cand'?'Candidate wins, promotion justified':(win==='cur'?'Candidate does not beat production':'Dead heat')}</div></div>`);out.appendChild(n);requestAnimationFrame(()=>{const t=n.querySelectorAll('.track i');t[0].style.setProperty('--s',Math.min(1,s.current));t[1].style.setProperty('--s',Math.min(1,s.candidate));});}
 $('coachBtn').onclick=async()=>{const btn=$('coachBtn');btn.disabled=true;btn.textContent='In session…';const out=$('coachOut');out.innerHTML='';
-  try{const resp=await fetch('/api/coach',{method:'POST'});await consumeSSE(resp,ev=>{if(ev.type==='tool_call'){if(ev.name==='add-prompt-version-tag')out.appendChild(el(`<div class="promoted"><b>Playbook promoted to production</b>The next question runs on the new playbook — no redeploy.</div>`));else out.appendChild(el(`<div class="cmcp"><b>${esc(ev.name)}</b> ${esc(fmtArgs(ev.args).slice(0,70))}</div>`));}
+  try{const resp=await fetch('/api/coach',{method:'POST'});await consumeSSE(resp,ev=>{if(ev.type==='tool_call'){if(ev.name==='add-prompt-version-tag')out.appendChild(el(`<div class="promoted"><b>Playbook promoted to production</b>The next question runs on the new playbook, with no redeploy.</div>`));else out.appendChild(el(`<div class="cmcp"><b>${esc(ev.name)}</b> ${esc(fmtArgs(ev.args).slice(0,70))}</div>`));}
     if(ev.type==='tool_result'&&ev.name==='run_scrimmage'){const s=parseScrim(ev.preview||'');if(s){renderScrim(out,s);return;}}
     if(ev.type==='text')out.appendChild(el(`<div class="cstep"><div class="who">The Gaffer</div><div class="t">${md(ev.text)}</div></div>`));
     if(ev.type==='error')out.appendChild(el(`<div class="cstep"><div class="t">${esc(ev.message)}</div></div>`));
@@ -385,9 +386,8 @@ $('coachBtn').onclick=async()=>{const btn=$('coachBtn');btn.disabled=true;btn.te
   btn.disabled=false;btn.textContent='Run another session';};
 
 async function loadVenues(){try{const d=await (await fetch('/api/venues')).json();
-  if(d.opening&&d.opening.match&&d.final)$('vctx').textContent=`16 stadiums · 3 nations · final at ${((d.final.venue||'').split(' (')[0])}`;
-  const grid=$('vgrid');grid.innerHTML='';d.venues.forEach(v=>{const c=el(`<div class="vc"><div class="city">${esc(v.city||'')}</div>${v.stage?`<div class="stage">${esc(v.stage)}</div>`:''}<div class="nm">${esc(v.name||'')}</div><div class="cap"><div class="n">${v.capacity?Number(v.capacity).toLocaleString():'—'}</div><div class="l">capacity</div></div></div>`);
-    c.onclick=()=>{location.hash='#ask';$('input').value=`Tell me about ${v.name} — capacity, how to get there, and what it hosts.`;send();};grid.appendChild(c);});}catch{}}
+  const grid=$('vgrid');grid.innerHTML='';d.venues.forEach(v=>{const c=el(`<div class="vc"><div class="city">${esc(v.city||'')}</div>${v.stage?`<div class="stage">${esc(v.stage)}</div>`:''}<div class="nm">${esc(v.name||'')}</div><div class="cap"><div class="n">${v.capacity?Number(v.capacity).toLocaleString():'n/a'}</div><div class="l">capacity</div></div></div>`);
+    c.onclick=()=>{location.hash='#ask';$('input').value=`Tell me about ${v.name}: capacity, how to get there, and what it hosts.`;send();};grid.appendChild(c);});}catch{}}
 
 fetch('/api/state').then(r=>r.json()).then(s=>{if(s.phoenix_url)$('pbLink').href=s.phoenix_url;$('pbLink').textContent=(s.playbook||'playbook').replace(/^phoenix:/,'');}).catch(()=>{});
 fetch('/diagnostics').then(r=>r.json()).then(d=>{const dot=$('trDot');if(d.tracing==='live'){dot.classList.remove('off');$('trLabel').textContent='tracing live · Phoenix';}else{dot.classList.add('off');$('trLabel').textContent='tracing · local mirror';}}).catch(()=>{});
