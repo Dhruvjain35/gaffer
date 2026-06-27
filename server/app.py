@@ -106,6 +106,33 @@ def _grounding(answer: str, evidence_chunks: list[str]) -> dict:
     return {"grounding": round(supported / len(ans_tokens), 3), "supported": supported, "total": len(ans_tokens)}
 
 
+# The agent's own honesty record across this instance's lifetime — the Referee's
+# running scoreline. Surfaced on the homepage as live proof it grades itself.
+_RECORD = {"goals": 0, "misses": 0, "gsum": 0.0, "gn": 0}
+
+
+def _record_verdict(label: str, grounding) -> None:
+    if label == "GOAL":
+        _RECORD["goals"] += 1
+    else:
+        _RECORD["misses"] += 1
+    if grounding is not None:
+        _RECORD["gsum"] += grounding
+        _RECORD["gn"] += 1
+
+
+def _record_summary() -> dict:
+    g, m = _RECORD["goals"], _RECORD["misses"]
+    total = g + m
+    return {
+        "goals": g,
+        "misses": m,
+        "total": total,
+        "goal_rate": round(g / total, 3) if total else None,
+        "avg_grounding": round(_RECORD["gsum"] / _RECORD["gn"], 3) if _RECORD["gn"] else None,
+    }
+
+
 async def _stream_run(runner, user_id: str, session_id: str, message: str):
     """Yields (event_dict, final_text, evidence) — final two only meaningful at end."""
     final_text = ""
@@ -173,11 +200,14 @@ async def chat(request: Request):
             annotated = await asyncio.to_thread(annotate_span, span["span_id"], verdict)
         # A deterministic grounding pre-screen runs beside the LLM verdict, plus the
         # turn's provenance — so every answer can show HOW it was produced.
+        grounding = _grounding(final_text, evidence)
+        _record_verdict(verdict["label"], grounding.get("grounding"))
         yield _sse(
             {
                 "type": "eval",
                 **verdict,
-                **_grounding(final_text, evidence),
+                **grounding,
+                "record": _record_summary(),
                 "trace_id": span["trace_id"] if span else None,
                 "annotated": annotated,
                 "model": os.environ.get("GEMINI_MODEL", "gemini-3.5-flash"),
@@ -243,6 +273,7 @@ async def state():
         "phoenix": bool(os.environ.get("PHOENIX_API_KEY")),
         "phoenix_url": os.environ.get("PHOENIX_COLLECTOR_ENDPOINT", ""),
         "instruction_preview": instruction[:400],
+        "record": _record_summary(),
     }
 
 
@@ -297,6 +328,52 @@ async def diagnostics():
         "status": "attempted_unconfirmed" if configured else "local_only",
         "project": os.environ.get("PHOENIX_PROJECT_NAME", "gaffer-pitch"),
         "exporter": os.environ.get("PHOENIX_COLLECTOR_ENDPOINT", ""),
+    }
+
+
+@app.get("/api/teams")
+async def teams_list():
+    """All 48 teams grouped, for the 'Follow your team' picker."""
+    return {"groups": _load_json("teams").get("groups", {}), "hosts": _load_json("teams").get("hosts", [])}
+
+
+@app.get("/api/team")
+async def team_plan(name: str = ""):
+    """A 'Follow your team' itinerary derived from the static schedule + venues:
+    the team's group, opponents, opening fixture (venue/city/date), and the road
+    ahead (knockout dates + venues). Honest about what isn't drawn yet."""
+    teams = _load_json("teams")
+    sched = _load_json("schedule")
+    venues = {v.get("fifa_name"): v for v in _load_json("venues").get("venues", [])}
+    n = (name or "").strip().lower()
+    group, members = None, []
+    for g, ms in teams.get("groups", {}).items():
+        if any(n == t.lower() for t in ms):
+            group, members = g, ms
+            break
+    if not group:
+        return {"error": f"'{name}' is not in the 48-team field."}
+    canon = next(t for t in members if t.lower() == n)
+    opponents = [t for t in members if t != canon]
+    fixtures = []
+    for fx in sched.get("first_week_fixtures", []):
+        if canon.lower() in fx.get("match", "").lower():
+            opp = fx["match"].replace(canon, "").replace("vs", "").strip(" -")
+            fixtures.append({
+                "match": fx.get("match"), "date": fx.get("date"), "opponent": opp,
+                "venue": fx.get("venue"), "city": fx.get("city"), "kickoff_et": fx.get("kickoff_et"),
+            })
+    ks = sched.get("knockout_structure", {})
+    road = [
+        {"stage": "Round of 32", "window": ks.get("round_of_32", "")},
+        {"stage": "Round of 16", "window": ks.get("round_of_16", "")},
+    ]
+    return {
+        "team": canon, "group": group, "opponents": opponents,
+        "host": canon in teams.get("hosts", []),
+        "fixtures": fixtures, "road": road,
+        "final": {"date": sched.get("final", {}).get("date"), "venue": (sched.get("final", {}).get("venue") or "").split(" (")[0], "city": sched.get("final", {}).get("city")},
+        "note": "Group fixtures beyond matchday 1 and knockout pairings are set after the draw / group stage.",
     }
 
 
