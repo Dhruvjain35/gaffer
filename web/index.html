@@ -32,21 +32,19 @@ a{color:inherit;text-decoration:none}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;scroll-behavior:auto}.reveal,.stagger>*{opacity:1!important;transform:none!important}.btn::after,.spark{animation:none!important}}
 
 /* ===== global background: grid + aura + stars ===== */
-.sitebg{position:fixed;inset:0;z-index:-2;pointer-events:none;background:var(--bg);overflow:hidden}
-.sitebg .grid{position:absolute;inset:-2px;background-image:linear-gradient(rgba(79,180,114,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(79,180,114,.06) 1px,transparent 1px);background-size:46px 46px;
-  -webkit-mask:radial-gradient(circle at 50% 26%,#000 68%,rgba(0,0,0,.5) 100%);mask:radial-gradient(circle at 50% 26%,#000 68%,rgba(0,0,0,.5) 100%)}
+/* vertical gradient (dark top -> deep green bottom) + full grid + pixel-cross stars. NO radial glow. */
+.sitebg{position:fixed;inset:0;z-index:-2;pointer-events:none;overflow:hidden;
+  background:linear-gradient(180deg,#040504 0%,#06120b 38%,#0b2a18 70%,#124a29 100%)}
+.sitebg .grid{position:absolute;inset:-2px;background-image:linear-gradient(rgba(120,210,150,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(120,210,150,.07) 1px,transparent 1px);background-size:44px 44px}
 .bgfx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.sitebg .aura{position:absolute;top:-300px;left:50%;transform:translateX(-50%);width:min(1500px,150vw);height:1100px;
-  background:radial-gradient(ellipse 38% 42% at 50% 50%,rgba(110,214,150,.46),rgba(60,170,100,.22) 38%,rgba(47,107,63,.10) 58%,transparent 72%);filter:blur(6px)}
-.sitebg .aura.b{top:auto;bottom:-520px;width:1100px;height:1000px;background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(47,107,63,.14),transparent 70%);filter:blur(8px)}
-@keyframes pixelPulse{0%,100%{opacity:.18}50%{opacity:.7}}
-.spark{position:absolute;color:var(--green-lum);background:currentColor;pointer-events:none;
-  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 0c1 8 7 14 16 16-9 2-15 8-16 16-1-8-7-14-16-16C9 14 15 8 16 0z'/%3E%3C/svg%3E") center/contain no-repeat;
-  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 0c1 8 7 14 16 16-9 2-15 8-16 16-1-8-7-14-16-16C9 14 15 8 16 0z'/%3E%3C/svg%3E") center/contain no-repeat;
-  opacity:.4;animation:pixelPulse var(--d,3.4s) ease-in-out infinite var(--dl,0s)}
+@keyframes pixelPulse{0%,100%{opacity:.2}50%{opacity:.78}}
+.spark{position:absolute;color:var(--green-soft);background:currentColor;pointer-events:none;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M5 0h2v5h5v2H7v5H5V7H0V5h5z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M5 0h2v5h5v2H7v5H5V7H0V5h5z'/%3E%3C/svg%3E") center/contain no-repeat;
+  opacity:.5;animation:pixelPulse var(--d,3.4s) ease-in-out infinite var(--dl,0s)}
 
 /* type */
-.display{font-family:var(--serif);font-weight:400;font-size:clamp(3.6rem,2rem+7.6vw,7rem);line-height:1.01;letter-spacing:-.01em}
+.display{font-family:var(--serif);font-weight:400;font-size:clamp(3.2rem,1.4rem+8vw,7.4rem);line-height:.98;letter-spacing:-.018em}
 .h1{font-family:var(--serif);font-weight:400;font-size:clamp(2.6rem,1.6rem+4vw,4.6rem);line-height:1.04}
 .h2{font-family:var(--serif);font-weight:400;font-size:clamp(2.1rem,1.4rem+2.8vw,3.3rem);line-height:1.07}
 .h3{font-family:var(--serif);font-weight:400;font-size:clamp(1.5rem,1.2rem+1.1vw,2.1rem);line-height:1.15}
@@ -111,14 +109,21 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .scr .pad{padding:clamp(20px,3vw,30px)}
 
 /* HOME hero */
-.hero{min-height:calc(100vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;text-align:center;padding:clamp(40px,7vh,88px) 24px 0;position:relative}
-.hero-copy{max-width:980px;position:relative;z-index:1}
-.hero h1{max-width:14ch;margin:0 auto;text-wrap:balance}
-.hero .lead{max-width:42ch;margin:28px auto 0;font-size:clamp(1.2rem,1rem+0.7vw,1.5rem)}
-.hero .cta-row{margin-top:42px;display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap}
-.hero .trustline{margin-top:28px;font-family:var(--pixel);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted-2)}
-.mock{margin-top:clamp(52px,8vh,84px);width:min(760px,94vw);text-align:left;position:relative;z-index:1}
-.mock .scr{box-shadow:0 50px 110px -45px rgba(0,0,0,.95),0 0 60px -20px rgba(79,180,114,.25),0 0 0 1px rgba(92,196,131,.08)}
+.annbar{display:block;text-align:center;padding:11px 16px;font-size:.92rem;color:#dff3e6;
+  background:linear-gradient(90deg,#1f5c39,#2f6b3f,#1f5c39);border-bottom:1px solid rgba(255,255,255,.08)}
+.annbar b{font-weight:600;margin-left:6px}.annbar:hover b{text-decoration:underline}
+.hero{min-height:calc(92vh - var(--nav-h));display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:clamp(48px,9vh,120px) 24px clamp(40px,7vh,80px);position:relative}
+.hero-copy{max-width:1100px;position:relative;z-index:1}
+.hero h1{max-width:18ch;margin:0 auto}
+.hero .lead{max-width:46ch;margin:30px auto 0;font-size:clamp(1.15rem,1rem+0.6vw,1.45rem);line-height:1.5}
+.hero .cta-row{margin-top:44px;display:flex;gap:24px;align-items:center;justify-content:center;flex-wrap:wrap}
+.hero .cta-row .ar{transition:transform .2s}.hero .btn:hover .ar{transform:translateX(3px)}
+.plink{font-size:1.05rem;font-weight:500;color:var(--fg);transition:color .2s}.plink:hover{color:var(--green-soft)}
+.hero .rating{margin-top:32px;font-family:var(--pixel);font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);display:inline-flex;align-items:center;gap:10px}
+.hero .rating .stars{color:var(--green-soft);letter-spacing:.15em;font-family:var(--sans);font-size:.85rem}
+.product .prodc{text-align:center}.product .eyebrow{display:block;margin-bottom:16px}.product h2{margin-bottom:clamp(40px,6vh,60px)}
+.mock{margin:0 auto;width:min(760px,94vw);text-align:left;position:relative;z-index:1}
+.mock .scr{box-shadow:0 50px 110px -45px rgba(0,0,0,.95),0 0 0 1px rgba(92,196,131,.08)}
 .mock-q{margin-bottom:18px;color:var(--fg)}
 .mock-a{color:var(--fg)}.mock-a b{color:var(--green-soft);font-weight:400}
 .mock-v{margin-top:24px;padding-top:20px;border-top:1px solid var(--border-2);display:flex;align-items:center;gap:10px;color:var(--muted);font-size:1rem}
@@ -216,7 +221,7 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .groups{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:18px}
 .grp{position:relative;background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:22px 24px;overflow:hidden;transition:border-color .35s var(--ease),transform .35s var(--ease),box-shadow .35s var(--ease)}
 .grp::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(92,196,131,.5),transparent 45%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s}
-.grp::after{content:'';position:absolute;left:50%;top:-40%;width:140%;height:80%;transform:translateX(-50%);background:radial-gradient(ellipse 50% 50% at 50% 50%,rgba(92,196,131,.16),transparent 70%);opacity:0;transition:opacity .4s;pointer-events:none}
+.grp::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(120,210,150,.04);opacity:0;transition:opacity .4s;pointer-events:none}
 .grp:hover{transform:translateY(-5px);border-color:transparent;box-shadow:0 26px 60px -34px rgba(0,0,0,.9)}
 .grp:hover::before,.grp:hover::after{opacity:1}
 .grp .gl{position:relative;font-family:var(--pixel);font-size:.74rem;letter-spacing:.05em;text-transform:uppercase;color:var(--green-lum);margin-bottom:10px}
@@ -280,7 +285,7 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .venues .head2{margin-bottom:clamp(40px,6vh,56px)}.venues .head2 .eyebrow{display:block;margin-bottom:16px}.venues .head2 .lead{margin-top:18px;max-width:48ch}
 .vgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .vc{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:26px;cursor:pointer;display:flex;flex-direction:column;min-height:230px;transition:transform .3s var(--ease),border-color .3s var(--ease)}
-.vc::after{content:'';position:absolute;left:0;right:0;bottom:0;height:120px;background:radial-gradient(ellipse 70% 100% at 30% 100%,rgba(79,180,114,.12),transparent 70%);opacity:0;transition:opacity .35s;pointer-events:none}
+.vc::after{content:'';position:absolute;inset:0;border-radius:inherit;background:rgba(120,210,150,.04);opacity:0;transition:opacity .35s;pointer-events:none}
 .vc:hover{transform:translateY(-5px);border-color:var(--tint-2)}.vc:hover::after{opacity:1}
 .vc.feat{grid-column:span 2;grid-row:span 2;min-height:0}
 .vc .city{font-size:.9rem;color:var(--muted)}
@@ -303,7 +308,8 @@ footer{border-top:1px solid var(--border-2)}
 </style>
 </head>
 <body>
-<div class="sitebg" id="sitebg"><div class="grid"></div><canvas class="bgfx" id="bgfx"></canvas><div class="aura"></div><div class="aura b"></div></div>
+<div class="sitebg" id="sitebg"><div class="grid"></div><canvas class="bgfx" id="bgfx"></canvas></div>
+<a class="annbar" id="annbar" href="#loop"><span>Built to keep itself honest for the FIFA World Cup 2026</span> <b>See how it works →</b></a>
 <header class="gnav" id="gnav"><div class="gnav-in">
   <a class="brand" href="#home"><span class="bmark"></span>GAFFER</a>
   <nav class="links" id="navLinks">
@@ -319,11 +325,15 @@ footer{border-top:1px solid var(--border-2)}
 <section class="screen home" id="screen-home">
   <div class="hero">
     <div class="hero-copy">
-      <h1 class="display reveal">The concierge that <span class="g">referees</span> itself.</h1>
-      <p class="lead reveal">Ask anything about the World Cup. Every answer is checked for honesty before it reaches you.</p>
-      <div class="cta-row reveal"><a class="btn" href="#ask">Ask the Referee</a><a class="btn btn--ghost" href="#loop">See how it works</a></div>
-      <p class="trustline reveal">Graded by an LLM referee · grounded in a verified knowledge base</p>
+      <h1 class="display reveal">The concierge<br>that <span class="g">referees</span> itself.</h1>
+      <p class="lead reveal">Ask anything about the World Cup. Every answer is<br>checked for honesty before it ever reaches you.</p>
+      <div class="cta-row reveal"><a class="btn" href="#ask">Ask the Referee <span class="ar">→</span></a><a class="plink" href="#loop">See how it works</a></div>
+      <p class="rating reveal"><span class="stars">★★★★★</span> Graded by an LLM referee · grounded in a verified knowledge base</p>
     </div>
+  </div>
+  <section class="section product"><div class="container prodc">
+    <span class="eyebrow reveal">See it work</span>
+    <h2 class="h2 reveal">Every answer, on the record.</h2>
     <div class="mock reveal" data-scale>
       <div class="scr"><div class="bar"><i></i><i></i><i></i><span class="lbl">Gaffer · ask the referee</span></div>
       <div class="pad">
@@ -333,7 +343,7 @@ footer{border-top:1px solid var(--border-2)}
         <div class="mock-chips"><span class="mc"><em>Policy</em>Permitted items</span><span class="mc"><em>Policy</em>Bag &amp; bottle</span></div>
       </div></div>
     </div>
-  </div>
+  </div></section>
   <section class="section--lg statband"><div class="container">
     <span class="eyebrow reveal">By the numbers</span>
     <h2 class="h2 lead-stmt reveal">It doesn’t just answer. It grades every answer for honesty and keeps it on the record.</h2>
@@ -528,7 +538,7 @@ function asVerdict(ev){const goal=ev.label==='GOAL',gp=ev.grounding==null?null:M
 function route(){let h=(location.hash||'#home').slice(1);if(!SCREENS.includes(h))h='home';
   SCREENS.forEach(s=>$('screen-'+s).classList.toggle('on',s===h));
   document.querySelectorAll('.gnav .links a').forEach(a=>a.classList.toggle('on',a.dataset.nav===h));
-  $('navLinks').classList.remove('open');$('menuBtn').classList.remove('open');
+  $('navLinks').classList.remove('open');$('menuBtn').classList.remove('open');$('annbar').style.display=h==='home'?'block':'none';
   window.scrollTo(0,0);observeScreen(h);_bg.set(BG_MODE[h]);requestAnimationFrame(()=>_resizers.forEach(f=>f()));
   if(h==='ask')setTimeout(()=>$('input').focus(),80);if(h==='team'&&!$('teamWrap').dataset.loaded)loadTeams();}
 addEventListener('hashchange',route);
