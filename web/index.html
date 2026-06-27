@@ -226,6 +226,48 @@ main{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1
 .empty .flow span.on{color:var(--acid);border-color:var(--acid-deep)}
 .empty .flow i{color:var(--ink-faint);font-style:normal;align-self:center}
 
+/* ---------------- the evidence (visible grounding) ---------------- */
+.evidence{margin-top:11px;padding-top:11px;border-top:1px dashed var(--line)}
+.evidence .lab{font-family:var(--mono);font-size:8.5px;letter-spacing:.22em;color:var(--ink-faint);text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:8px}
+.evidence .lab b{color:var(--acid-deep);font-weight:600}
+.evidence .lab .ph{margin-left:auto;color:var(--ink-faint);letter-spacing:.14em}
+.ecards{display:flex;gap:9px;flex-wrap:wrap}
+.ecard{flex:1 1 190px;min-width:0;background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:10px 12px;
+  display:flex;flex-direction:column;gap:5px;animation:slidein .34s cubic-bezier(.16,1,.3,1) both}
+.ecard .src{font-family:var(--mono);font-size:8px;letter-spacing:.18em;color:var(--acid-deep);text-transform:uppercase;display:flex;justify-content:space-between;gap:8px}
+.ecard .src .loc{color:var(--ink-faint)}
+.ecard .ttl{font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:.01em;line-height:1.02;color:var(--ink)}
+.ecard .row{display:flex;align-items:baseline;gap:7px}
+.ecard .big{font-family:var(--disp);font-weight:800;font-size:21px;color:var(--acid);font-variant-numeric:tabular-nums;line-height:1}
+.ecard .big + .u{font-family:var(--mono);font-size:8.5px;color:var(--ink-faint)}
+.ecard .sub{font-family:var(--mono);font-size:10px;color:var(--ink-dim);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ecard .chips{display:flex;gap:5px;flex-wrap:wrap}
+.ecard .chip{font-family:var(--mono);font-size:9px;color:var(--ink-dim);background:var(--surface);border:1px solid var(--line);padding:2px 7px;border-radius:999px}
+
+/* ---------------- venue board (the explorer) ---------------- */
+.tctx{display:flex;gap:var(--space-6);flex-wrap:wrap;margin:var(--space-6) 0 0}
+.tctx .b{display:flex;flex-direction:column;gap:4px}
+.tctx .b .l{font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--ink-faint);text-transform:uppercase}
+.tctx .b .v{font-family:var(--mono);font-size:11.5px;color:var(--ink-dim)} .tctx .b .v b{color:var(--acid);font-weight:600}
+.vbhead{display:flex;align-items:baseline;gap:var(--space-3);margin-top:var(--space-6);padding-bottom:var(--space-2x);border-bottom:1px solid var(--line)}
+.vbhead .t{font-family:var(--disp);font-weight:800;font-size:21px;letter-spacing:.02em;text-transform:uppercase}
+.vbhead .c{font-family:var(--mono);font-size:9px;letter-spacing:.14em;color:var(--ink-faint);margin-left:auto}
+.vboard{display:grid;grid-template-columns:repeat(auto-fill,minmax(166px,1fr));gap:9px;margin-top:var(--space-3)}
+.vcard{text-align:left;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;cursor:pointer;
+  font-family:inherit;color:inherit;display:flex;flex-direction:column;gap:8px;transition:transform .16s cubic-bezier(.16,1,.3,1),border-color .16s,background .16s;
+  opacity:0;animation:slidein .4s cubic-bezier(.16,1,.3,1) both}
+.vcard:hover{border-color:var(--acid-deep);background:var(--bg-3);transform:translateY(-2px)}
+.vcard:focus-visible{outline:2px solid var(--acid);outline-offset:2px}
+.vcard .city{font-family:var(--mono);font-size:8.5px;letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase;display:flex;justify-content:space-between;gap:8px}
+.vcard .nm{font-family:var(--disp);font-weight:700;font-size:16.5px;line-height:.98;letter-spacing:.01em;color:var(--ink)}
+.vcard .cap{display:flex;align-items:baseline;gap:6px;margin-top:auto}
+.vcard .cap .n{font-family:var(--disp);font-weight:800;font-size:15px;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.vcard .cap .u{font-family:var(--mono);font-size:8px;color:var(--ink-faint)}
+.vcard .bar{height:3px;border-radius:2px;background:var(--surface-2);overflow:hidden}
+.vcard .bar i{display:block;height:100%;background:var(--line-2);transform-origin:left;transform:scaleX(var(--s,0));transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.vcard .stage{font-family:var(--mono);font-size:7.5px;letter-spacing:.1em;color:var(--acid);text-transform:uppercase;font-weight:600;min-height:9px}
+.vcard.flag{border-color:color-mix(in oklch,var(--acid),transparent 72%)} .vcard.flag .bar i{background:var(--acid)}
+
 @media (max-width:1040px){body{overflow:auto;font-size:14px}
   main{grid-template-columns:1fr;height:auto}
   .scorebar{height:auto;flex-wrap:wrap}.crest{flex:1 0 100%;border-right:0;border-bottom:1px solid var(--line);height:58px}
@@ -295,6 +337,9 @@ main{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.1
         <p>The Player answers your World Cup 2026 question — venues, fixtures, policies, travel — using only a verified knowledge base, then <b>the Referee</b> (a Gemini LLM-as-judge) scores the answer for honesty in real time and files the verdict to <span class="k">Arize Phoenix</span>.</p>
         <p>Every reply earns a <span class="k">GOAL</span> or a <span class="k">MISS</span>, on screen. When it misses, hit <span class="k">Run Coaching</span> and watch the Gaffer fix it — with evidence.</p>
         <div class="flow"><span>you ask</span><i>→</i><span>player retrieves</span><i>→</i><span>player answers</span><i>→</i><span class="on">referee grades</span><i>→</i><span>filed to phoenix</span></div>
+        <div class="tctx" id="tctx"></div>
+        <div class="vbhead"><div class="t">The 16 venues</div><div class="c" id="vbcount">tap any stadium to scout it</div></div>
+        <div class="vboard" id="vboard"></div>
       </div>
     </div>
     <div class="suggest" id="suggest"></div>
@@ -346,6 +391,66 @@ function el(html){const d=document.createElement('div');d.innerHTML=html.trim();
 function scroll(f){f.scrollTop=f.scrollHeight}
 function fmtArgs(a){try{const o=typeof a==='string'?JSON.parse(a):a;return Object.values(o).join(' · ');}catch{return (typeof a==='string'?a:JSON.stringify(a||{}));}}
 
+/* THE EVIDENCE — render the verified source records an answer grounded on */
+function evCard(topic,m){
+  if(!m||typeof m!=='object')return null;
+  const f=s=>esc(String(s).replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
+  const firstStr=o=>{for(const v of Object.values(o)){if(typeof v==='string'&&v.length)return v;}return '';};
+  if(m.stadium_name||m.fifa_name){
+    const nm=(m.stadium_name||m.fifa_name||'').split(' (')[0];
+    const cap=m.capacity_approx?Number(m.capacity_approx).toLocaleString():null;
+    return {key:'v:'+nm,html:`<div class="ecard"><div class="src">VENUE<span class="loc">${esc(m.city||'')}</span></div><div class="ttl">${esc(nm)}</div>${cap?`<div class="row"><span class="big">${cap}</span><span class="u">capacity</span></div>`:''}<div class="sub">${esc((m.transit||m.quirks||'').split('. ')[0])}</div></div>`};
+  }
+  if(m.match){
+    return {key:'f:'+m.match,html:`<div class="ecard"><div class="src">FIXTURE<span class="loc">${esc(m.group?('Group '+m.group):'')}</span></div><div class="ttl">${esc(m.match)}</div><div class="sub">${esc([m.date,(m.venue||m.city),m.kickoff_et?(m.kickoff_et+' ET'):''].filter(Boolean).join(' · '))}</div></div>`};
+  }
+  const keys=Object.keys(m);
+  if(keys.length===1){
+    const key=keys[0],val=m[key];
+    if(key==='groups'&&val&&typeof val==='object')return {key:'groups',html:`<div class="ecard"><div class="src">SQUADS</div><div class="ttl">Group stage</div><div class="chips">${Object.keys(val).slice(0,12).map(g=>`<span class="chip">${esc(g)}</span>`).join('')}</div></div>`};
+    if(Array.isArray(val))return {key,html:`<div class="ecard"><div class="src">${f(topic||key)}</div><div class="ttl">${f(key)}</div><div class="sub">${esc(val.slice(0,3).map(x=>typeof x==='string'?x:JSON.stringify(x)).join(' · '))}</div></div>`};
+    if(val&&typeof val==='object')return {key,html:`<div class="ecard"><div class="src">${f(topic||key)}</div><div class="ttl">${f(key)}</div><div class="sub">${esc(firstStr(val))}</div></div>`};
+    return {key,html:`<div class="ecard"><div class="src">${f(topic||key)}</div><div class="ttl">${f(key)}</div><div class="sub">${esc(String(val))}</div></div>`};
+  }
+  return {key:keys.join(','),html:`<div class="ecard"><div class="src">${f(topic||keys[0])}</div><div class="ttl">${f(keys[0])}</div><div class="sub">${esc(firstStr(m))}</div></div>`};
+}
+function renderEvidence(ans,evid){
+  const cards=[],seen=new Set();
+  for(const e of evid)for(const m of (e.matches||[])){const c=evCard(e.topic,m);if(c&&!seen.has(c.key)){seen.add(c.key);cards.push(c.html);}}
+  if(!cards.length)return;
+  const n=Math.min(cards.length,4);
+  const strip=el(`<div class="evidence"><div class="lab"><b>THE EVIDENCE</b> · grounded on ${n} verified source${n>1?'s':''}<span class="ph">arize phoenix</span></div><div class="ecards"></div></div>`);
+  const wrap=strip.querySelector('.ecards');cards.slice(0,4).forEach((h,i)=>{const c=el(h);c.style.animationDelay=(i*55)+'ms';wrap.appendChild(c);});
+  ans.appendChild(strip);
+}
+
+/* THE VENUE BOARD — interactive explorer over the 16 host venues */
+async function renderVenues(){
+  const board=$('vboard');if(!board)return;
+  try{
+    const d=await (await fetch('/api/venues')).json();
+    const flag={USA:'🇺🇸',Canada:'🇨🇦',Mexico:'🇲🇽'};
+    const tctx=$('tctx');
+    if(tctx&&d.opening&&d.opening.match)tctx.innerHTML=
+      `<div class="b"><div class="l">Opening match${d.opening.date?(' · '+esc(d.opening.date)):''}</div><div class="v"><b>${esc(d.opening.match)}</b>${d.opening.venue?(' · '+esc((d.opening.venue||'').split(' (')[0])):''}</div></div>`+
+      `<div class="b"><div class="l">The final${(d.final&&d.final.date)?(' · '+esc(d.final.date)):''}</div><div class="v"><b>${esc(((d.final&&d.final.venue)||'').split(' (')[0])}</b>${(d.final&&d.final.city)?(' · '+esc(d.final.city)):''}</div></div>`;
+    const max=Math.max(1,...d.venues.map(v=>v.capacity||0));
+    const cnt=$('vbcount');if(cnt)cnt.textContent=d.venues.length+' stadiums · 3 nations';
+    board.innerHTML='';
+    d.venues.forEach((v,i)=>{
+      const c=el(`<button class="vcard ${v.stage?'flag':''}" style="animation-delay:${i*32}ms" aria-label="${esc(v.name)}">
+        <div class="city"><span>${esc(v.city||'')}</span><span>${flag[v.country]||''}</span></div>
+        <div class="nm">${esc(v.name||'')}</div>
+        <div class="stage">${esc(v.stage||'')}</div>
+        <div class="cap"><span class="n">${v.capacity?Number(v.capacity).toLocaleString():'—'}</span><span class="u">cap.</span></div>
+        <div class="bar"><i></i></div></button>`);
+      c.onclick=()=>{$('input').value=`Tell me about ${v.name} — capacity, how to get there, and what it hosts.`;send();};
+      board.appendChild(c);
+      requestAnimationFrame(()=>c.querySelector('.bar i').style.setProperty('--s',(v.capacity||0)/max));
+    });
+  }catch{board.closest('.vbhead')&&0;}
+}
+
 function recordForm(label){
   form.push(label); if(form.length>7)form.shift();
   const wrap=$('pips'); wrap.innerHTML='';
@@ -372,13 +477,17 @@ async function send(){
   const ans=el(`<div class="ans"><div class="lt"><div class="who">The Player</div><div class="tools"></div></div><div class="body"><span class="cur"></span></div></div>`);
   feed.appendChild(ans);scroll(feed);
   const tools=ans.querySelector('.tools'),body=ans.querySelector('.body');let answered=false;
+  const evid=[];let evRendered=false;
+  const showEvidence=()=>{if(!evRendered&&evid.length){renderEvidence(ans,evid);evRendered=true;}};
   try{
     const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,session_id:sessionId})});
     await consumeSSE(resp,ev=>{
       if(ev.type==='meta'&&ev.playbook){$('playbook').textContent=ev.playbook;}
       if(ev.type==='tool_call'){tools.appendChild(el(`<span class="tool"><b>${esc(ev.name)}</b><span class="arg">${esc(fmtArgs(ev.args))}</span></span>`));}
-      if(ev.type==='text'){answered=true;body.innerHTML=md(ev.text);}
+      if(ev.type==='tool_result'&&ev.data&&ev.data.matches&&ev.data.matches.length){evid.push(ev.data);}
+      if(ev.type==='text'){answered=true;body.innerHTML=md(ev.text);showEvidence();}
       if(ev.type==='eval'){
+        showEvidence();
         const s=Math.max(0,Math.min(1,ev.score??0));
         const px=ev.trace_id?` · <span class="px"><a href="#" onclick="return false">filed to phoenix</a></span>`:(ev.annotated?' · <span class="px">filed to phoenix</span>':'');
         const v=el(`<div class="verdict ${ev.label}">
@@ -452,6 +561,7 @@ fetch('/api/state').then(r=>r.json()).then(s=>{
   if(s.phoenix){$('pxdot').classList.remove('off');$('pxlabel').textContent='Phoenix · live';}
   else{$('pxlabel').textContent='Phoenix · offline';}
 }).catch(()=>{});
+renderVenues();
 
 /* ---- demo harness (?demo=1): populate states for screenshots, no backend ---- */
 if(new URLSearchParams(location.search).get('demo')){
@@ -463,6 +573,7 @@ if(new URLSearchParams(location.search).get('demo')){
   const a=el(`<div class="ans"><div class="lt"><div class="who">The Player</div><div class="tools"><span class="tool"><b>get_policy</b><span class="arg">alcohol</span></span><span class="tool"><b>get_policy</b><span class="arg">prohibited</span></span></div></div>
     <div class="body">No — you can't bring your own or any outside alcohol into the stadiums or fan zones. Only alcohol bought inside may be consumed. The one permitted outside beverage is a single factory-sealed water bottle up to <b>20 oz (590 ml)</b> at US and Canada matches.</div></div>`);
   feed.appendChild(a);
+  renderEvidence(a,[{topic:'policies',matches:[{alcohol:{bring_your_own:'You may NOT bring your own or any outside alcohol into the stadiums or fan zones.'}},{prohibited_items:['Outside or personal alcohol of any kind']}]}]);
   a.appendChild(el(`<div class="verdict GOAL"><div class="topline"><div class="badge"><span class="chev"></span>GOAL</div><div class="why">Every claim is supported by the retrieved policy evidence; the answer is grounded and direct. <span class="px"><a href="#" onclick="return false">filed to phoenix</a></span></div><div class="scoreNum">1.00</div></div><div class="gauge"><i style="--s:1"></i></div></div>`));
   const a2=el(`<div class="ans"><div class="lt"><div class="who">The Player</div><div class="tools"><span class="tool"><b>get_fan_info</b><span class="arg">restaurants near sofi</span></span></div></div>
     <div class="body">I can't verify that from my sources — restaurant recommendations are outside the verified knowledge base. For dining near SoFi Stadium, check the official FIFA World Cup 2026 app or the venue's guest-services page.</div></div>`);

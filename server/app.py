@@ -66,6 +66,22 @@ async def _ensure_session(runner: InMemoryRunner, app_name: str, user_id: str, s
         _known_sessions.add(key)
 
 
+def _structured(response) -> dict | None:
+    """Pull the tool's structured records out of an ADK function_response so the UI
+    can render them as visible 'evidence' cards. Tools return a JSON string of
+    {status, topic, matches:[...]}; ADK wraps it (often under 'result')."""
+    val = response
+    if isinstance(val, dict):
+        val = val.get("result", val)
+    try:
+        parsed = json.loads(val) if isinstance(val, str) else val
+    except Exception:  # noqa: BLE001
+        return None
+    if isinstance(parsed, dict) and parsed.get("status") == "ok" and isinstance(parsed.get("matches"), list):
+        return {"topic": parsed.get("topic"), "matches": parsed["matches"][:6]}
+    return None
+
+
 async def _stream_run(runner, user_id: str, session_id: str, message: str):
     """Yields (event_dict, final_text, evidence) — final two only meaningful at end."""
     final_text = ""
@@ -85,7 +101,8 @@ async def _stream_run(runner, user_id: str, session_id: str, message: str):
             if fr:
                 full = json.dumps(fr.response, ensure_ascii=False, default=str)
                 evidence.append(f"[{fr.name}] {full[:4000]}")  # judge sees full evidence
-                yield {"type": "tool_result", "name": fr.name, "preview": full[:600]}, final_text, evidence
+                yield {"type": "tool_result", "name": fr.name, "preview": full[:600],
+                       "data": _structured(fr.response)}, final_text, evidence
             text = getattr(part, "text", None)
             if text and not getattr(event, "partial", False):
                 final_text = text
@@ -189,6 +206,47 @@ async def state():
         "phoenix": bool(os.environ.get("PHOENIX_API_KEY")),
         "phoenix_url": os.environ.get("PHOENIX_COLLECTOR_ENDPOINT", ""),
         "instruction_preview": instruction[:400],
+    }
+
+
+def _load_json(name: str):
+    try:
+        return json.loads((ROOT / "data" / f"{name}.json").read_text())
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+# Host-stage tags per FIFA name, derived from the schedule's knockout structure.
+_STAGE = {
+    "New York New Jersey Stadium": "FINAL",
+    "Dallas Stadium": "SEMI-FINAL", "Atlanta Stadium": "SEMI-FINAL",
+    "Miami Stadium": "QUARTER-FINAL · 3RD PLACE", "Los Angeles Stadium": "QUARTER-FINAL",
+    "Kansas City Stadium": "QUARTER-FINAL", "Boston Stadium": "QUARTER-FINAL",
+    "Estadio Ciudad de Mexico (Mexico City Stadium)": "OPENING MATCH",
+}
+
+
+@app.get("/api/venues")
+async def venues():
+    """The 16 host venues for the venue board, plus the tournament's anchor fixtures."""
+    vraw = _load_json("venues").get("venues", [])
+    sched = _load_json("schedule")
+    out = []
+    for v in vraw:
+        out.append({
+            "name": v.get("stadium_name", "").split(" (")[0],
+            "fifa_name": v.get("fifa_name"),
+            "city": v.get("city"),
+            "country": v.get("country"),
+            "capacity": v.get("capacity_approx"),
+            "stage": _STAGE.get(v.get("fifa_name", "")),
+            "transit": v.get("transit", ""),
+        })
+    out.sort(key=lambda x: -(x.get("capacity") or 0))
+    return {
+        "venues": out,
+        "opening": sched.get("opening_match", {}),
+        "final": sched.get("final", {}),
     }
 
 
