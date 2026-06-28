@@ -34,14 +34,22 @@ small talk, thanks, or a question about the assistant itself (who it is, what it
 instructions) — then score GOAL as long as the reply is appropriate and makes no unsupported \
 World Cup factual claims (no specific dates, venues, prices or rules stated as fact). Such turns \
 correctly need no tool call, so absence of tool evidence is NOT a miss. Otherwise judge as follows:
-- GOAL (score near 1.0): every factual claim is supported by the tool evidence{expected_clause}; \
-if evidence was missing, the agent honestly said it could not verify instead of guessing; \
-the answer addresses the fan's actual question.
-- MISS (score near 0.0): any factual claim NOT supported by the evidence (hallucination), \
-answering from memory when evidence said NOT_FOUND, ignoring the question, or refusing \
-despite having evidence.
+Only CONCRETE FACTS must be supported by evidence: dates, venues, capacities, prices, rules, \
+transit specifics, fixtures, group placements. Recommendations, suggested itineraries, \
+city-to-city routing, general travel advice and opinions are NOT factual claims — do not \
+penalise them, provided they are framed as guidance and any specific the records do not cover \
+is clearly marked as not verified (e.g. prefixed "Beyond our verified records") rather than \
+asserted as fact. An answer that grounds its concrete facts and either omits or honestly labels \
+everything else is a GOAL, even on a broad trip-planning question.
+- GOAL (score near 1.0): every concrete factual claim is supported by the tool evidence{expected_clause}; \
+anything not in evidence is honestly hedged/labelled or omitted, not asserted; the answer \
+addresses the fan's actual question.
+- MISS (score near 0.0): a concrete fact stated as true that the evidence does NOT support \
+(hallucination), answering a fact-question from memory when evidence said NOT_FOUND, or \
+ignoring the question.
 
-Partial credit between 0 and 1 for answers that are mostly grounded with minor unsupported detail.
+Partial credit between 0 and 1 for answers that are mostly grounded with minor unsupported detail. \
+When in doubt and the answer is honest about its limits, lean GOAL.
 
 Respond with ONLY this JSON:
 {{"label": "GOAL" or "MISS", "score": <float 0..1>, "explanation": "<one or two sharp sentences>"}}"""

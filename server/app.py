@@ -218,49 +218,68 @@ async def chat(request: Request):
             }
         )
 
-        # When the Referee is not satisfied, the agent coaches itself in-line: it
-        # re-answers grounded only in the retrieved evidence, then the Referee re-grades.
+        # When the Referee is not satisfied, the agent coaches itself in-line and KEEPS
+        # going, escalating strictness each pass until the Referee passes it. A grounded,
+        # honest answer always can pass (advisory content is not a factual claim), so the
+        # loop is what makes the loop reliable rather than a one-shot that can stall.
         if verdict.get("label") == "MISS":
             yield _sse({"type": "recoach", "reason": verdict.get("explanation", "")[:240]})
-            correction = (
-                "The referee flagged your previous answer as not fully grounded in the verified "
-                f'evidence. Re-answer the fan\'s question — "{message}" — using ONLY facts your '
-                "knowledge-base tools return. Call the tools again if you need to. If a detail is "
-                "not in the evidence, say you cannot verify it instead of stating it."
-            )
-            f2, e2, tools2 = "", [], []
-            t1 = time.monotonic()
-            try:
-                async for event, f2, e2 in _stream_run(_player_runner, "fan", session_id, correction):
-                    if event.get("type") == "tool_call" and event.get("name"):
-                        tools2.append(event["name"])
-                    if event.get("type") == "text":
-                        yield _sse({"type": "revision", "text": event["text"]})
-                    elif event.get("type") == "tool_result":
-                        yield _sse({**event, "revision": True})
-            except Exception as exc:  # noqa: BLE001
-                yield _sse({"type": "error", "message": str(exc)[:300]})
-            else:
+            corrections = [
+                "The referee flagged your previous answer as not fully grounded. Re-answer the "
+                f'fan\'s question — "{message}" — by calling your knowledge-base tools first, then '
+                "stating ONLY facts those tools return. If a detail is not in the evidence, say so "
+                "rather than stating it.",
+                "Still not fully verified. Answer "
+                f'"{message}" once more. Call your tools, then write it so EVERY concrete fact '
+                "(dates, venues, capacities, prices, rules, transit) is one the tools returned. "
+                "Anything the records do not cover (routing between cities, personal logistics, "
+                "opinion) must be omitted or put on one short line prefixed 'Beyond our verified "
+                "records:' and never stated as fact. Lead with what you CAN verify.",
+                "It is STILL being flagged. Write the answer in exactly this shape so it is "
+                "fully honest: (1) one opening sentence stating plainly what you canNOT verify "
+                f'for "{message}" from your records (e.g. the full schedule, visas, flights, '
+                "prices, or fan festivals if your tools did not return them this turn); (2) a "
+                "short bulleted list of ONLY the facts your tools returned this turn, each a real "
+                "record; (3) one closing line pointing the fan to official sources for anything "
+                "else. Do NOT state any payment rule, visa requirement, weather figure or "
+                "fan-festival detail unless a tool returned it verbatim in this turn.",
+            ]
+            verdict2, f2, e2, tools2, span2, t1 = verdict, "", [], [], None, time.monotonic()
+            failed = False
+            for corr in corrections:
+                f2, e2, tools2 = "", [], []
+                t1 = time.monotonic()
+                try:
+                    async for event, f2, e2 in _stream_run(_player_runner, "fan", session_id, corr):
+                        if event.get("type") == "tool_call" and event.get("name"):
+                            tools2.append(event["name"])
+                        if event.get("type") == "text":
+                            yield _sse({"type": "revision", "text": event["text"]})
+                        elif event.get("type") == "tool_result":
+                            yield _sse({**event, "revision": True})
+                except Exception as exc:  # noqa: BLE001
+                    yield _sse({"type": "error", "message": str(exc)[:300]})
+                    failed = True
+                    break
                 span2 = latest_root_span()
                 verdict2 = await asyncio.to_thread(
                     judge_answer, message, f2, "\n".join(e2) or "(no tool calls were made)"
                 )
+                if verdict2.get("label") == "GOAL":
+                    break
+            if not failed:
                 ann2 = await asyncio.to_thread(annotate_span, span2["span_id"], verdict2) if span2 else False
                 grounding2 = _grounding(f2, e2)
                 _record_verdict(verdict2["label"], grounding2.get("grounding"))
                 yield _sse(
                     {
-                        "type": "eval",
-                        "revision": True,
-                        **verdict2,
-                        **grounding2,
+                        "type": "eval", "revision": True, **verdict2, **grounding2,
                         "record": _record_summary(),
                         "trace_id": span2["trace_id"] if span2 else None,
                         "annotated": ann2,
                         "model": os.environ.get("GEMINI_MODEL", "gemini-3.5-flash"),
                         "latency_ms": int((time.monotonic() - t1) * 1000),
-                        "tools": list(dict.fromkeys(tools2)),
-                        "sources": len(e2),
+                        "tools": list(dict.fromkeys(tools2)), "sources": len(e2),
                     }
                 )
         yield _sse({"type": "done", "playbook": source})
