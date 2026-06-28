@@ -185,6 +185,9 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .turn .body{color:var(--fg);line-height:1.62}
 .turn .body p{margin:0 0 16px}.turn .body p:last-child{margin-bottom:0}.turn .body b{font-weight:600}
 .turn .body .li{display:flex;gap:12px;margin:8px 0}.turn .body .li::before{content:"";flex:none;width:6px;height:6px;margin-top:11px;border-radius:1px;background:var(--green-lum)}
+.turn .body .mh{font-family:var(--serif);color:var(--fg);line-height:1.2;margin:26px 0 12px}
+.turn .body .mh1{font-size:1.55rem}.turn .body .mh2{font-size:1.32rem}.turn .body .mh3{font-size:1.15rem}.turn .body .mh4{font-size:1.05rem}
+.turn .body>.mh:first-child{margin-top:0}
 .thinking{display:inline-flex;gap:6px}.thinking i{width:7px;height:7px;border-radius:1px;background:var(--green-lum);animation:pixelPulse 1.1s infinite}.thinking i:nth-child(2){animation-delay:.18s}.thinking i:nth-child(3){animation-delay:.36s}
 .tcard{margin-top:26px;background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px}
 .tcard .head{display:flex;align-items:center;gap:11px;font-size:1.0625rem;color:var(--muted)}.tcard .head b{color:var(--fg);font-weight:600}
@@ -202,6 +205,8 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .recoach .rcd{flex:none;width:18px;height:18px;margin-top:2px;border-radius:50%;border:2px solid var(--green-lum);border-top-color:transparent;animation:spin .8s linear infinite}
 .recoach.done .rcd{border:0;animation:none;display:grid;place-items:center;background:var(--green-lum);color:#06140b;font-size:11px;font-weight:700}
 .recoach.done .rcd::after{content:"✓"}
+.recoach.warn{background:rgba(224,168,90,.12);border-color:rgba(224,168,90,.32)}
+.recoach.warn .rcd{background:#e0a85a;color:#1a1205}.recoach.warn .rcd::after{content:"!"}
 @keyframes spin{to{transform:rotate(360deg)}}
 .revision{margin-top:22px;padding-top:24px;border-top:1px solid var(--border-2)}
 .revision>.revlabel{font-family:var(--pixel);font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green-lum);margin-bottom:16px}
@@ -533,7 +538,7 @@ const _bg=makeBgFx($('bgfx'));
 /* live coaching side panel */
 function asSet(st){['play','ref','coach','prove'].forEach(o=>{const e=document.querySelector('.as-step[data-s="'+o+'"]');if(!e)return;e.classList.remove('on','done');if(st[o])e.classList.add(st[o]);});}
 function asRecord(r){if(!r)return;$('asN').textContent=r.total??0;$('asG').textContent=r.goal_rate!=null?Math.round(r.goal_rate*100)+'%':'·';$('asGr').textContent=r.avg_grounding!=null?Math.round(r.avg_grounding*100)+'%':'·';}
-function asVerdict(ev){const goal=ev.label==='GOAL',gp=ev.grounding==null?null:Math.round(ev.grounding*100);$('asVerdict').innerHTML=`<div class="asv ${goal?'':'miss'}"><span class="ast">${goal?'✓':'!'}</span><div><b>${goal?'Verified by the referee':'Not fully verified'}</b>${gp!=null?`<span>${gp}% grounded in sources</span>`:''}</div></div>`;}
+function asVerdict(ev){const goal=ev.label==='GOAL';$('asVerdict').innerHTML=`<div class="asv ${goal?'':'miss'}"><span class="ast">${goal?'✓':'!'}</span><div><b>${goal?'Verified by the referee':'Not fully verified'}</b><span>${goal?'every claim grounded in its sources':'the referee flagged a claim'}</span></div></div>`;}
 
 function route(){let h=(location.hash||'#home').slice(1);if(!SCREENS.includes(h))h='home';
   SCREENS.forEach(s=>$('screen-'+s).classList.toggle('on',s===h));
@@ -547,7 +552,10 @@ $('menuBtn').onclick=()=>{const o=$('navLinks').classList.toggle('open');$('menu
 
 function esc(s){return (s??'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function md(s){let h=esc(s);h=h.replace(/\*\*([^*]+)\*\*/g,'<b>$1</b>').replace(/(^|\s)\*([^*\n]+)\*(?=\s|$)/g,'$1<i>$2</i>');
-  const ls=h.split('\n');let o='';for(let l of ls){const m=l.match(/^\s*[*•\-]\s+(.*)/);if(m)o+='<div class="li"><span>'+m[1]+'</span></div>';else if(l.trim()!=='')o+='<p>'+l+'</p>';}return o;}
+  const ls=h.split('\n');let o='';for(let l of ls){
+    const hm=l.match(/^\s*(#{1,4})\s+(.*)/);if(hm){o+='<div class="mh mh'+hm[1].length+'">'+hm[2].replace(/[#*]+$/,'').trim()+'</div>';continue;}
+    const m=l.match(/^\s*(?:[*•\-]|\d+\.)\s+(.*)/);if(m){o+='<div class="li"><span>'+m[1]+'</span></div>';continue;}
+    if(l.trim()!=='')o+='<p>'+l+'</p>';}return o;}
 function el(h){const d=document.createElement('div');d.innerHTML=h.trim();return d.firstElementChild}
 function fmtArgs(a){try{const o=typeof a==='string'?JSON.parse(a):a;return Object.values(o).join(' · ');}catch{return ''}}
 async function consumeSSE(resp,on){const r=resp.body.getReader(),dec=new TextDecoder();let buf='';for(;;){const {done,value}=await r.read();if(done)break;buf+=dec.decode(value,{stream:true});let i;while((i=buf.indexOf('\n\n'))>=0){const c=buf.slice(0,i);buf=buf.slice(i+2);const ln=c.split('\n').find(x=>x.startsWith('data: '));if(ln){try{on(JSON.parse(ln.slice(6)))}catch{}}}}}
@@ -579,7 +587,7 @@ async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.
         revWrap=el(`<div class="revision"><div class="revlabel">Coached answer</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);turn.appendChild(revWrap);revBody=revWrap.querySelector('.body');revWrap.scrollIntoView({block:'nearest',behavior:'smooth'});}
       if(ev.type==='revision'){if(revBody)revBody.innerHTML=md(ev.text);}
       if(ev.type==='eval'){
-        if(ev.revision){if(strip){strip.classList.add('done');strip.querySelector('.rct').innerHTML='<b>Coached itself.</b> Re-answered using only verified evidence.';}renderTrust(revWrap||turn,ev,revEvid);asSet({play:'done',ref:'done',coach:'done',prove:'done'});asVerdict(ev);}
+        if(ev.revision){const rg=ev.label==='GOAL';if(strip){strip.classList.add('done');if(!rg)strip.classList.add('warn');strip.querySelector('.rct').innerHTML=rg?'<b>Coached itself.</b> Re-answered using only verified evidence.':'<b>Coached itself.</b> Still couldn’t fully verify it, so it stays flagged.';}renderTrust(revWrap||turn,ev,revEvid);asSet(rg?{play:'done',ref:'done',coach:'done',prove:'done'}:{play:'done',ref:'done',coach:'done',prove:'on'});asVerdict(ev);}
         else{renderTrust(turn,ev,evid);asVerdict(ev);asSet(ev.label==='GOAL'?{play:'done',ref:'done'}:{play:'done',ref:'done',coach:'on'});}
         if(ev.record){window._rec=ev.record;asRecord(ev.record);}}
       if(ev.type==='error'){(revBody||body).innerHTML='<p>'+esc(ev.message)+'</p>';}});
@@ -587,10 +595,10 @@ async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.
   }catch(e){body.innerHTML='<p>'+esc(e.message)+'</p>';}}
 function renderTrust(turn,ev,evid){const goal=ev.label==='GOAL',gp=(ev.grounding==null)?null:Math.round(ev.grounding*100),items=evidenceItems(evid);
   const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';
-  const box=el(`<div class="tcard ${goal?'':'miss'}"><div class="head"><span class="tick">${goal?'✓':'!'}</span><span>${goal?'<b>Verified</b> by the referee':'<b>Couldn’t fully verify</b>'}${gp!=null?` · ${gp}% grounded in its sources`:''}</span></div>
+  const box=el(`<div class="tcard ${goal?'':'miss'}"><div class="head"><span class="tick">${goal?'✓':'!'}</span><span>${goal?'<b>Verified</b> by the referee':'<b>Couldn’t fully verify</b>'}${items.length?` · grounded in ${items.length} source${items.length>1?'s':''}`:''}</span></div>
     ${items.length?`<div class="srcs">${items.map(s=>`<span class="chip"><span class="k">${esc(s.kind)}</span><b>${esc(s.title)}</b></span>`).join('')}</div>`:''}
     <button class="more"><span class="car">›</span> how it produced this</button>
-    <div class="detail"><div class="inn"><div class="tr">${ev.explanation?`<span style="flex-basis:100%;color:var(--muted)">${esc(ev.explanation)}</span>`:''}<span><b>referee</b> ${esc(ev.label)}</span><span><b>model</b> ${esc(ev.model||'gemini')}</span>${lat?`<span><b>latency</b> ${lat}</span>`:''}${tid?`<span><a href="#" onclick="return false">trace ${esc(tid)} · phoenix</a></span>`:''}</div></div></div></div>`);
+    <div class="detail"><div class="inn"><div class="tr">${ev.explanation?`<span style="flex-basis:100%;color:var(--muted)">${esc(ev.explanation)}</span>`:''}<span><b>referee</b> ${esc(ev.label)}</span>${gp!=null?`<span><b>grounding</b> ${gp}% lexical overlap</span>`:''}<span><b>model</b> ${esc(ev.model||'gemini')}</span>${lat?`<span><b>latency</b> ${lat}</span>`:''}${tid?`<span><a href="#" onclick="return false">trace ${esc(tid)} · phoenix</a></span>`:''}</div></div></div></div>`);
   const more=box.querySelector('.more'),detail=box.querySelector('.detail');more.onclick=()=>{more.classList.toggle('open');detail.classList.toggle('open');};turn.appendChild(box);}
 
 async function loadTeams(){const wrap=$('teamWrap');wrap.dataset.loaded='1';
