@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gaffer · the World Cup concierge that referees itself</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%234fb472'/%3E%3Cpath d='M9 23 V9 h6 a4.6 4.6 0 0 1 0 9 h-2.6' stroke='%23060809' stroke-width='2.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%232f6b3f'/%3E%3Cg%20fill='%23eafff0'%3E%3Crect%20x='10'%20y='2'%20width='4'%20height='4'/%3E%3Crect%20x='14'%20y='2'%20width='4'%20height='4'/%3E%3Crect%20x='18'%20y='2'%20width='4'%20height='4'/%3E%3Crect%20x='6'%20y='6'%20width='4'%20height='4'/%3E%3Crect%20x='22'%20y='6'%20width='4'%20height='4'/%3E%3Crect%20x='6'%20y='10'%20width='4'%20height='4'/%3E%3Crect%20x='6'%20y='14'%20width='4'%20height='4'/%3E%3Crect%20x='14'%20y='14'%20width='4'%20height='4'/%3E%3Crect%20x='18'%20y='14'%20width='4'%20height='4'/%3E%3Crect%20x='22'%20y='14'%20width='4'%20height='4'/%3E%3Crect%20x='6'%20y='18'%20width='4'%20height='4'/%3E%3Crect%20x='22'%20y='18'%20width='4'%20height='4'/%3E%3Crect%20x='6'%20y='22'%20width='4'%20height='4'/%3E%3Crect%20x='22'%20y='22'%20width='4'%20height='4'/%3E%3Crect%20x='10'%20y='26'%20width='4'%20height='4'/%3E%3Crect%20x='14'%20y='26'%20width='4'%20height='4'/%3E%3Crect%20x='18'%20y='26'%20width='4'%20height='4'/%3E%3C/g%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
@@ -69,7 +69,8 @@ a{color:inherit;text-decoration:none}
   -webkit-backdrop-filter:saturate(160%) blur(18px);backdrop-filter:saturate(160%) blur(18px);border-bottom:1px solid var(--border-2)}
 .gnav-in{max-width:var(--wide);margin:0 auto;height:var(--nav-h);display:flex;align-items:center;padding:0 24px}
 .gnav .brand{display:flex;align-items:center;gap:9px;font-family:var(--pixel);font-size:1rem;letter-spacing:.02em;color:var(--fg)}
-.gnav .brand .bmark{width:15px;height:15px;border-radius:3px;background:var(--grad)}
+.gnav .brand .bmark{width:26px;height:26px;border-radius:7px;background:var(--grad);display:grid;place-items:center;flex:none;box-shadow:0 0 0 1px rgba(92,196,131,.3)}
+.gnav .brand .bmark svg{width:22px;height:22px;display:block}.gnav .brand .bmark svg rect{fill:#eafff0}
 .gnav .links{margin-left:auto;display:flex;gap:4px;align-items:center}
 .gnav .links a{font-size:.85rem;font-weight:400;color:var(--muted);padding:6px 12px;transition:color .2s var(--ease-io)}
 .gnav .links a:hover{color:var(--fg)} .gnav .links a.on{color:var(--fg)}
@@ -302,6 +303,37 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 @media(max-width:1000px){.vgrid{grid-template-columns:repeat(2,1fr)}.vc.feat{grid-column:span 2;grid-row:auto}}
 @media(max-width:560px){.vgrid{grid-template-columns:1fr}.vc.feat{grid-column:auto}}
 
+/* MATCHES: fan trip planner */
+.matches .head2{margin-bottom:clamp(36px,5vh,52px)}.matches .head2 .eyebrow{display:block;margin-bottom:14px}.matches .head2 .lead{margin-top:16px;max-width:54ch}
+.cdbox{margin-bottom:34px}.cdbox .eyebrow{display:block;margin-bottom:14px;color:var(--muted-2)}
+.cdv{display:flex;gap:14px;flex-wrap:wrap}
+.cdc{display:flex;flex-direction:column;align-items:center;background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:14px 22px;min-width:80px}
+.cdc b{font-family:var(--serif);font-size:clamp(2rem,4vw,2.8rem);color:var(--green-soft);line-height:1;font-variant-numeric:tabular-nums}
+.cdc i{font-family:var(--pixel);font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted-2);font-style:normal;margin-top:9px}
+.cdnum{font-family:var(--serif);font-size:2.4rem;color:var(--green-soft)}
+.tripbar{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:var(--tint);border:1px solid var(--tint-2);border-radius:var(--r);padding:18px 22px;margin-bottom:28px}
+.tripbar .eyebrow{display:block;margin-bottom:6px}.tripbar .tripn{font-size:1.1rem;color:var(--fg);font-weight:500}
+.tripbar .tripx{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.tlink{background:0;border:0;color:var(--muted);cursor:pointer;font-family:var(--sans);font-size:.9rem}.tlink:hover{color:var(--fg)}
+.mfilters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:26px}
+.mfil{font-family:var(--sans);font-size:.85rem;color:var(--muted);background:var(--card);border:1px solid var(--border-2);border-radius:var(--pill);padding:8px 15px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.mfil:hover{color:var(--fg);border-color:var(--border)}.mfil.on{background:var(--green);color:#eafff0;border-color:transparent;font-weight:600}
+.fixgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(282px,1fr));gap:16px;margin-bottom:clamp(48px,7vh,72px)}
+.fixc{position:relative;background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:22px;cursor:pointer;transition:transform .25s var(--ease),border-color .25s}
+.fixc:hover{transform:translateY(-4px);border-color:var(--tint-2)}
+.fixc.fin{background:linear-gradient(155deg,rgba(47,107,63,.28),var(--card))}
+.fixstar{position:absolute;top:14px;right:14px;background:0;border:0;font-size:1.35rem;line-height:1;color:#363b37;cursor:pointer;transition:color .2s,transform .2s}
+.fixstar:hover{color:var(--green-soft);transform:scale(1.15)}.fixc.star .fixstar{color:var(--green-soft)}
+.fixhead{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.fixd{font-family:var(--pixel);font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2)}
+.fixg{font-family:var(--pixel);font-size:.56rem;letter-spacing:.05em;text-transform:uppercase;color:var(--green-lum);background:var(--tint);border-radius:var(--r-sm);padding:4px 8px}.fixg.fg2{background:var(--green);color:#eafff0}
+.fixm{font-family:var(--serif);font-size:1.4rem;line-height:1.12;color:var(--fg);margin-bottom:8px;padding-right:26px}
+.fixv{font-size:.92rem;color:var(--muted)}
+.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.tip{background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:24px}
+.tip .eyebrow{display:block;margin-bottom:12px}.tip .tiph{font-family:var(--serif);font-size:1.3rem;color:var(--fg);margin-bottom:10px;line-height:1.15}.tip p{font-size:.94rem;color:var(--muted);line-height:1.55}
+@media(max-width:820px){.tips{grid-template-columns:1fr}}
+
 /* footer */
 footer{border-top:1px solid var(--border-2)}
 .foot-in{display:flex;gap:24px;flex-wrap:wrap;align-items:center;padding-block:44px}
@@ -316,8 +348,9 @@ footer{border-top:1px solid var(--border-2)}
 <div class="sitebg" id="sitebg"><div class="grid"></div><canvas class="bgfx" id="bgfx"></canvas></div>
 <a class="annbar" id="annbar" href="#loop"><span>Built to keep itself honest for the FIFA World Cup 2026</span> <b>See how it works →</b></a>
 <header class="gnav" id="gnav"><div class="gnav-in">
-  <a class="brand" href="#home"><span class="bmark"></span>GAFFER</a>
+  <a class="brand" href="#home"><span class="bmark"><svg viewBox="0 0 32 32"><g><rect x="10" y="2" width="4" height="4"/><rect x="14" y="2" width="4" height="4"/><rect x="18" y="2" width="4" height="4"/><rect x="6" y="6" width="4" height="4"/><rect x="22" y="6" width="4" height="4"/><rect x="6" y="10" width="4" height="4"/><rect x="6" y="14" width="4" height="4"/><rect x="14" y="14" width="4" height="4"/><rect x="18" y="14" width="4" height="4"/><rect x="22" y="14" width="4" height="4"/><rect x="6" y="18" width="4" height="4"/><rect x="22" y="18" width="4" height="4"/><rect x="6" y="22" width="4" height="4"/><rect x="22" y="22" width="4" height="4"/><rect x="10" y="26" width="4" height="4"/><rect x="14" y="26" width="4" height="4"/><rect x="18" y="26" width="4" height="4"/></g></svg></span>GAFFER</a>
   <nav class="links" id="navLinks">
+    <a href="#matches" data-nav="matches">Matches</a>
     <a href="#team" data-nav="team">Follow Your Team</a>
     <a href="#loop" data-nav="loop">How It Works</a>
     <a href="#venues" data-nav="venues">Venues</a>
@@ -395,6 +428,9 @@ footer{border-top:1px solid var(--border-2)}
 <!-- TEAM -->
 <section class="screen team" id="screen-team"><div class="section"><div class="container container--wide" id="teamWrap"></div></div></section>
 
+<!-- MATCHES (fan trip planner) -->
+<section class="screen matches" id="screen-matches"><div class="section"><div class="container container--wide" id="matchesWrap"></div></div></section>
+
 <!-- HOW IT WORKS -->
 <section class="screen loop" id="screen-loop">
   <section class="loop-intro"><div class="container">
@@ -466,7 +502,7 @@ footer{border-top:1px solid var(--border-2)}
 <script>
 const $=id=>document.getElementById(id);
 const sessionId=Math.random().toString(36).slice(2);
-const SCREENS=['home','ask','team','loop','venues'];
+const SCREENS=['home','ask','matches','team','loop','venues'];
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.16,rootMargin:'0px 0px -8% 0px'});
 const cio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){countUp(e.target);cio.unobserve(e.target)}}),{threshold:.6});
@@ -545,7 +581,8 @@ function route(){let h=(location.hash||'#home').slice(1);if(!SCREENS.includes(h)
   document.querySelectorAll('.gnav .links a').forEach(a=>a.classList.toggle('on',a.dataset.nav===h));
   $('navLinks').classList.remove('open');$('menuBtn').classList.remove('open');$('annbar').style.display=h==='home'?'block':'none';
   window.scrollTo(0,0);observeScreen(h);_bg.set(BG_MODE[h]);requestAnimationFrame(()=>_resizers.forEach(f=>f()));
-  if(h==='ask')setTimeout(()=>$('input').focus(),80);if(h==='team'&&!$('teamWrap').dataset.loaded)loadTeams();}
+  if(h!=='matches')clearInterval(_cdTimer);
+  if(h==='ask')setTimeout(()=>$('input').focus(),80);if(h==='team'&&!$('teamWrap').dataset.loaded)loadTeams();if(h==='matches')loadMatches();}
 addEventListener('hashchange',route);
 addEventListener('resize',()=>_resizers.forEach(f=>f()));
 $('menuBtn').onclick=()=>{const o=$('navLinks').classList.toggle('open');$('menuBtn').classList.toggle('open',o);};
@@ -624,6 +661,45 @@ $('coachBtn').onclick=async()=>{const btn=$('coachBtn');btn.disabled=true;btn.te
     if(ev.type==='error')out.appendChild(el(`<div class="cstep"><div class="t">${esc(ev.message)}</div></div>`));
     out.lastElementChild&&out.lastElementChild.scrollIntoView({block:'nearest'});});}catch(e){out.appendChild(el(`<div class="cstep"><div class="t">${esc(e.message)}</div></div>`));}
   btn.disabled=false;btn.textContent='Run another session';};
+
+/* ---- Matches: fan trip planner ---- */
+let _sched=null,_cityFilter='all',_cdTimer=null,_trip=[];
+try{_trip=JSON.parse(localStorage.getItem('gaffer_trip')||'[]')}catch{}
+function saveTrip(){try{localStorage.setItem('gaffer_trip',JSON.stringify(_trip))}catch{}}
+const flexv=v=>Array.isArray(v)?v.join(' · '):(v||'');
+function askAbout(q){location.hash='#ask';setTimeout(()=>{$('input').value=q;send();},80);}
+function tickCd(){const el=$('cdv');if(!el)return;const t=new Date('2026-07-19T19:00:00Z')-new Date();
+  if(t<=0){el.innerHTML='<span class="cdnum">The final is here.</span>';return;}
+  const d=Math.floor(t/864e5),h=Math.floor(t/36e5)%24,m=Math.floor(t/6e4)%60,s=Math.floor(t/1e3)%60;
+  const c=(n,l)=>`<span class="cdc"><b>${String(n).padStart(2,'0')}</b><i>${l}</i></span>`;
+  el.innerHTML=c(d,'days')+c(h,'hrs')+c(m,'min')+c(s,'sec');}
+async function loadMatches(){const w=$('matchesWrap');
+  if(!_sched){w.innerHTML='<div class="thinking" style="margin:80px auto;justify-content:center"><i></i><i></i><i></i></div>';
+    try{_sched=await (await fetch('/api/schedule')).json();}catch{w.innerHTML='<p style="color:var(--muted)">Schedule unavailable right now.</p>';return;}}
+  renderMatches();clearInterval(_cdTimer);_cdTimer=setInterval(tickCd,1000);tickCd();}
+function renderMatches(){const w=$('matchesWrap'),s=_sched;
+  const cities=['all',...s.cities];
+  const fix=s.fixtures.filter(f=>_cityFilter==='all'||f.city===_cityFilter);
+  const inTrip=m=>_trip.includes(m);
+  const fixcard=f=>`<div class="fixc${inTrip(f.match)?' star':''}" data-q="${esc('How do I get to '+f.match+' at '+(f.venue||'')+' in '+(f.city||'')+'? Tickets, transit and travel tips.')}"><button class="fixstar" data-m="${esc(f.match)}" aria-label="Save to my trip">★</button><div class="fixhead"><span class="fixd">${esc(f.date||'')}${f.kickoff_et?' · '+esc(f.kickoff_et)+' ET':''}</span>${f.group?`<span class="fixg">Group ${esc(f.group)}</span>`:''}</div><div class="fixm">${esc(f.match)}</div><div class="fixv">${esc((f.venue||'').split(' (')[0])} · ${esc(f.city||'')}</div></div>`;
+  const finalc=`<div class="fixc fin" data-q="${esc('How do I get to the World Cup Final at '+(s.final.venue||'')+'? Tickets, transit and travel.')}"><div class="fixhead"><span class="fixd">${esc(s.final.date||'')}</span><span class="fixg fg2">Final</span></div><div class="fixm">The World Cup Final</div><div class="fixv">${esc((s.final.venue||'').split(' (')[0])} · ${esc(s.final.city||'')}</div></div>`;
+  const tripbar=_trip.length?`<div class="tripbar"><div><span class="eyebrow">My trip</span><div class="tripn">${_trip.length} match${_trip.length>1?'es':''} shortlisted</div></div><div class="tripx"><button class="btn" id="tripPlan">Plan my trip with Gaffer</button><button class="tlink" id="tripClear">Clear</button></div></div>`:'';
+  const tips=`<div class="tips stagger">
+    <div class="tip"><span class="eyebrow">Fan festivals</span><div class="tiph">13 host cities, free entry</div><p>${esc(s.festivals.overview)}</p></div>
+    <div class="tip"><span class="eyebrow">Getting there</span><div class="tiph">Rail straight to the gate</div><p>${esc(flexv(s.transit.rail_direct_to_stadium))}</p></div>
+    <div class="tip"><span class="eyebrow">Plan for heat</span><div class="tiph">Summer can be brutal</div><p>${esc(s.heat)}</p></div></div>`;
+  w.innerHTML=`<div class="head2"><span class="eyebrow reveal">Plan your trip</span><h2 class="h1 reveal">Every match, mapped.</h2><p class="lead reveal">Browse the fixtures, shortlist the ones you want, and tap any match to ask Gaffer how to get there.</p></div>
+    <div class="cdbox reveal"><span class="eyebrow">Counting down to the final</span><div class="cdv" id="cdv"></div></div>
+    ${tripbar}
+    <div class="mfilters reveal">${cities.map(c=>`<button class="mfil${c===_cityFilter?' on':''}" data-c="${esc(c)}">${c==='all'?'All cities':esc(c)}</button>`).join('')}</div>
+    <div class="fixgrid stagger">${fix.map(fixcard).join('')}${_cityFilter==='all'?finalc:''}</div>
+    ${tips}`;
+  observeScreen('matches');
+  w.querySelectorAll('.mfil').forEach(b=>b.onclick=()=>{_cityFilter=b.dataset.c;renderMatches();});
+  w.querySelectorAll('.fixstar').forEach(b=>b.onclick=e=>{e.stopPropagation();const m=b.dataset.m;_trip=_trip.includes(m)?_trip.filter(x=>x!==m):[..._trip,m];saveTrip();renderMatches();});
+  w.querySelectorAll('.fixc').forEach(c=>c.onclick=()=>askAbout(c.dataset.q));
+  const tp=$('tripPlan');if(tp)tp.onclick=()=>askAbout('I want to attend these World Cup matches: '+_trip.join('; ')+'. Build me a trip plan: how to travel between the cities, transit to each stadium, and what to know.');
+  const tc=$('tripClear');if(tc)tc.onclick=()=>{_trip=[];saveTrip();renderMatches();};tickCd();}
 
 async function loadVenues(){try{const d=await (await fetch('/api/venues')).json();
   const grid=$('vgrid');grid.innerHTML='';d.venues.forEach((v,i)=>{const c=el(`<div class="vc${i===0?' feat':''}"><div class="city">${esc(v.city||'')}</div>${v.stage?`<div class="stage">${esc(v.stage)}</div>`:''}<div class="nm">${esc(v.name||'')}</div><div class="cap"><div class="n">${v.capacity?Number(v.capacity).toLocaleString():'n/a'}</div><div class="l">capacity</div></div></div>`);

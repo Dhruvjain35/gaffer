@@ -364,6 +364,26 @@ async def venues():
     }
 
 
+@app.get("/api/schedule")
+async def schedule():
+    """Fixtures + tournament structure + fan trip info for the Matches planner."""
+    s = _load_json("schedule")
+    fan = _load_json("fan_info")
+    fixtures = s.get("first_week_fixtures", [])
+    cities = sorted({fx.get("city") for fx in fixtures if fx.get("city")})
+    fest = fan.get("fan_festivals", {})
+    return {
+        "opening": s.get("opening_match", {}),
+        "final": s.get("final", {}),
+        "knockout": s.get("knockout_structure", {}),
+        "fixtures": fixtures,
+        "cities": cities,
+        "festivals": {"overview": fest.get("overview", ""), "sites": fest.get("confirmed_sites", {})},
+        "transit": fan.get("transit_tips", {}),
+        "heat": fan.get("weather_june_july", {}).get("highest_heat_risk", ""),
+    }
+
+
 @app.get("/diagnostics")
 async def diagnostics():
     """Tracing health for the control-room 'LIVE TRACING' indicator. OTLP gives no
