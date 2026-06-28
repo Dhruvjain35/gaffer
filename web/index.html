@@ -284,7 +284,21 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .mk-row .s{color:var(--muted);font-size:.92rem}.mk-row.win .s{color:var(--green-soft);font-weight:600}
 .mk-row .t{height:7px;border-radius:3px;background:#23262a;overflow:hidden}.mk-row .t i{display:block;height:100%;background:#444;border-radius:3px}.mk-row.win .t i{background:var(--green-lum)}
 .mk-row .v{font-family:var(--serif);text-align:right;color:var(--fg)}.mk-row.win .v{color:var(--green-lum)}
-.mk-won{margin-top:8px;padding-top:14px;border-top:1px solid var(--border-2);font-size:.92rem;color:var(--green-soft)}
+.mk-won{margin-top:8px;padding-top:14px;border-top:1px solid var(--border-2);font-size:.92rem;color:var(--green-soft)}.mk-won .wk{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:50%;background:var(--tint-2);color:var(--green-soft);font-size:10px;margin-right:6px;vertical-align:-3px}
+/* how-it-works: gradient-bordered windows, trace waterfall, diff, reveal animations */
+.smock .scr.glow{position:relative;box-shadow:0 50px 110px -50px rgba(0,0,0,.95),0 0 0 1px rgba(92,196,131,.07)}
+.smock .scr.glow::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(92,196,131,.5),transparent 42%,transparent 72%,rgba(92,196,131,.14));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.mk-meter i,.mk-row .t i,.trbar i{transform-origin:left;transform:scaleX(0);transition:transform 1.1s var(--ease) .25s}
+.reveal.in .mk-meter i,.reveal.in .mk-row .t i,.reveal.in .trbar i{transform:scaleX(1)}
+.mk-trace{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.trrow{display:grid;grid-template-columns:96px 1fr 32px;gap:12px;align-items:center;font-family:var(--pixel);font-size:.55rem;letter-spacing:.03em;text-transform:uppercase}
+.trrow .trk{color:var(--muted)}.trrow .trms{color:var(--muted-2);text-align:right}
+.trbar{height:11px;border-radius:3px;background:rgba(255,255,255,.035);overflow:hidden}.trbar i{display:block;height:100%;border-radius:3px;background:var(--grad)}.trbar i.amb{background:#e0a85a}
+.mk-diff span{display:block;padding:2px 8px;border-radius:4px;opacity:0;transform:translateX(-10px);transition:opacity .5s var(--ease),transform .5s var(--ease)}
+.reveal.in .mk-diff span{opacity:1;transform:none}
+.reveal.in .mk-diff span:nth-child(1){transition-delay:.15s}.reveal.in .mk-diff span:nth-child(2){transition-delay:.28s}.reveal.in .mk-diff span:nth-child(3){transition-delay:.41s}.reveal.in .mk-diff span:nth-child(4){transition-delay:.54s}.reveal.in .mk-diff span:nth-child(5){transition-delay:.67s}
+.mk-diff span b{display:inline-block;width:18px;color:var(--muted-2);font-weight:400;margin-right:12px}
+.mk-diff .ctx{color:var(--muted)}.mk-diff .del b{color:#cc8080}.mk-diff .add b{color:var(--green-soft)}
 /* live coaching run */
 .runwrap .eyebrow{display:block;margin-bottom:16px}.runwrap .lead-block{max-width:var(--container)}.runwrap .lead-block .lead{margin:14px 0 32px;max-width:42ch}
 .coachout{margin-top:36px;display:flex;flex-direction:column;gap:18px}
@@ -483,43 +497,51 @@ footer{border-top:1px solid var(--border-2)}
   <div class="steps"><div class="container">
 
     <div class="stepblock reveal">
-      <div class="stxt"><div class="n">Step 01 · Play</div><h3 class="h2">It answers, grounded.</h3><p class="lead">The Player pulls only from a verified knowledge base and cites the records it used. No memory, no guessing.</p></div>
-      <div class="smock"><div class="scr"><div class="bar"><i></i><i></i><i></i><span class="lbl">Player · gemini on vertex</span></div><div class="pad">
+      <div class="stxt"><div class="n">Step 01 · Play</div><h3 class="h2">It answers, grounded.</h3><p class="lead">The Player pulls only from a verified knowledge base and cites the exact records it used. No memory, no guessing.</p></div>
+      <div class="smock"><div class="scr glow"><div class="bar"><i></i><i></i><i></i><span class="lbl">player · gemini 3.5 on vertex</span></div><div class="pad">
         <div class="mk-q">When and where is the final?</div>
-        <p class="mk-line">The final is <b>Sunday, July 19, 2026</b> at <b>MetLife Stadium</b>, East Rutherford, NJ, kicking off 3:00 PM ET.</p>
+        <p class="mk-line">The final is <b>Sunday, July 19, 2026</b> at <b>MetLife Stadium</b>, East Rutherford, NJ, kicking off <b>3:00 PM ET</b>.</p>
         <div class="mk-chips"><span><em>Schedule</em>Final</span><span><em>Venue</em>MetLife Stadium</span></div>
+        <div class="mk-foot" style="margin-top:18px"><span class="d"></span>2 records retrieved · cited inline</div>
       </div></div></div>
     </div>
 
     <div class="stepblock reverse reveal">
-      <div class="stxt"><div class="n">Step 02 · Referee</div><h3 class="h2">Every answer is graded.</h3><p class="lead">A second model scores it for honesty against that evidence and files the verdict to Arize Phoenix as a span annotation.</p></div>
-      <div class="smock"><div class="scr"><div class="bar"><i></i><i></i><i></i><span class="lbl">Referee · llm-as-judge</span></div><div class="pad">
-        <div class="mk-verdict"><span class="mk-pill">GOAL</span><span class="mk-score">0.94</span></div>
-        <div class="mk-line mut">Grounding in cited sources</div>
+      <div class="stxt"><div class="n">Step 02 · Referee</div><h3 class="h2">Every answer is graded.</h3><p class="lead">A separate referee model scores it for honesty against that evidence, then files the verdict to Arize Phoenix as a span annotation you can open.</p></div>
+      <div class="smock"><div class="scr glow"><div class="bar"><i></i><i></i><i></i><span class="lbl">arize phoenix · trace</span></div><div class="pad">
+        <div class="mk-trace">
+          <div class="trrow"><span class="trk">player.answer</span><span class="trbar"><i style="margin-left:0;width:100%"></i></span><span class="trms">1.2s</span></div>
+          <div class="trrow"><span class="trk">retrieve_kb</span><span class="trbar"><i style="margin-left:5%;width:38%"></i></span><span class="trms">.5s</span></div>
+          <div class="trrow"><span class="trk">referee.grade</span><span class="trbar"><i class="amb" style="margin-left:68%;width:30%"></i></span><span class="trms">.4s</span></div>
+        </div>
+        <div class="mk-verdict"><span class="mk-pill">GOAL</span><span class="mk-score count" data-to="0.94">0.00</span></div>
+        <div class="mk-line mut">grounding in cited evidence</div>
         <div class="mk-meter"><i style="width:91%"></i></div>
-        <p class="mk-line">Every factual claim is supported by the retrieved evidence. Date, venue and kickoff all verified.</p>
-        <div class="mk-foot" style="margin-top:16px"><span class="d"></span>logged to Arize Phoenix · span annotated</div>
+        <div class="mk-foot" style="margin-top:16px"><span class="d"></span>span annotated · referee=GOAL · score=0.94</div>
       </div></div></div>
     </div>
 
     <div class="stepblock reveal">
-      <div class="stxt"><div class="n">Step 03 · Coach</div><h3 class="h2">It rewrites the playbook.</h3><p class="lead">When it misses, the Gaffer reads its own failures through the Phoenix MCP and edits the exact instruction that let it slip.</p></div>
-      <div class="smock"><div class="scr"><div class="bar"><i></i><i></i><i></i><span class="lbl">Playbook · production tag</span></div><div class="pad">
+      <div class="stxt"><div class="n">Step 03 · Coach</div><h3 class="h2">It rewrites its own playbook.</h3><p class="lead">On a miss, the Gaffer reads its failures through the Phoenix MCP and edits the exact instruction that let it slip.</p></div>
+      <div class="smock"><div class="scr glow"><div class="bar"><i></i><i></i><i></i><span class="lbl">playbook.diff · gafferplayer</span></div><div class="pad">
         <div class="mk-diff">
-          <span class="del">− answer from your general knowledge</span>
-          <span class="add">+ answer ONLY from retrieved records</span>
-          <span class="add">+ if a fact is not in evidence, say so</span>
+          <span class="ctx"><b>11</b>Ground every claim in retrieved records.</span>
+          <span class="del"><b>12</b>When unsure, answer from general knowledge.</span>
+          <span class="add"><b>12</b>When a fact isn’t retrieved, say you can’t verify it.</span>
+          <span class="add"><b>13</b>Lead with what the records confirm.</span>
+          <span class="ctx"><b>14</b>Cite each record inline.</span>
         </div>
-        <div class="mk-foot" style="margin-top:18px"><span class="d"></span>gafferplayer · v26 → v27</div>
+        <div class="mk-foot" style="margin-top:18px"><span class="d"></span>promoted via Phoenix prompt registry · v26 → v27</div>
       </div></div></div>
     </div>
 
     <div class="stepblock reverse reveal">
       <div class="stxt"><div class="n">Step 04 · Prove</div><h3 class="h2">Only a winner ships.</h3><p class="lead">Old and new play a scrimmage of two Phoenix experiments on the same dataset. The higher score is promoted to production, with no human in the loop.</p></div>
-      <div class="smock"><div class="scr"><div class="bar"><i></i><i></i><i></i><span class="lbl">Scrimmage · phoenix experiments</span></div><div class="pad">
-        <div class="mk-row"><span class="s">Production</span><span class="t"><i style="width:86%"></i></span><span class="v">0.863</span></div>
-        <div class="mk-row win"><span class="s">Candidate</span><span class="t"><i style="width:90%"></i></span><span class="v">0.901</span></div>
-        <div class="mk-won">Candidate wins · promoted to production</div>
+      <div class="smock"><div class="scr glow"><div class="bar"><i></i><i></i><i></i><span class="lbl">scrimmage · phoenix experiments</span></div><div class="pad">
+        <div class="mk-line mut" style="margin-bottom:16px">same 24-question dataset, graded by the referee</div>
+        <div class="mk-row"><span class="s">Production v26</span><span class="t"><i style="width:86%"></i></span><span class="v count" data-to="0.863">0.000</span></div>
+        <div class="mk-row win"><span class="s">Candidate v27</span><span class="t"><i style="width:94%"></i></span><span class="v count" data-to="0.901">0.000</span></div>
+        <div class="mk-won"><span class="wk">✓</span> Candidate wins by +0.038 · promoted to production</div>
       </div></div></div>
     </div>
 
@@ -548,7 +570,7 @@ const SCREENS=['home','ask','matches','team','loop','venues'];
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.16,rootMargin:'0px 0px -8% 0px'});
 const cio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){countUp(e.target);cio.unobserve(e.target)}}),{threshold:.6});
-function countUp(el){const to=+el.dataset.to,suf=el.dataset.suffix||'',dur=1200,s=performance.now();(function f(now){let t=Math.min(1,(now-s)/dur);t=1-Math.pow(1-t,3);el.textContent=Math.round(to*t)+suf;if(t<1)requestAnimationFrame(f)})(s);}
+function countUp(el){const to=+el.dataset.to,suf=el.dataset.suffix||'',ds=(''+el.dataset.to).split('.')[1],dec=ds?ds.length:0,dur=1200,s=performance.now();(function f(now){let t=Math.min(1,(now-s)/dur);t=1-Math.pow(1-t,3);el.textContent=(dec?(to*t).toFixed(dec):Math.round(to*t))+suf;if(t<1)requestAnimationFrame(f)})(s);}
 function observeScreen(s){const sc=$('screen-'+s);sc.querySelectorAll('.reveal,.stagger').forEach(n=>{n.classList.remove('in');io.observe(n);});sc.querySelectorAll('.count').forEach(n=>{n.textContent='0';cio.observe(n);});}
 
 /* scattered background stars */
