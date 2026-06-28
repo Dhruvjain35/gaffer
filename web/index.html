@@ -201,6 +201,18 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .more:hover{color:var(--fg)}.more .car{transition:transform .25s var(--ease)}.more.open .car{transform:rotate(90deg)}
 .detail{display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s var(--ease)}.detail.open{grid-template-rows:1fr}.detail>.inn{overflow:hidden}
 .tr{display:flex;flex-wrap:wrap;gap:8px 24px;padding-top:16px;font-size:.82rem;color:var(--muted-2)}.tr b{color:var(--muted);font-weight:600}.tr a{color:var(--green-lum)}
+/* rich answer: grounding meter, Arize Phoenix badge, action chips */
+.gmeter{margin-top:16px}
+.gml{display:flex;justify-content:space-between;align-items:baseline;font-size:.82rem;color:var(--muted);margin-bottom:8px}.gml b{color:var(--green-soft);font-family:var(--serif);font-size:1.1rem}
+.gbar{height:7px;border-radius:4px;background:rgba(255,255,255,.06);overflow:hidden}.gbar i{display:block;height:100%;border-radius:4px;background:var(--grad);transition:width .9s var(--ease)}
+.phx{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--border-2)}
+.phxb{display:inline-flex;align-items:center;gap:7px;font-family:var(--pixel);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;color:var(--green-lum)}.phxb svg{fill:var(--green-lum)}
+.phxdot{width:6px;height:6px;border-radius:50%;background:var(--green-lum);box-shadow:0 0 8px var(--green-lum);animation:pixelPulse 1.6s infinite}.phxb em{font-style:normal;color:var(--muted-2)}
+.phxm{font-size:.82rem;color:var(--muted-2)}.phxm b{color:var(--green-soft);font-weight:600}
+.phxa{margin-left:auto;font-size:.82rem;color:var(--green-lum);font-weight:600;white-space:nowrap}.phxa:hover{text-decoration:underline}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.actc{font-family:var(--sans);font-size:.86rem;color:var(--fg);background:var(--card);border:1px solid var(--border);border-radius:var(--pill);padding:9px 16px;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+.actc:hover{border-color:var(--tint-2);color:var(--green-soft);background:#11150f}
 .recoach{margin-top:22px;display:flex;gap:13px;align-items:flex-start;padding:16px 18px;border-radius:var(--r);background:var(--tint);border:1px solid var(--tint-2)}
 .recoach .rct{font-size:1rem;color:var(--muted);line-height:1.5}.recoach .rct b{color:var(--fg);font-weight:600}
 .recoach .rcd{flex:none;width:18px;height:18px;margin-top:2px;border-radius:50%;border:2px solid var(--green-lum);border-top-color:transparent;animation:spin .8s linear infinite}
@@ -661,13 +673,35 @@ async function runTurn(q,mount,side){
     if(!answered)body.innerHTML='<p>I couldn’t find a verified answer for that one. Try rephrasing it.</p>';
   }catch(e){body.innerHTML='<p>'+esc(e.message)+'</p>';}return turn;}
 async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.height='auto';if($('askintro'))$('askintro').remove();await runTurn(q,$('convInner'),true);}
+const PHX='<svg viewBox="0 0 24 24" width="13" height="13"><path d="M13 2c.6 3-1.4 4.6-3 6.6C8.4 10.8 8 12.4 8 14a6 6 0 1 0 9.8-4.6C16 7.6 14.6 6 15 3c-1 .5-2 1.4-2.6 2.6C12 4.2 12.5 3 13 2z"/></svg>';
 function renderTrust(turn,ev,evid){const goal=ev.label==='GOAL',gp=(ev.grounding==null)?null:Math.round(ev.grounding*100),items=evidenceItems(evid);
-  const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';
-  const box=el(`<div class="tcard ${goal?'':'miss'}"><div class="head"><span class="tick">${goal?'✓':'!'}</span><span>${goal?'<b>Verified</b> by the referee':'<b>Couldn’t fully verify</b>'}${items.length?` · grounded in ${items.length} source${items.length>1?'s':''}`:''}</span></div>
+  const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';const phx=window._phx||'';
+  const box=el(`<div class="tcard ${goal?'':'miss'}">
+    <div class="head"><span class="tick">${goal?'✓':'!'}</span><span>${goal?'<b>Verified</b> by the referee':'<b>Couldn’t fully verify</b>'}${items.length?` · grounded in ${items.length} source${items.length>1?'s':''}`:''}</span></div>
+    ${gp!=null?`<div class="gmeter"><div class="gml"><span>Answer traced to its cited evidence</span><b>${gp}%</b></div><div class="gbar"><i style="width:0"></i></div></div>`:''}
     ${items.length?`<div class="srcs">${items.map(s=>`<span class="chip"><span class="k">${esc(s.kind)}</span><b>${esc(s.title)}</b></span>`).join('')}</div>`:''}
-    <button class="more"><span class="car">›</span> how it produced this</button>
-    <div class="detail"><div class="inn"><div class="tr">${ev.explanation?`<span style="flex-basis:100%;color:var(--muted)">${esc(ev.explanation)}</span>`:''}<span><b>referee</b> ${esc(ev.label)}</span>${gp!=null?`<span><b>grounding</b> ${gp}% lexical overlap</span>`:''}<span><b>model</b> ${esc(ev.model||'gemini')}</span>${lat?`<span><b>latency</b> ${lat}</span>`:''}${tid?`<span><a href="#" onclick="return false">trace ${esc(tid)} · phoenix</a></span>`:''}</div></div></div></div>`);
-  const more=box.querySelector('.more'),detail=box.querySelector('.detail');more.onclick=()=>{more.classList.toggle('open');detail.classList.toggle('open');};turn.appendChild(box);}
+    <div class="phx"><span class="phxb">${PHX}<span>Arize Phoenix</span><i class="phxdot"></i><em>traced</em></span><span class="phxm"><b>${esc(ev.label)}</b> · ${esc(ev.model||'gemini')}${lat?' · '+lat:''}</span>${phx?`<a class="phxa" href="${esc(phx)}" target="_blank" rel="noopener">open trace${tid?' '+esc(tid):''} ↗</a>`:''}</div>
+    <button class="more"><span class="car">›</span> the referee’s notes</button>
+    <div class="detail"><div class="inn"><div class="tr">${ev.explanation?`<span style="flex-basis:100%;color:var(--muted)">${esc(ev.explanation)}</span>`:''}<span><b>referee</b> ${esc(ev.label)}</span>${gp!=null?`<span><b>grounding</b> ${gp}% lexical overlap</span>`:''}<span><b>model</b> ${esc(ev.model||'gemini')}</span><span><b>annotation</b> ${ev.annotated?'span logged in Phoenix':'local mirror'}</span></div></div></div></div>`);
+  const more=box.querySelector('.more'),detail=box.querySelector('.detail');more.onclick=()=>{more.classList.toggle('open');detail.classList.toggle('open');};
+  turn.appendChild(box);
+  const gb=box.querySelector('.gbar i');if(gb&&gp!=null)requestAnimationFrame(()=>requestAnimationFrame(()=>{gb.style.width=gp+'%';}));
+  if(turn.closest('#convInner'))renderActions(turn,items);}
+function renderActions(turn,items){
+  const chips=[];
+  (items||[]).slice(0,3).forEach(it=>{
+    if(it.kind==='Venue')chips.push({l:'Getting to '+it.title,q:'How do I get to '+it.title+'? Transit, parking and travel tips.'});
+    else if(it.kind==='Fixture')chips.push({l:'+ '+it.title+' to my trip',add:it.title});
+    else if(it.kind==='Fixture'||it.kind==='Source')chips.push({l:'More on '+it.title,q:'Tell me more about '+it.title+'.'});
+    else chips.push({l:'More on '+it.title,q:'Tell me more about '+it.title+'.'});
+  });
+  chips.push({l:'Plan my trip →',nav:'#matches'});
+  const row=el(`<div class="acts">${chips.map((c,i)=>`<button class="actc" data-i="${i}">${esc(c.l)}</button>`).join('')}</div>`);
+  row.querySelectorAll('.actc').forEach((bn,i)=>{const c=chips[i];bn.onclick=()=>{
+    if(c.q){$('input').value=c.q;send();}
+    else if(c.add){toggleTrip(c.add);_view='plan';location.hash='#matches';}
+    else if(c.nav){location.hash=c.nav;}};});
+  turn.appendChild(row);}
 
 async function loadTeams(){const wrap=$('teamWrap');wrap.dataset.loaded='1';
   wrap.innerHTML=`<div class="head2"><span class="eyebrow reveal">Forty-eight teams</span><h2 class="h1 reveal">Follow your team.</h2><p class="lead reveal">Pick any side to see its group, opening match, and the road to the final.</p></div><div class="groups stagger" id="groups"></div>`;
@@ -756,7 +790,7 @@ async function loadVenues(){try{const d=await (await fetch('/api/venues')).json(
   const grid=$('vgrid');grid.innerHTML='';d.venues.forEach((v,i)=>{const c=el(`<div class="vc${i===0?' feat':''}"><div class="city">${esc(v.city||'')}</div>${v.stage?`<div class="stage">${esc(v.stage)}</div>`:''}<div class="nm">${esc(v.name||'')}</div><div class="cap"><div class="n">${v.capacity?Number(v.capacity).toLocaleString():'n/a'}</div><div class="l">capacity</div></div></div>`);
     c.onclick=()=>{location.hash='#ask';$('input').value=`Tell me about ${v.name}: capacity, how to get there, and what it hosts.`;send();};grid.appendChild(c);});}catch{}}
 
-fetch('/api/state').then(r=>r.json()).then(s=>{if(s.phoenix_url)$('pbLink').href=s.phoenix_url;$('pbLink').textContent=(s.playbook||'playbook').replace(/^phoenix:/,'');if(s.record)asRecord(s.record);}).catch(()=>{});
+fetch('/api/state').then(r=>r.json()).then(s=>{if(s.phoenix_url){$('pbLink').href=s.phoenix_url;window._phx=s.phoenix_url;}$('pbLink').textContent=(s.playbook||'playbook').replace(/^phoenix:/,'');if(s.record)asRecord(s.record);}).catch(()=>{});
 fetch('/diagnostics').then(r=>r.json()).then(d=>{const dot=$('trDot');if(d.tracing==='live'){dot.classList.remove('off');$('trLabel').textContent='tracing live · Phoenix';}else{dot.classList.add('off');$('trLabel').textContent='tracing · local mirror';}}).catch(()=>{});
 loadVenues();route();
 </script>
