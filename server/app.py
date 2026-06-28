@@ -12,6 +12,7 @@ from __future__ import annotations
 import asyncio
 import json
 import os
+import re
 import secrets
 from pathlib import Path
 
@@ -381,6 +382,87 @@ async def schedule():
         "festivals": {"overview": fest.get("overview", ""), "sites": fest.get("confirmed_sites", {})},
         "transit": fan.get("transit_tips", {}),
         "heat": fan.get("weather_june_july", {}).get("highest_heat_risk", ""),
+    }
+
+
+def _ntok(s):
+    return set(re.findall(r"[a-z]{4,}", (s or "").lower().replace("_", " ")))
+
+
+@app.get("/api/plan")
+async def plan():
+    """Enriched, grounded itinerary catalog for the interactive trip planner: every
+    fixture joined to its stadium (detailed transit, capacity, quirks), rail-direct
+    status, the city's fan festival, weather/heat note and money-saver tip."""
+    s = _load_json("schedule")
+    fan = _load_json("fan_info")
+    venues = _load_json("venues").get("venues", [])
+    fest = fan.get("fan_festivals", {}).get("confirmed_sites", {})
+    weather = fan.get("weather_june_july", {})
+    savers = fan.get("transit_tips", {}).get("money_savers", {})
+    rail = fan.get("transit_tips", {}).get("rail_direct_to_stadium", [])
+    rail_norm = " | ".join(rail).lower()
+
+    def find_venue(vname):
+        vn = re.sub(r"\s*\(.*", "", vname or "").strip().lower()
+        if not vn:
+            return {}
+        for v in venues:
+            sn = (v.get("stadium_name") or "").lower()
+            fn = (v.get("fifa_name") or "").lower()
+            if sn.startswith(vn) or fn.startswith(vn) or vn in sn or vn in fn:
+                return v
+        return {}
+
+    def best_key(city, d):
+        cands = [city, re.sub(r"\s*\(.*", "", city or "")]
+        m = re.search(r"\(([^)]+)\)", city or "")
+        if m:
+            cands.append(m.group(1))
+        ctoks = set()
+        for c in cands:
+            ctoks |= _ntok(c)
+        best, bs = None, 0
+        for k in d:
+            ov = len(ctoks & _ntok(k))
+            if ov > bs:
+                bs, best = ov, k
+        return best if bs else None
+
+    def enrich(match, date, group, kickoff, venue, city):
+        v = find_venue(venue)
+        wk, fk, sk = best_key(city, weather), best_key(city, fest), best_key(city, savers)
+        rd = any(t and t in rail_norm for t in (_ntok(city) | _ntok(v.get("city", ""))))
+        return {
+            "match": match, "date": date, "group": group, "kickoff_et": kickoff,
+            "city": city or v.get("city", ""),
+            "venue": (v.get("stadium_name") or venue or "").split(" (")[0],
+            "country": v.get("country", ""), "capacity": v.get("capacity_approx"),
+            "transit": v.get("transit", ""), "quirks": v.get("quirks", ""),
+            "rail_direct": rd,
+            "festival": fest.get(fk, "") if fk else "",
+            "weather": weather.get(wk, "") if wk else "",
+            "saver": savers.get(sk, "") if sk else "",
+        }
+
+    catalog = [
+        enrich(fx.get("match"), fx.get("date"), fx.get("group"), fx.get("kickoff_et"),
+               fx.get("venue"), fx.get("city"))
+        for fx in s.get("first_week_fixtures", [])
+    ]
+    fin = s.get("final", {})
+    catalog.append(enrich("The World Cup Final", fin.get("date"), "Final",
+                          fin.get("kickoff_et"), fin.get("venue"), fin.get("city")))
+    cities = sorted({fx.get("city") for fx in s.get("first_week_fixtures", []) if fx.get("city")})
+    return {
+        "catalog": catalog,
+        "cities": cities,
+        "final_date": fin.get("date"),
+        "tips": {
+            "festivals": fan.get("fan_festivals", {}).get("overview", ""),
+            "rail": " · ".join(rail),
+            "heat": weather.get("highest_heat_risk", ""),
+        },
     }
 
 

@@ -333,6 +333,36 @@ a.inline{color:var(--green-lum)}a.inline:hover{text-decoration:underline}
 .tip{background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:24px}
 .tip .eyebrow{display:block;margin-bottom:12px}.tip .tiph{font-family:var(--serif);font-size:1.3rem;color:var(--fg);margin-bottom:10px;line-height:1.15}.tip p{font-size:.94rem;color:var(--muted);line-height:1.55}
 @media(max-width:820px){.tips{grid-template-columns:1fr}}
+/* planner: add buttons, plan bar, itinerary */
+.fixc{display:flex;flex-direction:column;cursor:default}
+.fixc.on{border-color:var(--green);background:rgba(47,107,63,.13)}
+.fixc .raild{align-self:flex-start;margin-top:10px;font-family:var(--pixel);font-size:.54rem;letter-spacing:.04em;text-transform:uppercase;color:var(--green-lum);background:var(--tint);border-radius:var(--r-sm);padding:4px 8px}
+.fixc .addbtn{margin-top:16px;align-self:flex-start;font-family:var(--sans);font-size:.88rem;font-weight:600;color:var(--green-lum);background:var(--tint);border:1px solid var(--tint-2);border-radius:var(--pill);padding:9px 17px;cursor:pointer;transition:filter .2s,background .2s,color .2s}
+.fixc.on .addbtn{background:var(--green);color:#eafff0;border-color:transparent}.fixc .addbtn:hover{filter:brightness(1.12)}
+.planbar{position:fixed;left:50%;bottom:0;transform:translate(-50%,130%);z-index:9000;display:flex;align-items:center;gap:20px;background:rgba(13,16,14,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border:1px solid var(--border);border-bottom:0;border-radius:16px 16px 0 0;padding:13px 14px 13px 24px;box-shadow:0 -12px 44px -22px rgba(0,0,0,.85);transition:transform .35s var(--ease)}
+.planbar.show{transform:translate(-50%,0)}.planbar .pbn{font-size:.95rem;color:var(--fg)}.planbar .pbn b{color:var(--green-soft);font-weight:700}
+.matches .backb{margin-bottom:24px}
+.psum{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:30px}
+.ps{background:var(--card);border:1px solid var(--border-2);border-radius:var(--r);padding:20px}
+.ps b{display:block;font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.4rem);color:var(--green-soft);line-height:1}
+.ps i{font-family:var(--pixel);font-size:.56rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted-2);font-style:normal;margin-top:10px;display:block}
+@media(max-width:680px){.psum{grid-template-columns:1fr 1fr}}
+.brief{background:var(--card);border:1px solid var(--tint-2);border-radius:var(--r-lg);padding:26px;margin-bottom:34px}
+.briefhint{font-size:.88rem;color:var(--muted);margin-top:12px}
+.briefout{margin-top:4px}.briefout:empty{margin:0}.briefout .turn{margin-bottom:0;margin-top:24px}.briefout .turn .q{display:none}
+.itinwrap{display:flex;flex-direction:column;gap:16px}
+.itin{background:var(--card);border:1px solid var(--border-2);border-radius:var(--r-lg);padding:26px}
+.itd{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.itnum{font-family:var(--pixel);font-size:.8rem;color:var(--green-lum)}
+.itdate{font-family:var(--pixel);font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2)}
+.itrm{margin-left:auto;background:0;border:0;color:var(--muted-2);font-family:var(--sans);font-size:.82rem;cursor:pointer}.itrm:hover{color:#e0a85a}
+.itm{font-family:var(--serif);font-size:clamp(1.5rem,2.4vw,2rem);color:var(--fg);line-height:1.1;margin-bottom:8px}
+.itv{font-size:.95rem;color:var(--green-soft);margin-bottom:18px}
+.itrows{display:flex;flex-direction:column;gap:0}
+.itrow{display:grid;grid-template-columns:124px 1fr;gap:16px;padding:13px 0;border-top:1px solid var(--border-2)}
+.itk{font-family:var(--pixel);font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted-2);padding-top:3px}
+.itval{font-size:.96rem;color:var(--fg);line-height:1.5}.itval .raild{font-family:var(--pixel);font-size:.5rem;color:var(--green-lum);background:var(--tint);border-radius:4px;padding:2px 6px;margin-left:6px;text-transform:uppercase;font-style:normal;white-space:nowrap}
+@media(max-width:680px){.itrow{grid-template-columns:1fr;gap:4px}}
 
 /* footer */
 footer{border-top:1px solid var(--border-2)}
@@ -363,8 +393,8 @@ footer{border-top:1px solid var(--border-2)}
 <section class="screen home" id="screen-home">
   <div class="hero">
     <div class="hero-copy">
-      <h1 class="display reveal">The concierge that <span class="g">referees</span> itself.</h1>
-      <p class="lead reveal">Ask anything about the World Cup. Every answer is<br>checked for honesty before it ever reaches you.</p>
+      <h1 class="display reveal">Everything for the World&nbsp;Cup. <span class="g">Nothing made up.</span></h1>
+      <p class="lead reveal">Plan your trip, ask anything, follow your team.<br>Every answer is grounded in real data and checked by the referee.</p>
       <div class="cta-row reveal"><a class="btn" href="#ask">Ask the Referee <span class="ar">→</span></a><a class="plink" href="#loop">See how it works</a></div>
       <p class="rating reveal"><span class="stars">★★★★★</span> Graded by an LLM referee · grounded in a verified knowledge base</p>
     </div>
@@ -581,7 +611,7 @@ function route(){let h=(location.hash||'#home').slice(1);if(!SCREENS.includes(h)
   document.querySelectorAll('.gnav .links a').forEach(a=>a.classList.toggle('on',a.dataset.nav===h));
   $('navLinks').classList.remove('open');$('menuBtn').classList.remove('open');$('annbar').style.display=h==='home'?'block':'none';
   window.scrollTo(0,0);observeScreen(h);_bg.set(BG_MODE[h]);requestAnimationFrame(()=>_resizers.forEach(f=>f()));
-  if(h!=='matches')clearInterval(_cdTimer);
+  if(h!=='matches'){clearInterval(_cdTimer);const _pb=document.getElementById('planbar');if(_pb)_pb.classList.remove('show');}
   if(h==='ask')setTimeout(()=>$('input').focus(),80);if(h==='team'&&!$('teamWrap').dataset.loaded)loadTeams();if(h==='matches')loadMatches();}
 addEventListener('hashchange',route);
 addEventListener('resize',()=>_resizers.forEach(f=>f()));
@@ -612,24 +642,25 @@ function evidenceItems(evid){const items=[],seen=new Set();const f=s=>esc(String
     if(m.stadium_name||m.fifa_name){kind='Venue';title=(m.stadium_name||m.fifa_name).split(' (')[0];key='v'+title;}
     else if(m.match){kind='Fixture';title=m.match;key='f'+title;}else{const k=Object.keys(m)[0];kind=e.topic?f(e.topic):'Source';title=f(k);key=k;}
     if(seen.has(key))continue;seen.add(key);items.push({kind,title});}return items.slice(0,6);}
-async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.height='auto';if($('askintro'))$('askintro').remove();
-  const inner=$('convInner');const turn=el(`<div class="turn"><div class="q">${esc(q)}</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);
-  inner.appendChild(turn);turn.scrollIntoView({block:'start',behavior:'smooth'});const body=turn.querySelector('.body');asSet({play:'on'});
+async function runTurn(q,mount,side){
+  const turn=el(`<div class="turn"><div class="q">${esc(q)}</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);
+  mount.appendChild(turn);turn.scrollIntoView({block:'start',behavior:'smooth'});const body=turn.querySelector('.body');if(side)asSet({play:'on'});
   const evid=[],revEvid=[];let answered=false,strip=null,revWrap=null,revBody=null;
   try{const resp=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:q,session_id:sessionId})});
     await consumeSSE(resp,ev=>{
       if(ev.type==='tool_result'&&ev.data&&ev.data.matches&&ev.data.matches.length){(ev.revision?revEvid:evid).push(ev.data);}
       if(ev.type==='text'){answered=true;body.innerHTML=md(ev.text);}
-      if(ev.type==='recoach'){asSet({play:'done',ref:'done',coach:'on'});strip=el(`<div class="recoach"><span class="rcd"></span><div class="rct"><b>The referee sent this back.</b> Not fully verified, so Gaffer is coaching itself and answering again.</div></div>`);turn.appendChild(strip);
+      if(ev.type==='recoach'){if(side)asSet({play:'done',ref:'done',coach:'on'});strip=el(`<div class="recoach"><span class="rcd"></span><div class="rct"><b>The referee sent this back.</b> Not fully verified, so Gaffer is coaching itself and answering again.</div></div>`);turn.appendChild(strip);
         revWrap=el(`<div class="revision"><div class="revlabel">Coached answer</div><div class="body"><span class="thinking"><i></i><i></i><i></i></span></div></div>`);turn.appendChild(revWrap);revBody=revWrap.querySelector('.body');revWrap.scrollIntoView({block:'nearest',behavior:'smooth'});}
       if(ev.type==='revision'){if(revBody)revBody.innerHTML=md(ev.text);}
       if(ev.type==='eval'){
-        if(ev.revision){const rg=ev.label==='GOAL';if(strip){strip.classList.add('done');if(!rg)strip.classList.add('warn');strip.querySelector('.rct').innerHTML=rg?'<b>Coached itself.</b> Re-answered using only verified evidence.':'<b>Coached itself.</b> Still couldn’t fully verify it, so it stays flagged.';}renderTrust(revWrap||turn,ev,revEvid);asSet(rg?{play:'done',ref:'done',coach:'done',prove:'done'}:{play:'done',ref:'done',coach:'done',prove:'on'});asVerdict(ev);}
-        else{renderTrust(turn,ev,evid);asVerdict(ev);asSet(ev.label==='GOAL'?{play:'done',ref:'done'}:{play:'done',ref:'done',coach:'on'});}
-        if(ev.record){window._rec=ev.record;asRecord(ev.record);}}
+        if(ev.revision){const rg=ev.label==='GOAL';if(strip){strip.classList.add('done');if(!rg)strip.classList.add('warn');strip.querySelector('.rct').innerHTML=rg?'<b>Coached itself.</b> Re-answered using only verified evidence.':'<b>Coached itself.</b> Still couldn’t fully verify it, so it stays flagged.';}renderTrust(revWrap||turn,ev,revEvid);if(side){asSet(rg?{play:'done',ref:'done',coach:'done',prove:'done'}:{play:'done',ref:'done',coach:'done',prove:'on'});asVerdict(ev);}}
+        else{renderTrust(turn,ev,evid);if(side){asVerdict(ev);asSet(ev.label==='GOAL'?{play:'done',ref:'done'}:{play:'done',ref:'done',coach:'on'});}}
+        if(ev.record){window._rec=ev.record;if(side)asRecord(ev.record);}}
       if(ev.type==='error'){(revBody||body).innerHTML='<p>'+esc(ev.message)+'</p>';}});
     if(!answered)body.innerHTML='<p>I couldn’t find a verified answer for that one. Try rephrasing it.</p>';
-  }catch(e){body.innerHTML='<p>'+esc(e.message)+'</p>';}}
+  }catch(e){body.innerHTML='<p>'+esc(e.message)+'</p>';}return turn;}
+async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.height='auto';if($('askintro'))$('askintro').remove();await runTurn(q,$('convInner'),true);}
 function renderTrust(turn,ev,evid){const goal=ev.label==='GOAL',gp=(ev.grounding==null)?null:Math.round(ev.grounding*100),items=evidenceItems(evid);
   const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';
   const box=el(`<div class="tcard ${goal?'':'miss'}"><div class="head"><span class="tick">${goal?'✓':'!'}</span><span>${goal?'<b>Verified</b> by the referee':'<b>Couldn’t fully verify</b>'}${items.length?` · grounded in ${items.length} source${items.length>1?'s':''}`:''}</span></div>
@@ -662,44 +693,64 @@ $('coachBtn').onclick=async()=>{const btn=$('coachBtn');btn.disabled=true;btn.te
     out.lastElementChild&&out.lastElementChild.scrollIntoView({block:'nearest'});});}catch(e){out.appendChild(el(`<div class="cstep"><div class="t">${esc(e.message)}</div></div>`));}
   btn.disabled=false;btn.textContent='Run another session';};
 
-/* ---- Matches: fan trip planner ---- */
-let _sched=null,_cityFilter='all',_cdTimer=null,_trip=[];
+/* ---- Matches: interactive fan trip planner ---- */
+let _plan=null,_cityFilter='all',_cdTimer=null,_view='browse',_trip=[];
 try{_trip=JSON.parse(localStorage.getItem('gaffer_trip')||'[]')}catch{}
 function saveTrip(){try{localStorage.setItem('gaffer_trip',JSON.stringify(_trip))}catch{}}
-const flexv=v=>Array.isArray(v)?v.join(' · '):(v||'');
-function askAbout(q){location.hash='#ask';setTimeout(()=>{$('input').value=q;send();},80);}
+const inTrip=m=>_trip.includes(m);
+function toggleTrip(m){_trip=inTrip(m)?_trip.filter(x=>x!==m):[..._trip,m];saveTrip();}
 function tickCd(){const el=$('cdv');if(!el)return;const t=new Date('2026-07-19T19:00:00Z')-new Date();
   if(t<=0){el.innerHTML='<span class="cdnum">The final is here.</span>';return;}
   const d=Math.floor(t/864e5),h=Math.floor(t/36e5)%24,m=Math.floor(t/6e4)%60,s=Math.floor(t/1e3)%60;
   const c=(n,l)=>`<span class="cdc"><b>${String(n).padStart(2,'0')}</b><i>${l}</i></span>`;
   el.innerHTML=c(d,'days')+c(h,'hrs')+c(m,'min')+c(s,'sec');}
 async function loadMatches(){const w=$('matchesWrap');
-  if(!_sched){w.innerHTML='<div class="thinking" style="margin:80px auto;justify-content:center"><i></i><i></i><i></i></div>';
-    try{_sched=await (await fetch('/api/schedule')).json();}catch{w.innerHTML='<p style="color:var(--muted)">Schedule unavailable right now.</p>';return;}}
-  renderMatches();clearInterval(_cdTimer);_cdTimer=setInterval(tickCd,1000);tickCd();}
-function renderMatches(){const w=$('matchesWrap'),s=_sched;
-  const cities=['all',...s.cities];
-  const fix=s.fixtures.filter(f=>_cityFilter==='all'||f.city===_cityFilter);
-  const inTrip=m=>_trip.includes(m);
-  const fixcard=f=>`<div class="fixc${inTrip(f.match)?' star':''}" data-q="${esc('How do I get to '+f.match+' at '+(f.venue||'')+' in '+(f.city||'')+'? Tickets, transit and travel tips.')}"><button class="fixstar" data-m="${esc(f.match)}" aria-label="Save to my trip">★</button><div class="fixhead"><span class="fixd">${esc(f.date||'')}${f.kickoff_et?' · '+esc(f.kickoff_et)+' ET':''}</span>${f.group?`<span class="fixg">Group ${esc(f.group)}</span>`:''}</div><div class="fixm">${esc(f.match)}</div><div class="fixv">${esc((f.venue||'').split(' (')[0])} · ${esc(f.city||'')}</div></div>`;
-  const finalc=`<div class="fixc fin" data-q="${esc('How do I get to the World Cup Final at '+(s.final.venue||'')+'? Tickets, transit and travel.')}"><div class="fixhead"><span class="fixd">${esc(s.final.date||'')}</span><span class="fixg fg2">Final</span></div><div class="fixm">The World Cup Final</div><div class="fixv">${esc((s.final.venue||'').split(' (')[0])} · ${esc(s.final.city||'')}</div></div>`;
-  const tripbar=_trip.length?`<div class="tripbar"><div><span class="eyebrow">My trip</span><div class="tripn">${_trip.length} match${_trip.length>1?'es':''} shortlisted</div></div><div class="tripx"><button class="btn" id="tripPlan">Plan my trip with Gaffer</button><button class="tlink" id="tripClear">Clear</button></div></div>`:'';
-  const tips=`<div class="tips stagger">
-    <div class="tip"><span class="eyebrow">Fan festivals</span><div class="tiph">13 host cities, free entry</div><p>${esc(s.festivals.overview)}</p></div>
-    <div class="tip"><span class="eyebrow">Getting there</span><div class="tiph">Rail straight to the gate</div><p>${esc(flexv(s.transit.rail_direct_to_stadium))}</p></div>
-    <div class="tip"><span class="eyebrow">Plan for heat</span><div class="tiph">Summer can be brutal</div><p>${esc(s.heat)}</p></div></div>`;
-  w.innerHTML=`<div class="head2"><span class="eyebrow reveal">Plan your trip</span><h2 class="h1 reveal">Every match, mapped.</h2><p class="lead reveal">Browse the fixtures, shortlist the ones you want, and tap any match to ask Gaffer how to get there.</p></div>
+  if(!_plan){w.innerHTML='<div class="thinking" style="margin:90px auto;justify-content:center"><i></i><i></i><i></i></div>';
+    try{_plan=await (await fetch('/api/plan')).json();}catch{w.innerHTML='<p style="color:var(--muted)">Schedule unavailable right now.</p>';return;}}
+  if(_view==='plan')renderPlan();else renderBrowse();
+  clearInterval(_cdTimer);_cdTimer=setInterval(tickCd,1000);tickCd();}
+function planbar(){let bar=$('planbar');if(!bar){bar=el('<div class="planbar" id="planbar"></div>');document.body.appendChild(bar);}
+  const show=_trip.length&&_view==='browse'&&$('screen-matches').classList.contains('on');
+  bar.classList.toggle('show',!!show);
+  if(show){bar.innerHTML=`<span class="pbn"><b>${_trip.length}</b> match${_trip.length>1?'es':''} in your trip</span><button class="btn" id="goplan">Plan my trip →</button>`;
+    $('goplan').onclick=()=>{_view='plan';renderPlan();bar.classList.remove('show');window.scrollTo(0,0);};}}
+function renderBrowse(){const w=$('matchesWrap'),P=_plan;
+  const cities=['all',...P.cities];
+  const cat=P.catalog.filter(f=>f.group!=='Final');
+  const fix=cat.filter(f=>_cityFilter==='all'||f.city===_cityFilter);
+  const card=f=>`<div class="fixc${inTrip(f.match)?' on':''}"><div class="fixhead"><span class="fixd">${esc(f.date||'')}${f.kickoff_et?' · '+esc(f.kickoff_et)+' ET':''}</span>${f.group?`<span class="fixg">Group ${esc(f.group)}</span>`:''}</div><div class="fixm">${esc(f.match)}</div><div class="fixv">${esc(f.venue||'')} · ${esc(f.city||'')}</div>${f.rail_direct?'<span class="raild">Rail to the gate</span>':''}<button class="addbtn" data-m="${esc(f.match)}">${inTrip(f.match)?'✓ In my trip':'+ Add to trip'}</button></div>`;
+  w.innerHTML=`<div class="head2"><span class="eyebrow reveal">Plan your trip</span><h2 class="h1 reveal">Build your World Cup.</h2><p class="lead reveal">Add the matches you want to catch, then build one interactive plan: venues, transit, festivals and weather, grounded in real data and checked by the referee.</p></div>
     <div class="cdbox reveal"><span class="eyebrow">Counting down to the final</span><div class="cdv" id="cdv"></div></div>
-    ${tripbar}
     <div class="mfilters reveal">${cities.map(c=>`<button class="mfil${c===_cityFilter?' on':''}" data-c="${esc(c)}">${c==='all'?'All cities':esc(c)}</button>`).join('')}</div>
-    <div class="fixgrid stagger">${fix.map(fixcard).join('')}${_cityFilter==='all'?finalc:''}</div>
-    ${tips}`;
+    <div class="fixgrid stagger">${fix.map(card).join('')}</div>`;
   observeScreen('matches');
-  w.querySelectorAll('.mfil').forEach(b=>b.onclick=()=>{_cityFilter=b.dataset.c;renderMatches();});
-  w.querySelectorAll('.fixstar').forEach(b=>b.onclick=e=>{e.stopPropagation();const m=b.dataset.m;_trip=_trip.includes(m)?_trip.filter(x=>x!==m):[..._trip,m];saveTrip();renderMatches();});
-  w.querySelectorAll('.fixc').forEach(c=>c.onclick=()=>askAbout(c.dataset.q));
-  const tp=$('tripPlan');if(tp)tp.onclick=()=>askAbout('I want to attend these World Cup matches: '+_trip.join('; ')+'. Build me a trip plan: how to travel between the cities, transit to each stadium, and what to know.');
-  const tc=$('tripClear');if(tc)tc.onclick=()=>{_trip=[];saveTrip();renderMatches();};tickCd();}
+  w.querySelectorAll('.mfil').forEach(b=>b.onclick=()=>{_cityFilter=b.dataset.c;renderBrowse();tickCd();});
+  w.querySelectorAll('.addbtn').forEach(b=>b.onclick=()=>{toggleTrip(b.dataset.m);renderBrowse();tickCd();});
+  planbar();}
+function renderPlan(){const w=$('matchesWrap'),P=_plan;
+  const items=P.catalog.filter(f=>inTrip(f.match)).sort((a,b)=>(a.date||'').localeCompare(b.date||''));
+  const back=()=>{_view='browse';renderBrowse();tickCd();window.scrollTo(0,0);};
+  if(!items.length){w.innerHTML=`<div class="head2"><span class="eyebrow">Your trip</span><h2 class="h1">Nothing on the plan yet.</h2><p class="lead">Add a few matches from the schedule and they’ll show up here as a full, grounded itinerary.</p></div><button class="btn" id="backbrowse">← Browse matches</button>`;$('backbrowse').onclick=back;return;}
+  const cities=[...new Set(items.map(i=>i.city).filter(Boolean))];
+  const dates=items.map(i=>i.date).filter(Boolean).sort();
+  const fests=[...new Set(items.filter(i=>i.festival).map(i=>i.city))];
+  const sum=`<div class="psum stagger"><div class="ps"><b>${items.length}</b><i>matches</i></div><div class="ps"><b>${cities.length}</b><i>cities</i></div><div class="ps"><b>${dates[0]?dates[0].slice(5).replace('-','/'):'·'}</b><i>first match</i></div><div class="ps"><b>${fests.length}</b><i>fan festivals</i></div></div>`;
+  const row=(k,v)=>v?`<div class="itrow"><span class="itk">${k}</span><span class="itval">${v}</span></div>`:'';
+  const itin=items.map((it,i)=>`<div class="itin reveal"><div class="itd"><span class="itnum">${String(i+1).padStart(2,'0')}</span><span class="itdate">${esc(it.date||'')}${it.kickoff_et?' · '+esc(it.kickoff_et)+' ET':''}</span>${it.group==='Final'?'<span class="fixg fg2">Final</span>':(it.group?`<span class="fixg">Group ${esc(it.group)}</span>`:'')}<button class="itrm" data-m="${esc(it.match)}">remove</button></div>
+    <h3 class="itm">${esc(it.match)}</h3>
+    <div class="itv">${esc(it.venue||'')} · ${esc(it.city||'')}${it.capacity?' · '+Number(it.capacity).toLocaleString()+' seats':''}</div>
+    <div class="itrows">${row('Getting there',esc(it.transit||'')+(it.rail_direct?' <em class="raild">Rail to the gate</em>':''))}${row('Fan festival',esc(it.festival))}${row('Weather',esc(it.weather))}${row('Save money',esc(it.saver))}${row('Good to know',esc(it.quirks))}</div></div>`).join('');
+  w.innerHTML=`<button class="tlink backb" id="backbrowse">← Back to all matches</button>
+    <div class="head2"><span class="eyebrow reveal">Your World Cup trip</span><h2 class="h1 reveal">${cities.length} cit${cities.length>1?'ies':'y'}, ${items.length} match${items.length>1?'es':''}.</h2><p class="lead reveal">Every detail below is built from verified venue, transit and city data. Want it stress-tested? Have the referee brief the whole trip.</p></div>
+    ${sum}
+    <div class="brief reveal"><button class="btn" id="briefBtn">Get Gaffer’s verified briefing</button><p class="briefhint">The agent writes a grounded plan, the referee grades it, and if it slips it coaches itself, live, right below.</p><div class="briefout" id="briefout"></div></div>
+    <div class="itinwrap">${itin}</div>`;
+  observeScreen('matches');
+  $('backbrowse').onclick=back;
+  w.querySelectorAll('.itrm').forEach(b=>b.onclick=()=>{toggleTrip(b.dataset.m);renderPlan();tickCd();});
+  $('briefBtn').onclick=()=>{const b=$('briefBtn');b.disabled=true;b.textContent='Briefing…';
+    const q='I am attending these FIFA World Cup 2026 matches: '+items.map(i=>i.match+' ('+(i.city||'')+', '+(i.date||'')+')').join('; ')+'. Give me a concise trip briefing: the smartest city-to-city order, how to reach each stadium, fan festivals worth catching, and what to watch for with heat and travel. Ground every detail in the verified records.';
+    runTurn(q,$('briefout'),false).then(()=>{b.disabled=false;b.textContent='Re-run briefing';});};}
 
 async function loadVenues(){try{const d=await (await fetch('/api/venues')).json();
   const grid=$('vgrid');grid.innerHTML='';d.venues.forEach((v,i)=>{const c=el(`<div class="vc${i===0?' feat':''}"><div class="city">${esc(v.city||'')}</div>${v.stage?`<div class="stage">${esc(v.stage)}</div>`:''}<div class="nm">${esc(v.name||'')}</div><div class="cap"><div class="n">${v.capacity?Number(v.capacity).toLocaleString():'n/a'}</div><div class="l">capacity</div></div></div>`);
