@@ -2,7 +2,7 @@
 
 **Title:** GAFFER, the World Cup concierge that referees itself
 
-**Tagline:** Everything for the World Cup. Nothing made up. A fan concierge whose coach is also an agent: every miss becomes a drill, every drill tests the next playbook, and nothing ships unless it beats the old one.
+**Tagline:** Everything for the World Cup. Nothing made up. The AI concierge that grounds every answer, referees itself, and coaches itself to be right, live in Arize Phoenix.
 
 **Track:** Arize
 **Live demo:** https://gaffer-734868402447.us-central1.run.app

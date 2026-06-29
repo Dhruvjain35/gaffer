@@ -2,3 +2,6 @@
 build/
 audio/
 clips/
+
+# raw SSE capture (regenerable)
+coach_session.sse

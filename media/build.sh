@@ -56,12 +56,13 @@ seg=0
 make_seg(){ # $1 still  $2 dur  $3 zoomdir
   seg=$((seg+1)); local img=$SH/$1.png; local d=$2; local zd=$3
   local frames=$(awk -v d=$d -v f=$FPS 'BEGIN{printf "%d", d*f}')
+  # VERY gentle zoom (range ~0.035) to minimise motion, and SUPERSAMPLE:
+  # zoompan renders at 3840x2160 (2x), then lanczos-downscale to 1080p so the
+  # integer pixel steps become sub-pixel = no shake/jitter.
   local zexpr
-  # on-based zoom (no drift). gentle 1.00 -> 1.09 over the clip.
-  if [ "$zd" = "out" ]; then zexpr="if(gt(1.09-0.00030*on,1.0),1.09-0.00030*on,1.0)"; else zexpr="min(1.001+0.00030*on,1.09)"; fi
-  # downscaled buffer (2304x1296) keeps zoompan fast while still supersampling 1080p
+  if [ "$zd" = "out" ]; then zexpr="if(gt(1.035-0.00018*on,1.0),1.035-0.00018*on,1.0)"; else zexpr="min(1.0+0.00018*on,1.035)"; fi
   $FF -y -loglevel error -i "$img" \
-    -filter_complex "[0:v]scale=2304:1296,setsar=1,zoompan=z='$zexpr':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=$frames:s=1920x1080:fps=$FPS,format=yuv420p[v]" \
+    -filter_complex "[0:v]setsar=1,zoompan=z='$zexpr':x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':d=$frames:s=3840x2160:fps=$FPS,scale=1920:1080:flags=lanczos,format=yuv420p[v]" \
     -map "[v]" -c:v libx264 -preset veryfast -crf 20 -pix_fmt yuv420p "$BU/seg_$(printf %02d $seg).mp4"
 }
 

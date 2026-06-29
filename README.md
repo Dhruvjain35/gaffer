@@ -1,31 +1,73 @@
-# ⚽ GAFFER — the concierge that coaches itself
+<div align="center">
 
-**A World Cup 2026 fan concierge that gets measurably better while you watch — because its coach is also an agent, and its film room is Arize Phoenix.**
+<img src="media/shots/home.png" alt="GAFFER · Everything for the World Cup. Nothing made up." width="100%">
 
-![GAFFER — THE PITCH and THE FILM ROOM](docs/media/hero.png)
+# ⚽ GAFFER
 
-**Live:** https://gaffer-734868402447.us-central1.run.app
+### Everything for the World Cup. Nothing made up.
 
-Built for the Google Cloud Rapid Agent Hackathon (Arize track). Submitted on opening day of the 2026 FIFA World Cup.
+**The AI concierge that grounds every answer, referees itself, and coaches itself to be right, live in Arize Phoenix.**
 
-## The idea
+[![Live demo](https://img.shields.io/badge/▶_Live_demo-gaffer.run.app-2f6b3f?style=for-the-badge)](https://gaffer-734868402447.us-central1.run.app)
+[![Watch the demo](https://img.shields.io/badge/Watch_the_90s_demo-▶-c0392b?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=ARjeNECEABY)
 
-Every agent ships with a flawed prompt. Most teams find out in production and patch by vibes. GAFFER closes the loop instead:
+![Google ADK](https://img.shields.io/badge/Google-ADK-34A853?logo=google&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini-3.5_·_2.5_Flash-4285F4?logo=googlegemini&logoColor=white)
+![Arize Phoenix](https://img.shields.io/badge/Arize-Phoenix-ff5a1f?logo=arize&logoColor=white)
+![Phoenix MCP](https://img.shields.io/badge/Phoenix-MCP_16_tools-6e44ff)
+![FastAPI](https://img.shields.io/badge/FastAPI-SSE-009688?logo=fastapi&logoColor=white)
+![Cloud Run](https://img.shields.io/badge/Cloud_Run-deployed-4285F4?logo=googlecloud&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-- **The Player** answers real fan questions (stadiums, schedules, policies, travel) — grounded in a verified knowledge base, traced end-to-end to Phoenix via OpenInference.
-- **The Referee** (Gemini LLM-as-judge) scores every single answer live — `GOAL` or `MISS` — and files the verdict as a span annotation on the exact trace.
-- **The Gaffer** (coach agent) reviews the game tape through the **Phoenix MCP server**: pulls failed traces, names the failure patterns, drills every miss into a regression dataset (`training-ground-wc26`), rewrites the playbook, and runs a **scrimmage** — two Phoenix experiments, old prompt vs new, scored by the Referee.
-- **Promotion is gated on evidence.** Only if the candidate playbook beats production does the Gaffer move the `production` tag. The Player pulls its prompt from Phoenix's registry by tag at session start — **Phoenix is the deployment mechanism**, not a dashboard.
+</div>
 
-No human in the loop. No redeploy. The next fan question runs on the improved playbook, and the regression dataset guarantees old failures stay fixed.
+> Built for the **Google Cloud Rapid Agent Hackathon · Arize track.** A FIFA World Cup 2026 fan concierge that gets measurably better while you watch, because its coach is also an agent and its film room is Arize Phoenix.
+
+---
+
+## The problem
+
+Any chatbot can tell you who is playing. Ask the questions that actually decide a World Cup trip, though, and it falls apart: *Can I get this bag through security? Which exact train reaches the gate? What ID do I need at the border?* A normal AI answers those instantly, fluently, and often wrong, and you only find out at the turnstile. Confidently wrong is the worst failure mode there is, because nobody double-checks an answer that sounds sure of itself.
+
+**GAFFER is built for exactly those questions, and it refuses to bluff.**
+
+<div align="center">
+<img src="media/shots/ask.png" alt="A grounded, sourced answer" width="88%">
+<br><em>A messy, multi-part question answered from verified records: exact rail route, the 4-hour Penn Station restriction, the $105 fare capped at 40,000 riders, the bag dimensions. Every fact carries its source.</em>
+</div>
+
+---
+
+## How it works: the loop
+
+GAFFER is two agents and a referee, wired into a closed self-improvement loop. The football framing is the architecture.
+
+**🥅 The Player** answers fan questions (stadiums, schedules, policies, travel), grounded in a verified knowledge base and traced end to end to Phoenix via OpenInference. Its tools return an explicit `NOT_FOUND` when a fact is not in the corpus, which is what lets the system tell *grounded* from *guessed*.
+
+**🟨 The Referee** is a Gemini LLM-as-judge that scores every single answer the moment it lands, `GOAL` or `MISS`, and files the verdict as a span annotation on that exact trace. Only concrete facts must be supported; honest hedging and labelled guidance pass.
+
+**📋 The Gaffer** is the coach. It reviews the game tape through the **Phoenix MCP server**: pulls failed traces, names the failure patterns, drills every miss into a regression dataset (`training-ground-wc26`), rewrites the playbook, and runs a **scrimmage**, two Phoenix experiments, old prompt vs new, scored by the Referee.
+
+**🏆 Promotion is gated on evidence.** The candidate playbook ships only if it beats production. The Player loads its prompt from the Phoenix registry by tag at session start, so **Phoenix is the deployment mechanism, not a dashboard.** No human in the loop. No redeploy. The next question runs on the improved playbook.
+
+<div align="center">
+
+| It grades itself | It rewrites itself | Only a winner ships |
+|:---:|:---:|:---:|
+| <img src="media/shots/loop_trace.png" width="100%"> | <img src="media/shots/loop_diff.png" width="100%"> | <img src="media/shots/loop_scrim.png" width="100%"> |
+| Referee scores every answer, traced in Phoenix | The coach edits its own prompt over Phoenix MCP | Paired experiments promote only on a proven win |
+
+</div>
+
+---
 
 ## Architecture
 
 ```
                          ┌────────────────────────────────────────────┐
-                         │              ARIZE PHOENIX                 │
-   OpenInference traces  │  traces · annotations · prompt registry    │
-      ┌─────────────────▶│  datasets · experiments                    │
+                         │              ARIZE PHOENIX                  │
+   OpenInference traces  │  traces · annotations · prompt registry     │
+      ┌─────────────────▶│  datasets · experiments                     │
       │                  └───────┬───────────────────▲────────────────┘
       │                          │ prompt by tag      │ MCP (16 tools)
       │                          ▼ "production"       │
@@ -35,23 +77,41 @@ No human in the loop. No redeploy. The next fan question runs on the improved pl
 └────────────┘   answers   │ Gemini   │         │  Gemini    │
       ▲                    └────┬─────┘         └─────┬──────┘
       │ GOAL/MISS verdict       │ every answer        │ run_scrimmage()
-┌─────┴──────┐                  ▼                     ▼
-│  REFEREE   │◀────────  span annotation     Phoenix experiments:
-│ LLM-as-judge│                              current vs candidate
-└────────────┘                               → promote only if better
+┌─────┴───────┐                 ▼                     ▼
+│   REFEREE   │◀────────  span annotation     Phoenix experiments:
+│ LLM-as-judge│                               current vs candidate
+└─────────────┘                               → promote only if better
 ```
 
-**Stack:** Google ADK (Agent Development Kit) · Gemini 3.5 Flash on Vertex AI · Arize Phoenix Cloud (tracing via `arize-phoenix-otel` + OpenInference, prompt registry, datasets, experiments) · official `@arizeai/phoenix-mcp` server (stdio) · FastAPI + SSE · Cloud Run.
+The Arize loop, proven on the live workspace: in one coaching session the scrimmage scored the old playbook **0.38** and the coached one **0.60** over the regression set, a **58% relative lift**. Questions that scored `MISS 0.00` in the morning (stadium rail access, Houston weather, power-bank rules) score `GOAL 1.00` now. The registry holds **13 playbook versions**, and every `production` tag was moved by the Gaffer itself after a winning experiment.
 
-## The knowledge base
+---
 
-`data/*.json` — 16 venues, all 48 teams and groups, opening-week fixtures, FIFA fan policies (bag rules, re-entry, ticketing, visas), fan festivals, weather and transit. Researched and verified from primary sources on 2026-06-11; every source cited in [`data/sources.md`](data/sources.md). The corpus doubles as eval ground truth: the tools return an explicit `NOT_FOUND` so the Referee can tell *grounded* from *guessed*.
+## The trip planner
+
+Beyond chat, GAFFER plans a whole trip. Add the matches you want to catch and it builds one grounded itinerary, venue, transit to the gate, fan festival, and weather per fixture, with anything uncertain clearly flagged. Then hand it to the Referee to stress-test, live.
+
+<div align="center">
+<img src="media/shots/matches_plan.png" alt="A grounded multi-city trip plan" width="88%">
+</div>
+
+---
+
+## Stack
+
+| Layer | What |
+|---|---|
+| **Agents** | Google ADK · Gemini 3.5 Flash (Player) + Gemini 2.5 Flash (Referee) on Vertex AI |
+| **Observability + control loop** | Arize Phoenix Cloud: `arize-phoenix-otel` + OpenInference tracing, span annotations, prompt registry, datasets, experiments |
+| **Coach's hands** | official `@arizeai/phoenix-mcp` server (stdio, 16 tools) via ADK `McpToolset` |
+| **Serving** | FastAPI + Server-Sent Events · single-container Cloud Run (Python agents + Node for the MCP server) |
+| **Knowledge base** | 16 venues, all 48 teams and groups, opening-week fixtures, FIFA fan policies, festivals, weather, transit. Verified from primary sources, every source cited in [`data/sources.md`](data/sources.md) |
+
+---
 
 ## Run it
 
-Prerequisites: Python 3.11+ with [uv](https://docs.astral.sh/uv/), **Node.js 18+** (the Gaffer
-spawns the Phoenix MCP server via `npx`), a GCP project with Vertex AI enabled
-(`gcloud auth application-default login`), and a free [Phoenix Cloud](https://app.phoenix.arize.com) account.
+Prerequisites: Python 3.11+ with [uv](https://docs.astral.sh/uv/), **Node.js 18+** (the Gaffer spawns the Phoenix MCP server via `npx`), a GCP project with Vertex AI enabled (`gcloud auth application-default login`), and a free [Phoenix Cloud](https://app.phoenix.arize.com) account.
 
 ```bash
 uv sync
@@ -60,44 +120,32 @@ uv run python -m scripts.seed_playbook   # playbook v1 → Phoenix, tagged "prod
 make dev                   # http://localhost:8080
 ```
 
-> Note: `openai`/`anthropic` appear in `uv.lock` only as unused transitive dependencies of
-> `arize-phoenix` itself. The runtime calls Google models exclusively (Gemini on Vertex AI).
+Ask questions on **THE PITCH**. Watch verdicts land. Then hit **▸ COACHING SESSION** and watch the Gaffer work the film room, every Phoenix MCP call streaming live. Deploy with `make deploy`.
 
-Ask questions on **THE PITCH**. Watch verdicts land. Then hit **▸ COACHING SESSION** and watch the Gaffer work the film room — every Phoenix MCP call streams live.
-
-Deploy: `make deploy` (Cloud Run, single container: Python agents + Node for the MCP server).
-
-## For judges: the two-minute live tour
-
-The deployed playbook has already been coached, so most questions score GOAL. To watch the
-full loop fire live:
-
-1. Open the [live app](https://gaffer-734868402447.us-central1.run.app) and try to beat the
-   Player: ask about something outside its knowledge base ("What accessibility services do the
-   stadiums offer?") or smuggle in a wrong premise ("What time does the Netherlands vs Japan
-   opening match start?"). If the Referee files a red MISS, you have coaching material. If
-   everything scores GOAL, that is the coached playbook holding up; the
-   [demo video](https://www.youtube.com/watch?v=ARjeNECEABY) shows the full failure arc from
-   the rookie playbook.
-2. Click **▸ COACHING SESSION**. A full session runs three to six minutes: the Gaffer pulls
-   the tape over Phoenix MCP, drills your miss into `training-ground-wc26`, rewrites the
-   playbook, scrimmages old against new (two Phoenix experiments, judge scored), and promotes
-   only on a win. The promotion banner is the payoff.
-3. Re-ask your question. The playbook chip in the header shows the new version, served from
-   the Phoenix prompt registry by tag. No redeploy happened.
-
-The [demo video](https://www.youtube.com/watch?v=ARjeNECEABY) shows the same arc in 2:24 if
-you prefer to watch one we ran on opening day.
-
-## Why this matters beyond football
-
-Swap the corpus and the Player becomes any customer-facing agent. The loop — *trace → judge → drill → rewrite → experiment → gated promotion* — is how production agents should ship prompt changes: like code, through CI. We just made the CI an agent too.
-
-## License
-
-MIT
+> `openai`/`anthropic` appear in `uv.lock` only as unused transitive dependencies of `arize-phoenix`. The runtime calls Google models exclusively (Gemini on Vertex AI).
 
 ---
 
-*Fan-made demo for the Google Cloud Rapid Agent Hackathon. Not affiliated with, sponsored or
-endorsed by FIFA. World Cup data compiled from public sources cited in `data/sources.md`.*
+## For judges: the two-minute tour
+
+The deployed playbook has already been coached, so most questions score `GOAL`. To watch the full loop fire live:
+
+1. Open the [**live app**](https://gaffer-734868402447.us-central1.run.app) and try to beat the Player. Ask something operational and specific, or smuggle in a wrong premise (*"What time does the Netherlands vs Japan opening match start?"*). If the Referee files a red `MISS`, you have coaching material.
+2. Click **▸ COACHING SESSION**. The Gaffer pulls the tape over Phoenix MCP, drills your miss into `training-ground-wc26`, rewrites the playbook, scrimmages old against new (two Phoenix experiments, judge scored), and promotes only on a win. The promotion banner is the payoff.
+3. Re-ask your question. The playbook chip in the header shows the new version, served from the Phoenix registry by tag. **No redeploy happened.**
+
+---
+
+## Why this matters beyond football
+
+Swap the corpus and the Player becomes any customer-facing agent. The loop, *trace → judge → drill → rewrite → experiment → gated promotion*, is how production agents should ship prompt changes: like code, through CI. We just made the CI an agent too.
+
+---
+
+<div align="center">
+
+**[⚽ Try GAFFER](https://gaffer-734868402447.us-central1.run.app)** · MIT licensed
+
+<sub>Fan-made for the Google Cloud Rapid Agent Hackathon. Not affiliated with, sponsored, or endorsed by FIFA. World Cup data compiled from public sources cited in <a href="data/sources.md"><code>data/sources.md</code></a>.</sub>
+
+</div>
