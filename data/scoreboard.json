@@ -1,0 +1,209 @@
+{
+  "dataset": "training-ground-wc26",
+  "examples": 11,
+  "experiments_total": 44,
+  "rounds": [
+    {
+      "date": "2026-06-11T08:32",
+      "current": 0.2,
+      "candidate": 0.175,
+      "delta": -0.025,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoz",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo0"
+    },
+    {
+      "date": "2026-06-11T08:36",
+      "current": 0.3,
+      "candidate": 0.4,
+      "delta": 0.1,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo2",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo1"
+    },
+    {
+      "date": "2026-06-11T08:43",
+      "current": 0.2,
+      "candidate": 0.25,
+      "delta": 0.05,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo3",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo4"
+    },
+    {
+      "date": "2026-06-11T09:45",
+      "current": 0.38,
+      "candidate": 0.6,
+      "delta": 0.22,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo5",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxMA=="
+    },
+    {
+      "date": "2026-06-11T15:48",
+      "current": 0.6,
+      "candidate": 0.458,
+      "delta": -0.142,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxMQ==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxMg=="
+    },
+    {
+      "date": "2026-06-11T15:51",
+      "current": 0.567,
+      "candidate": 0.692,
+      "delta": 0.125,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxMw==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxNA=="
+    },
+    {
+      "date": "2026-06-11T16:26",
+      "current": 0.486,
+      "candidate": 0.629,
+      "delta": 0.143,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxNQ==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxNg=="
+    },
+    {
+      "date": "2026-06-11T16:43",
+      "current": 0.55,
+      "candidate": 0.514,
+      "delta": -0.036,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxNw==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxOA=="
+    },
+    {
+      "date": "2026-06-11T16:46",
+      "current": 0.497,
+      "candidate": 0.529,
+      "delta": 0.032,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoxOQ==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyMA=="
+    },
+    {
+      "date": "2026-06-11T17:08",
+      "current": 0.362,
+      "candidate": 0.463,
+      "delta": 0.101,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyMg==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyMQ=="
+    },
+    {
+      "date": "2026-06-11T19:16",
+      "current": 0.428,
+      "candidate": 0.622,
+      "delta": 0.194,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyMw==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyNA=="
+    },
+    {
+      "date": "2026-06-11T19:41",
+      "current": 0.69,
+      "candidate": 0.59,
+      "delta": -0.1,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyNQ==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyNg=="
+    },
+    {
+      "date": "2026-06-11T20:10",
+      "current": 0.675,
+      "candidate": 0.588,
+      "delta": -0.087,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyNw==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyOA=="
+    },
+    {
+      "date": "2026-06-14T18:01",
+      "current": 0.571,
+      "candidate": 0.636,
+      "delta": 0.065,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDoyOQ==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozMA=="
+    },
+    {
+      "date": "2026-06-14T19:55",
+      "current": 0.863,
+      "candidate": 0.669,
+      "delta": -0.194,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozMg==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozMQ=="
+    },
+    {
+      "date": "2026-06-14T20:00",
+      "current": 0.8,
+      "candidate": 0.781,
+      "delta": -0.019,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozMw==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozNA=="
+    },
+    {
+      "date": "2026-06-14T20:03",
+      "current": 0.863,
+      "candidate": 0.894,
+      "delta": 0.031,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozNQ==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozNg=="
+    },
+    {
+      "date": "2026-06-15T16:04",
+      "current": 0.969,
+      "candidate": 0.781,
+      "delta": -0.188,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozNw==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozOA=="
+    },
+    {
+      "date": "2026-06-15T16:14",
+      "current": 0.981,
+      "candidate": 0.988,
+      "delta": 0.007,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo0MA==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDozOQ=="
+    },
+    {
+      "date": "2026-06-15T16:23",
+      "current": 0.863,
+      "candidate": 0.969,
+      "delta": 0.106,
+      "promoted": true,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo0Mg==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo0MQ=="
+    },
+    {
+      "date": "2026-06-29T20:38",
+      "current": 0.95,
+      "candidate": 0.7,
+      "delta": -0.25,
+      "promoted": false,
+      "current_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo0NA==",
+      "candidate_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/compare?experimentId=RXhwZXJpbWVudDo0Mw=="
+    }
+  ],
+  "n_rounds": 21,
+  "promotions": 12,
+  "refusals": 9,
+  "production_score": 0.95,
+  "first_score": 0.2,
+  "best_score": 0.981,
+  "prompt_versions": 25,
+  "goal_count": 0,
+  "miss_count": 0,
+  "live_avg": null,
+  "dataset_url": "https://app.phoenix.arize.com/s/dhruvhydrox/datasets/RGF0YXNldDoy/experiments",
+  "prompts_url": "https://app.phoenix.arize.com/s/dhruvhydrox/prompts",
+  "project_url": "https://app.phoenix.arize.com/s/dhruvhydrox/projects"
+}

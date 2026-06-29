@@ -46,6 +46,17 @@ def _sse(payload: dict) -> str:
     return f"data: {json.dumps(payload, ensure_ascii=False)}\n\n"
 
 
+# ---- Phoenix deep links: project ids are stable, env-overridable ----
+PHX_BASE = os.environ.get("PHOENIX_COLLECTOR_ENDPOINT", "").rstrip("/")
+PHX_PITCH_PROJECT = os.environ.get("PHOENIX_PITCH_PROJECT_ID", "UHJvamVjdDoxNA==")  # gaffer-pitch
+
+
+def _trace_url(trace_id):
+    if not (PHX_BASE and trace_id and PHX_PITCH_PROJECT):
+        return None
+    return f"{PHX_BASE}/projects/{PHX_PITCH_PROJECT}/traces/{trace_id}"
+
+
 def _gaffer():
     global _gaffer_runner
     if _gaffer_runner is None:
@@ -210,6 +221,7 @@ async def chat(request: Request):
                 **grounding,
                 "record": _record_summary(),
                 "trace_id": span["trace_id"] if span else None,
+                "trace_url": _trace_url(span["trace_id"] if span else None),
                 "annotated": annotated,
                 "model": os.environ.get("GEMINI_MODEL", "gemini-3.5-flash"),
                 "latency_ms": int((time.monotonic() - t0) * 1000),
@@ -276,6 +288,7 @@ async def chat(request: Request):
                         "type": "eval", "revision": True, **verdict2, **grounding2,
                         "record": _record_summary(),
                         "trace_id": span2["trace_id"] if span2 else None,
+                        "trace_url": _trace_url(span2["trace_id"] if span2 else None),
                         "annotated": ann2,
                         "model": os.environ.get("GEMINI_MODEL", "gemini-3.5-flash"),
                         "latency_ms": int((time.monotonic() - t1) * 1000),
@@ -542,6 +555,35 @@ async def team_plan(name: str = ""):
         "final": {"date": sched.get("final", {}).get("date"), "venue": (sched.get("final", {}).get("venue") or "").split(" (")[0], "city": sched.get("final", {}).get("city")},
         "note": "Group fixtures beyond matchday 1 and knockout pairings are set after the draw / group stage.",
     }
+
+
+@app.get("/api/scoreboard")
+async def scoreboard():
+    """Baked snapshot of the real Arize Phoenix evidence: every scrimmage round,
+    promotions vs refusals, the climb from 0.20 to production. Snapshotted so the
+    proof always renders fast and offline. Refresh: uv run python -m scripts.snapshot_phoenix"""
+    return _load_json("scoreboard")
+
+
+@app.get("/api/coach/replay")
+async def coach_replay():
+    """Deterministic replay of a verified coaching session, real Phoenix MCP calls,
+    a real scrimmage, a real REFUSAL. The live session depends on Phoenix being up;
+    this guarantees the payoff always plays for judges even when Phoenix is flaky."""
+    path = ROOT / "data" / "coach_replay.sse"
+
+    async def gen():
+        if not path.exists():
+            yield _sse({"type": "error", "message": "no verified replay available"})
+            return
+        for line in path.read_text().splitlines():
+            line = line.strip()
+            if not line.startswith("data:"):
+                continue
+            yield line + "\n\n"
+            await asyncio.sleep(0.4)
+
+    return StreamingResponse(gen(), media_type="text/event-stream")
 
 
 @app.get("/")

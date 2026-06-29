@@ -5,3 +5,6 @@ clips/
 
 # raw SSE capture (regenerable)
 coach_session.sse
+
+# raw session captures
+*.sse

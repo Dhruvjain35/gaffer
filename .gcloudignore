@@ -1,0 +1,13 @@
+# Keep the Cloud Build context lean. The Dockerfile only COPYs
+# agent/ server/ web/ data/ pyproject.toml, so everything else is dead weight.
+.venv/
+.git/
+media/
+docs/
+scripts/
+__pycache__/
+**/__pycache__/
+*.pyc
+.DS_Store
+.pptr/
+*.mp4

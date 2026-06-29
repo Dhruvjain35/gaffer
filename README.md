@@ -83,7 +83,23 @@ GAFFER is two agents and a referee, wired into a closed self-improvement loop. T
 └─────────────┘                               → promote only if better
 ```
 
-The Arize loop, proven on the live workspace: in one coaching session the scrimmage scored the old playbook **0.38** and the coached one **0.60** over the regression set, a **58% relative lift**. Questions that scored `MISS 0.00` in the morning (stadium rail access, Houston weather, power-bank rules) score `GOAL 1.00` now. The registry holds **13 playbook versions**, and every `production` tag was moved by the Gaffer itself after a winning experiment.
+## Proof: the loop, in Arize Phoenix
+
+Most self-improving agents hand-wave quality. GAFFER's is auditable, and surfaced live in the app's [**Scoreboard**](https://gaffer-734868402447.us-central1.run.app/#proof). Everything here is real, pulled from the Phoenix workspace this app writes to:
+
+- **21 scrimmage rounds. 12 promotions, 9 refusals.** The agent climbed from a referee score of **0.20 to 0.95** on the held-out regression set, promoting candidates only when they beat production and refusing the rest, including the most recent round (production `0.95` beat a `0.70` candidate, no promotion).
+- **44 experiments, 25 playbook versions**, every `production` tag moved by the Gaffer itself after a winning experiment. Questions that scored `MISS 0.00` early (stadium rail access, Houston weather, power-bank rules) score `GOAL 1.00` now.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/media/phoenix/04-experiments-curve.png" alt="44 experiments climbing"><br><sub><b>44 experiments, climbing.</b> Referee score per scrimmage on <code>training-ground-wc26</code>, round over round.</sub></td>
+<td width="50%"><img src="docs/media/phoenix/06-prompt-registry-versions.png" alt="25 playbook versions"><br><sub><b>25 playbook versions.</b> The Phoenix prompt registry; v25 carries the <code>production</code> tag the Player loads at session start.</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src="docs/media/phoenix/01-trace-waterfall-annotation.png" alt="referee annotation on a trace"><br><sub><b>The referee, on the trace.</b> Every answer is a span; the referee files a GOAL/MISS annotation with a score and explanation.</sub></td>
+<td width="50%"><img src="docs/media/phoenix/08-project-spans-goalmiss.png" alt="GOAL/MISS across live traces"><br><sub><b>Graded live.</b> Real GOAL/MISS scores across the Player's production traces, from μ1.00 down to μ0.20.</sub></td>
+</tr>
+</table>
 
 ---
 
