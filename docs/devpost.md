@@ -1,49 +1,62 @@
 # Devpost submission: GAFFER
 
-**Title:** GAFFER, the World Cup concierge that coaches itself
+**Title:** GAFFER, the World Cup concierge that referees itself
 
-**Tagline:** A fan concierge whose coach is also an agent. Every miss becomes a drill, every drill tests the next playbook, and nothing ships unless it beats the old one.
+**Tagline:** Everything for the World Cup. Nothing made up. A fan concierge whose coach is also an agent: every miss becomes a drill, every drill tests the next playbook, and nothing ships unless it beats the old one.
+
+**Track:** Arize
+**Live demo:** https://gaffer-734868402447.us-central1.run.app
 
 ## Inspiration
 
-The World Cup started this morning. 104 matches, 16 stadiums, three countries, and FIFA changed its water bottle policy eight days ago. An agent that answers bag policy questions from its training data instead of current rules will get a real person turned away at a stadium gate.
+For most fans the World Cup is a once-in-a-lifetime trip. They book flights, cross borders, and plan around kickoff times based on whatever an AI tells them. So we asked a few popular assistants real questions: when is the final, can I bring a water bottle into the stadium, what visa do I need. They answered instantly, fluently, and often completely wrong. Confidently wrong is the worst failure mode there is, because nobody double-checks an answer that sounds sure of itself. And the facts move: 104 matches, 16 stadiums, three countries, and FIFA can change its bag policy a week before kickoff. An agent that answers from training data instead of current, cited records gets a real person turned away at a stadium gate.
 
-I kept thinking about what happens after that bad answer. Someone reads a trace, guesses at a prompt fix, ships it, and hopes. I wanted to see whether the agent could run that loop itself, with evidence at every step, using Phoenix as the machinery rather than just the dashboard.
+We did not want one more chatbot that sounds right. We wanted one that can prove it is right, and that fixes itself when it is not. The Arize track was the perfect forcing function: it rewards agents that use their own observability data to improve. That is exactly the loop a trustworthy concierge needs.
 
 ## What it does
 
-The Player is the concierge. It answers fan questions about venues, fixtures, policies and travel, grounded in a knowledge base I verified against primary sources this morning. Google ADK runs it on gemini-3.5-flash, and OpenInference traces every turn to Phoenix Cloud.
+GAFFER answers fan questions about the World Cup: stadiums and how to reach them, the schedule, teams and groups, ticketing and IDs, bag and re-entry policies, fan festivals, weather, and city transit. Three things make it different.
 
-The Referee is a second Gemini model that scores each answer the moment it lands: GOAL if every claim is supported by the tool evidence, MISS if anything came from memory. The verdict is written to Phoenix as a span annotation on that exact trace.
+1. **It grounds every claim.** The Player agent only answers from a verified knowledge base and cites the exact records it used. Every concrete fact, a date, a venue, a capacity, a price, a rule, is traceable to a source. Anything outside the records is honestly labelled, not invented.
 
-The Gaffer is the coach. When you start a coaching session, it works Arize's Phoenix MCP server live: pulls recent traces and their referee annotations, quotes the failures, writes each one into a regression dataset called training-ground-wc26, fetches the current playbook from the prompt registry, and rewrites it. Then comes the part I care most about. It refuses to trust its own rewrite. It runs two Phoenix experiments, old playbook against new across the whole drill set, referee scoring both sides. Only a winner gets the production tag.
+2. **It shows its work in Arize Phoenix.** Every answer is traced end to end with OpenInference. The interface surfaces a live grounding score, the cited sources, and a one-click link that opens the full reasoning trace in Phoenix. Observability is not a back-office dashboard here, it is a feature fans can see.
 
-The Player reads its instruction from that tag at session start. So the promotion is the deployment. Ask the failed question again two minutes later and you watch the scoreboard change.
+3. **It coaches itself.** A Referee agent scores every answer GOAL or MISS and files the verdict as a span annotation on that exact trace. When an answer misses, GAFFER re-answers on the spot using only verified evidence, and banks the failure for the coach. The Gaffer reads the game tape through the Phoenix MCP server, drills every miss into a regression dataset, rewrites the Player's prompt, and runs a scrimmage: two Phoenix experiments, old prompt versus new, scored by the Referee. The new prompt is promoted to production only if the data proves it wins. The Player loads its prompt from the Phoenix registry by tag, so the very next question runs on the improved playbook with no redeploy.
 
-## How I built it
+On top of the chat, GAFFER has an interactive trip planner. Add the matches you want to catch and it builds one grounded itinerary: venue, transit to the gate, fan festival, and weather for each fixture, with anything uncertain clearly marked. You can then ask the agent to stress-test the whole plan and watch the Referee grade it live.
 
-Python ADK agents on Vertex AI, with the Referee on gemini-2.5-flash so scrimmage bursts draw from a separate quota pool. A custom OTel span processor pins each verdict to the right root span. The Gaffer holds 16 Phoenix MCP tools through ADK's McpToolset over stdio. FastAPI streams both agents' tool calls to the browser over SSE, one container on Cloud Run with Node inside for the MCP server.
+## How we built it
 
-## Challenges
+Two Google ADK agents on Gemini. The Player runs Gemini 3.5 Flash on Vertex AI and calls knowledge-base tools that return an explicit `NOT_FOUND` when a fact is not in the corpus, which is what lets the system tell grounded from guessed. The Gaffer is a second ADK agent that holds 16 Phoenix MCP tools through ADK's McpToolset over stdio, so it inspects traces, manages datasets and experiments, and moves prompt tags.
 
-The honest list. My span recorder silently replaced Phoenix's exporter (replace_default_processor defaults to true), so for an hour the annotations pointed at spans that never arrived. The coach once read traces of its own previous sessions, which contain trace dumps, and blew through Gemini's million token context; each agent now traces to its own Phoenix project. A 1 GiB container OOMed when the Gaffer pulled fifty traces in one MCP call. And the MCP upsert tool slugs prompt names, which broke the registry chain until I renamed the prompt to match.
+The Referee is an LLM-as-judge on Gemini 2.5 Flash, on a separate quota pool so a burst of scrimmage evaluations never starves the Player. It scores honesty against the retrieved evidence: only concrete facts must be supported, while guidance and itineraries are fine as long as anything uncertain is labelled. A custom OTel span processor pins each verdict to the right root span, written back to Phoenix as a span annotation.
 
-## Accomplishments
+Arize Phoenix Cloud is the spine. Traces and annotations via `arize-phoenix-otel` and OpenInference; the prompt registry holds every playbook version; datasets hold the regression set; experiments run the scrimmages. The registry is also the deployment mechanism: promotion is a tag move, and the Player reads its prompt by tag at session start. Shipping a prompt change is a gated experiment, not a code push. Beyond the full offline coaching session, every chat turn judges itself in real time and, on a MISS, runs an escalating correction loop that re-answers strictly from tool evidence and re-judges, so a fan never leaves with an unverified claim presented as fact.
 
-Numbers from my Phoenix workspace, reproducible there: the scrimmage scored the old playbook 0.38 and the coached one 0.60 over the regression set, a 58 percent relative improvement in a single session. Questions that scored MISS 0.00 in the morning (stadium rail access, Houston weather, power bank rules) score GOAL 1.00 now. The registry holds 13 playbook versions, and every production tag was moved by the Gaffer itself after a winning experiment.
+FastAPI streams both agents over Server-Sent Events so you watch tool calls, the answer, the verdict, and the coaching land token by token. The whole thing, Python agents plus the Node MCP server, ships as one container on Cloud Run. The corpus in `data/*.json` covers 16 host venues, all 48 teams and groups, opening-week fixtures, FIFA fan policies, festivals, weather, and transit, verified from primary sources and fully cited. The same corpus doubles as eval ground truth.
 
-## What I learned
+## Challenges we ran into
 
-An eval is a report card until it can gate a deployment. Wired to a prompt registry and an experiment runner, it becomes the deployment pipeline. Phoenix's MCP server is what makes that possible for an agent rather than a human: observability stops being something you read and becomes something the system acts on.
+Making the coaching reliable, not just demoable, was the hard part. Early on a MISS would sometimes be re-answered with a different but still unverified claim, the one thing a trust product cannot do. We fixed it from both ends: we refined the Referee so honest hedging and labelled guidance count as a GOAL while invented specifics count as a MISS, and we turned the single re-answer into an escalating correction loop that ends, in the worst case, with the Player stating only what its tools returned and pointing the fan to official sources. It now converges to an honest answer in every case we tested, which is why fresh questions tend to pass on the first try in the live demo.
 
-## What's next
+The honest infrastructure list, too. Our span recorder silently replaced Phoenix's exporter, so for an hour the annotations pointed at spans that never arrived. The coach once read traces of its own previous sessions, which contain trace dumps, and blew through Gemini's context window, so each agent now traces to its own Phoenix project. A 1 GiB container OOMed when the Gaffer pulled fifty traces in one MCP call. And the MCP upsert tool slugs prompt names, which broke the registry chain until we renamed the prompt to match.
 
-Coaching sessions triggered by MISS rate instead of a button. Human override through Phoenix annotation configs. Per failure mode playbook branches behind Phoenix A/B experiments.
+## Accomplishments we are proud of
+
+Numbers from our Phoenix workspace, reproducible there: in a single coaching session the scrimmage scored the old playbook 0.38 and the coached one 0.60 over the regression set, a 58 percent relative improvement. Questions that scored MISS 0.00 in the morning, stadium rail access, Houston weather, power bank rules, score GOAL 1.00 now. The registry holds 13 playbook versions, and every production tag was moved by the Gaffer itself after a winning experiment. The loop is genuinely closed: trace, judge, drill, rewrite, experiment, gated promotion, with no human in the loop and no redeploy. And we turned observability into something a fan can see: grounding, sources, and a real trace link on every answer.
+
+## What we learned
+
+An eval is a report card until it can gate a deployment. Wired to a prompt registry and an experiment runner, it becomes the deployment pipeline. Tracing is most valuable when it feeds back into the agent: the moment the Referee started writing verdicts onto traces and the coach started reading them, Phoenix stopped being a place we looked at after the fact and became part of the control loop. We also learned that the trustworthy answer is often the one that admits what it does not know, and that an evaluator has to be taught the difference between an unverified fact and honest guidance, or it will punish exactly the humility you want.
+
+## What is next
+
+Coaching sessions triggered by MISS rate instead of a button. Multi-armed coaching, where the Gaffer tests several candidate prompts per scrimmage and keeps the Pareto winner. The full 104-match schedule and live operational data such as gate times and transit alerts. Per-trace deep links and a public, read-only Phoenix view so anyone can audit a specific answer.
+
+## Built with
+
+google-adk, gemini-3.5-flash, gemini-2.5-flash, vertex-ai, arize-phoenix, openinference, phoenix-mcp, mcp, fastapi, server-sent-events, python, nodejs, docker, google-cloud-run
 
 ---
 
-**Track:** Arize
-**Try it:** https://gaffer-734868402447.us-central1.run.app
-**Data sources:** FIFA.com, host city transit authorities, official venue sites, US State Department. Every fact cited in data/sources.md in the repo.
-**Built with:** google-adk, gemini, vertex-ai, cloud-run, arize-phoenix, mcp, openinference, fastapi, python
-**Disclaimer:** Fan-made demo. Not affiliated with or endorsed by FIFA.
+*Fan-made for the Google Cloud Rapid Agent Hackathon. Not affiliated with, sponsored, or endorsed by FIFA. World Cup data compiled from public sources cited in `data/sources.md`.*
