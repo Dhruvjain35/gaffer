@@ -1,8 +1,8 @@
 # Devpost submission: GAFFER
 
-**Title:** GAFFER, the World Cup concierge that referees itself
+**Title:** GAFFER, the agent that catches and fixes its own lies
 
-**Tagline:** Everything for the World Cup. Nothing made up. The AI concierge that grounds every answer, referees itself, and coaches itself to be right, live in Arize Phoenix.
+**Tagline:** An AI agent that catches and fixes its own lies, live: it referees every answer in Arize Phoenix, coaches itself when it slips, and we even graded the grader. Its use case is the World Cup.
 
 **Track:** Arize
 **Live demo:** https://gaffer-734868402447.us-central1.run.app
@@ -15,7 +15,9 @@ We did not want one more chatbot that sounds right. We wanted one that can prove
 
 ## What it does
 
-GAFFER answers fan questions about the World Cup: stadiums and how to reach them, the schedule, teams and groups, ticketing and IDs, bag and re-entry policies, fan festivals, weather, and city transit. Three things make it different.
+Most demos ask you to trust the agent. GAFFER lets you break it. Click "inject a hallucination" and watch its own referee stamp the answer false in red, then watch the agent re-answer from verified records and turn green, GOAL, in about ten seconds. That live self-correction, plus the fact that we then **graded the grader** (we wrote 22 fabrications to fool the referee, and it caught all 22, including the subtle ones), is what sets GAFFER apart in a field where "an agent that grades itself" has become table-stakes.
+
+Underneath, it is a World Cup concierge. It answers fan questions about the tournament: stadiums and how to reach them, the schedule, teams and groups, ticketing and IDs, bag and re-entry policies, fan festivals, weather, and city transit. Three things make it different.
 
 1. **It grounds every claim.** The Player agent only answers from a verified knowledge base and cites the exact records it used. Every concrete fact, a date, a venue, a capacity, a price, a rule, is traceable to a source. Anything outside the records is honestly labelled, not invented.
 

@@ -462,7 +462,7 @@ footer{border-top:1px solid var(--border-2)}
         <span class="eyebrow">Ask Gaffer</span>
         <h2 class="h2">Ask anything. The referee checks every answer before you see it.</h2>
         <div class="suggest" id="suggest"></div>
-        <div class="challenge"><b>⚔ Try to beat the referee.</b> Ask it something it can’t verify, or smuggle in a wrong premise, a fake fixture, a made-up rule. If GAFFER bluffs, the referee catches it on the spot: every answer is graded GOAL or MISS and traced in Arize Phoenix, and you can open the trace.</div>
+        <div class="challenge"><b>Try to beat the referee.</b> Ask it something it can’t verify, or smuggle in a wrong premise, a fake fixture, a made-up rule. If GAFFER bluffs, the referee catches it on the spot: every answer is graded GOAL or MISS and traced in Arize Phoenix, and you can open the trace.</div>
       </div>
     </div></div>
     <div class="composer">
@@ -647,7 +647,7 @@ footer{border-top:1px solid var(--border-2)}
     <div class="sb-panel reveal" id="stressPanel">
       <h3>Break it on purpose.</h3>
       <p class="sub">Don’t take the green numbers on faith. Inject a hallucinated answer and watch the referee catch it live, in red, then watch GAFFER re-answer from verified records. Both verdicts below are real Arize Phoenix judge calls, made on the spot.</p>
-      <button class="btn" id="stressBtn">⚡ Inject a hallucination</button>
+      <button class="btn" id="stressBtn">Inject a hallucination</button>
       <div class="stress-out" id="stressOut"></div>
     </div>
     <div class="sb-panel reveal" id="honestyPanel" style="display:none">
@@ -1034,7 +1034,7 @@ function wireStress(){const btn=$('stressBtn');if(!btn||btn._wired)return;btn._w
         if(ev.type==='done')_stressI=ev.next||0;
       });
     }catch(e){add(`<div class="st-v miss"><span class="st-ex">${esc(e.message)}</span></div>`);}
-    btn.disabled=false;btn.textContent='⚡ Inject another hallucination';};
+    btn.disabled=false;btn.textContent='Inject another hallucination';};
 }
 let _honLoaded=false;
 async function loadHonesty(){if(_honLoaded)return;_honLoaded=true;

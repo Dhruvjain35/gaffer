@@ -4,9 +4,9 @@
 
 # ⚽ GAFFER
 
-### Everything for the World Cup. Nothing made up.
+### The agent that catches and fixes its own lies.
 
-**The AI concierge that grounds every answer, referees itself, and coaches itself to be right, live in Arize Phoenix.**
+**It referees every answer GOAL or MISS in Arize Phoenix, coaches itself when it slips, and proves it, we even graded the grader. Its use case: the World Cup. Everything for the tournament, nothing made up.**
 
 [![Live demo](https://img.shields.io/badge/▶_Live_demo-gaffer.run.app-2f6b3f?style=for-the-badge)](https://gaffer-734868402447.us-central1.run.app)
 [![Watch the demo](https://img.shields.io/badge/Watch_the_90s_demo-▶-c0392b?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=ARjeNECEABY)

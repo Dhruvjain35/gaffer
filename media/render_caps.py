@@ -14,15 +14,14 @@ PAD = 0.45
 # each caption = list of lines; each line = list of (text, color)
 W_, G_ = "w", "g"
 CAPS = [
-    [[("Most AI is ", W_), ("confidently wrong", G_)]],
-    [[("Everything", G_), (" for the World Cup.", W_)], [("Nothing", G_), (" made up.", W_)]],
-    [[("Every fact has a ", W_), ("source", G_)]],
-    [[("Traced live in ", W_), ("Arize Phoenix", G_)]],
-    [[("It ", W_), ("referees itself", G_)]],
-    [[("Coaches itself:  ", W_), ("MISS", G_), ("__ARROW__", W_), ("GOAL", G_)]],
-    [[("Promoted only when ", W_), ("data proves it", G_)]],
-    [[("Plan the whole trip, ", W_), ("grounded", G_)]],
-    [[("GAFFER", G_), ("    Google ADK + Gemini    Arize Phoenix", W_)]],
+    [[("An AI catching ", W_), ("its own lie", G_)]],
+    [[("It ", W_), ("referees every answer", G_)]],
+    [[("It rewrites ", W_), ("its own playbook", G_)]],
+    [[("We tried to fool the referee.", W_)], [("It caught all ", W_), ("22", G_), (".", W_)]],
+    [[("Every decision, traced in ", W_), ("Arize Phoenix", G_)]],
+    [[("The use case: the ", W_), ("World Cup", G_)]],
+    [[("Grounds ", G_), ("every fact", G_), (", or says it can't", W_)]],
+    [[("GAFFER", G_), ("    catches and fixes its own lies", W_)]],
 ]
 
 def col(c): return GREEN if c == G_ else WHITE
@@ -99,7 +98,7 @@ with open(os.path.join(AU, "durations.txt")) as fh:
         i, v = ln.split(); dur[int(i)] = float(v)
 
 t = 0.0; wins = []
-for i in range(1, 10):
+for i in range(1, len(CAPS) + 1):
     seg = dur[i] + PAD
     wins.append((i, t, t + seg)); t += seg
 
