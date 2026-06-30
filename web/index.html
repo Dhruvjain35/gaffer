@@ -398,10 +398,41 @@ footer{border-top:1px solid var(--border-2)}
 .tracing{display:inline-flex;align-items:center;gap:8px}.tracing .d{width:8px;height:8px;border-radius:50%;background:var(--green-lum)}.tracing .d.off{background:var(--muted-2)}
 .foot-r a{color:var(--green-lum)}
 @media(max-width:680px){.foot-r{margin-left:0;width:100%}}
+
+/* ===== craft polish: grain, cinematic hero, panel depth, alive hover ===== */
+.grain{position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.055;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* cinematic hero: title resolves out of blur as it rises, copy cascades under it */
+.hero h1.reveal{filter:blur(18px);transform:translate3d(0,48px,0) scale(.985);transition:opacity 1.15s var(--ease),transform 1.15s var(--ease),filter 1.15s var(--ease)}
+.hero h1.reveal.in{filter:blur(0);transform:none}
+.hero-copy .lead.reveal{transition-delay:.24s}.hero-copy .cta-row.reveal{transition-delay:.36s}.hero-copy .rating.reveal{transition-delay:.48s}
+.hero .g{position:relative}
+/* gradient-hairline depth on the panels judges read, plus a top light-catch on cards */
+.sb-panel{position:relative}
+.sb-panel::before{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;background:linear-gradient(140deg,rgba(92,196,131,.30),transparent 38%,transparent 74%,rgba(92,196,131,.09));-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
+.sb-stat{position:relative;transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease)}
+.sb-stat:hover{transform:translateY(-4px);border-color:var(--tint-2);box-shadow:0 24px 50px -34px rgba(0,0,0,.9),0 0 30px -14px rgba(79,180,114,.24)}
+.sb-stat::after,.stat::after{content:'';position:absolute;left:16px;right:16px;top:0;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);pointer-events:none}
+.stat{position:relative}
+/* nav: animated underline on active + hover */
+.gnav .links a{position:relative}
+.gnav .links a::after{content:'';position:absolute;left:12px;right:12px;bottom:1px;height:1.5px;background:var(--green-lum);border-radius:2px;transform:scaleX(0);transform-origin:left;transition:transform .32s var(--ease);opacity:.9}
+.gnav .links a.on::after,.gnav .links a:hover::after{transform:scaleX(1)}
+/* buttons: a touch more lift + green bloom */
+.btn:hover{filter:brightness(1.07);transform:translateY(-2px);box-shadow:0 0 0 1px rgba(92,196,131,.5),0 22px 52px -14px rgba(47,107,63,.85),0 0 42px -10px rgba(92,196,131,.38)}
+.btn--ghost:hover{transform:translateY(-2px);box-shadow:0 14px 36px -18px rgba(0,0,0,.8)}
+/* cards: green edge-glow on hover instead of flat shadow */
+.grp:hover{box-shadow:0 26px 60px -34px rgba(0,0,0,.9),0 0 34px -16px rgba(79,180,114,.3)}
+.vc:hover{box-shadow:0 26px 60px -34px rgba(0,0,0,.9),0 0 30px -16px rgba(79,180,114,.26)}
+.fixc{transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.fixc:hover{transform:translateY(-4px);box-shadow:0 24px 54px -34px rgba(0,0,0,.9),0 0 28px -16px rgba(79,180,114,.24)}
+.navprog{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--grad);box-shadow:0 0 9px rgba(92,196,131,.55);transition:width .08s linear;z-index:1;border-radius:0 2px 2px 0}
+@media (prefers-reduced-motion:reduce){.grain{display:none}}
 </style>
 </head>
 <body>
 <div class="sitebg" id="sitebg"><div class="grid"></div><canvas class="bgfx" id="bgfx"></canvas></div>
+<div class="grain" aria-hidden="true"></div>
 <a class="annbar" id="annbar" href="#loop"><span>Built to keep itself honest for the FIFA World Cup 2026</span> <b>See how it works →</b></a>
 <header class="gnav" id="gnav"><div class="gnav-in">
   <a class="brand" href="#home"><span class="bmark"><svg viewBox="0 0 32 32"><g><rect x="10" y="2" width="4" height="4"/><rect x="14" y="2" width="4" height="4"/><rect x="18" y="2" width="4" height="4"/><rect x="6" y="6" width="4" height="4"/><rect x="22" y="6" width="4" height="4"/><rect x="6" y="10" width="4" height="4"/><rect x="6" y="14" width="4" height="4"/><rect x="14" y="14" width="4" height="4"/><rect x="18" y="14" width="4" height="4"/><rect x="22" y="14" width="4" height="4"/><rect x="6" y="18" width="4" height="4"/><rect x="22" y="18" width="4" height="4"/><rect x="6" y="22" width="4" height="4"/><rect x="22" y="22" width="4" height="4"/><rect x="10" y="26" width="4" height="4"/><rect x="14" y="26" width="4" height="4"/><rect x="18" y="26" width="4" height="4"/></g></svg></span>GAFFER</a>
@@ -414,7 +445,7 @@ footer{border-top:1px solid var(--border-2)}
   </nav>
   <button class="menu-btn" id="menuBtn" aria-label="Menu"><span></span><span></span></button>
   <a class="cta" href="#ask">Ask the Referee</a>
-</div></header>
+</div><div class="navprog" id="navprog"></div></header>
 
 <!-- HOME -->
 <section class="screen home" id="screen-home">
@@ -1051,6 +1082,7 @@ async function loadVenues(){try{const d=await (await fetch('/api/venues')).json(
 
 fetch('/api/state').then(r=>r.json()).then(s=>{if(s.phoenix_url){$('pbLink').href=s.phoenix_url;window._phx=s.phoenix_url;}$('pbLink').textContent=(s.playbook||'playbook').replace(/^phoenix:/,'');if(s.record)asRecord(s.record);}).catch(()=>{});
 fetch('/diagnostics').then(r=>r.json()).then(d=>{const dot=$('trDot');if(d.tracing==='live'){dot.classList.remove('off');$('trLabel').textContent='tracing live · Phoenix';}else{dot.classList.add('off');$('trLabel').textContent='tracing · local mirror';}}).catch(()=>{});
+(function(){const np=$('navprog');if(!np)return;const upd=()=>{const h=document.documentElement,max=h.scrollHeight-h.clientHeight;np.style.width=(max>4?(h.scrollTop/max*100):0)+'%';};addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();})();
 loadVenues();route();
 </script>
 </body>
