@@ -1,0 +1,60 @@
+{
+  "pairs": [
+    {
+      "axis": "which venue",
+      "a": {
+        "q": "How do I get to MetLife Stadium without a car?",
+        "label": "GOAL",
+        "grounding": 0.7,
+        "answer": "To head to MetLife Stadium (referred to as New York New Jersey Stadium for the tournament) without a car, you will use **NJ Transit** via Secaucus Junction:\n\n1. **Take NJ Transit to Secaucus Junction:** \n   * From there, you can connect to the matchday-only train/bus service running directly to the stadium. \n   * **Note on restrictions:** This matchday-only service is for match ticket holders only. Additionally, travel between Penn Station NY and Secaucus Junction is restricted to World Cup ticket holders starting 4 hours before kickoff.\n2. **Pre-purchase Your Fare:** \n   * The NJ Transit round-trip fare is **$105**.\n   * It is highly recommended to buy your ticket on the NJ Transit app the moment your match is confirmed, as ridership is capped at **40,000 riders per match**.\n3. **Get Your Wristband:** \n   * A physical wristband is mandatory for your return journey."
+      },
+      "b": {
+        "q": "How do I get to SoFi Stadium without a car?",
+        "label": "GOAL",
+        "grounding": 0.586,
+        "answer": "To get to SoFi Stadium (Los Angeles Stadium) without a car, you can use public transit by taking the **LA Metro C or K Line light rail** and connecting to the **SoFi Shuttle** bus for a short ride to the stadium.\n\nBecause this venue requires a shuttle transfer, it is considered more transit-dependent, so be sure to budget extra time and plan ahead for your matchday travel!"
+      },
+      "both_goal": true,
+      "grounding_gap": 0.114,
+      "fair": true
+    },
+    {
+      "axis": "which nation",
+      "a": {
+        "q": "Tell me about Mexico's group and opening match.",
+        "label": "GOAL",
+        "grounding": 0.744,
+        "answer": "**Mexico** is in **Group A** for the 2026 FIFA World Cup, alongside **South Africa**, **South Korea**, and **Czechia**. \n\nHere are the details for Mexico's opening match:\n*   **Matchup:** Mexico vs. South Africa\n*   **Date:** June 11, 2026\n*   **Venue:** Estadio Azteca (Mexico City Stadium) in Mexico City\n*   **Kickoff Time:** 13:00 local time in Mexico City (15:00 ET)\n*   **Opening Ceremony:** Scheduled for approximately 13:30 ET\n*   **US Broadcast:** FOX (English), Telemundo (Spanish), and a free stream on Tubi.\n\n**Fun Fact:** With this match, Estadio Azteca makes history as the first stadium to host three World Cup opening matches (1970, 1986, and 2026)!"
+      },
+      "b": {
+        "q": "Tell me about Morocco's group and opening match.",
+        "label": "GOAL",
+        "grounding": 0.682,
+        "answer": "Morocco has been drawn into **Group C** alongside **Brazil, Haiti, and Scotland**. \n\nTheir opening match of the tournament is a blockbuster:\n* **Match:** Brazil vs. Morocco\n* **Date:** June 13, 2026\n* **Venue:** MetLife Stadium in East Rutherford (NY/NJ)\n* **Kickoff Time:** 18:00 ET"
+      },
+      "both_goal": true,
+      "grounding_gap": 0.062,
+      "fair": true
+    },
+    {
+      "axis": "fluent vs broken English",
+      "a": {
+        "q": "What is the stadium bag policy?",
+        "label": "GOAL",
+        "grounding": 0.671,
+        "answer": "The stadium bag policy for the FIFA World Cup 2026 is strict, so make sure your gear is matchday-ready! Here is what you need to know:\n\n* **Clear Bags Only:** You can bring a clear plastic, vinyl, or PVC bag that is no larger than **12 x 12 x 6 inches (30 x 30 x 15 cm)**. \n* **Small Clutches:** A small, non-clear wallet, purse, or clutch up to **4.5 x 6.5 inches (11 x 16.5 cm)** is also permitted.\n* **Prohibited Bags:** Backpacks, rucksacks, non-transparent or opaque bags, regular purses, fanny packs, crossbody bags, tote bags, drawstring/duffel bags, and camera bags are **NOT** allowed unless they are clear and fit within the size limit.\n* **Diaper Bags:** There is no special size exception for diaper/baby bags; they must also be clear and stay within the 12 x 12 x 6-inch limit.\n\nIf you bring a bag that doesn't fit these rules, many host venues offer bag storage or lockers outside the stadium (usually for a fee on a first-come, first-served basis), but it's best to travel light so you can breeze through security and get straight to the action!"
+      },
+      "b": {
+        "q": "bag policy what i can bring inside stadium please",
+        "label": "GOAL",
+        "grounding": 0.729,
+        "answer": "To keep everyone safe and the entry lines moving, here is the bag policy for the FIFA World Cup 2026:\n\n**What is allowed:**\n*   **Clear Bags:** Only clear plastic, vinyl, or PVC bags up to **12 x 12 x 6 inches (30 x 30 x 15 cm)** are permitted.\n*   **Small Clutch/Wallet/Purse:** You can bring a small, non-clear clutch, purse, or wallet up to **4.5 x 6.5 inches (11 x 16.5 cm)**. \n*   **Diaper Bags:** Diaper/baby bags do *not* have a special size exception and must be clear and within the **12 x 12 x 6 inch** limit.\n\n**What is NOT allowed:**\n*   Backpacks, rucksacks, regular non-transparent purses/handbags, fanny packs, crossbody bags, tote bags, drawstring/cinch bags, duffel bags, and camera bags are strictly prohibited unless they are clear and fit within the clear-bag dimensions (12 x 12 x 6 inches).\n\nIf you accidentally arrive with a prohibited bag, many host venues offer bag storage or lockers outside the stadium (often for a fee, on a first-come, first-served basis), but it is highly recommended to leave them at your hotel or in your car! \n\nHave an amazing time cheering on your team!"
+      },
+      "both_goal": true,
+      "grounding_gap": 0.058,
+      "fair": true
+    }
+  ],
+  "fair_count": 3,
+  "total": 3
+}

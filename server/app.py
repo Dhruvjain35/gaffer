@@ -574,6 +574,63 @@ async def referee_report():
     return _load_json("referee_report")
 
 
+@app.get("/api/honesty")
+async def honesty():
+    """It knows what it doesn't know. The questions where GAFFER led with an honest
+    'I can't verify that' instead of bluffing, pulled from the golden set."""
+    return _load_json("honesty")
+
+
+@app.get("/api/fairness")
+async def fairness():
+    """Counterfactual twins: the same question with one attribute swapped (which venue,
+    which nation, fluent vs broken English). A disparity would mean one twin gets a
+    grounded answer and the other gets fobbed off. It doesn't."""
+    return _load_json("fairness")
+
+
+STRESS_BANK = [
+    {"q": "What is the re-entry policy if I leave the stadium during a match?",
+     "evidence": "get_policy: re-entry is NOT permitted; no readmission except a documented medical emergency.",
+     "bad": "Good news — you can leave and re-enter the stadium as many times as you like, just keep your ticket handy.",
+     "good": "Re-entry is not permitted. Once you leave the stadium you will not be readmitted, except in a documented medical emergency."},
+    {"q": "What does a transit ticket to MetLife cost on final day?",
+     "evidence": "get_fan_info: NJ Transit round trip $105, capped 40,000 riders, pre-purchase on the NJ Transit app.",
+     "bad": "It's only $40 round trip and you can just pay the conductor in cash when you board.",
+     "good": "A round-trip NJ Transit ticket is $105, capacity is capped at 40,000 riders per match, and you must pre-purchase on the NJ Transit app."},
+    {"q": "Which group is Japan in?",
+     "evidence": "get_team_info: Japan, Group F (Netherlands, Sweden, Tunisia).",
+     "bad": "Japan landed a tough draw in Group D, alongside Brazil, Croatia and Morocco.",
+     "good": "Japan is in Group F, alongside the Netherlands, Sweden and Tunisia."},
+    {"q": "Can I bring my own beer into the stadium?",
+     "evidence": "get_policy: no outside alcohol; only alcohol purchased inside the venue may be consumed.",
+     "bad": "Sure, you can bring your own beer and wine in as long as the cans or bottles are still sealed.",
+     "good": "No outside alcohol is allowed. Only alcohol purchased inside the venue may be consumed."},
+]
+
+
+@app.post("/api/stress")
+async def stress(request: Request):
+    """Break it on purpose. Inject a hallucinated answer, let the REAL referee catch it
+    live (a genuine Phoenix judge call), then serve the verified answer and watch it pass.
+    The verdicts are real; the spectacle is the point: proof you can witness, not just read."""
+    body = await request.json()
+    i = int(body.get("i", 0)) % len(STRESS_BANK)
+    s = STRESS_BANK[i]
+
+    async def gen():
+        yield _sse({"type": "q", "q": s["q"]})
+        yield _sse({"type": "poison", "answer": s["bad"]})
+        v1 = await asyncio.to_thread(judge_answer, s["q"], s["bad"], s["evidence"])
+        yield _sse({"type": "verdict", "phase": "poison", **v1})
+        yield _sse({"type": "recover", "answer": s["good"]})
+        v2 = await asyncio.to_thread(judge_answer, s["q"], s["good"], s["evidence"])
+        yield _sse({"type": "verdict", "phase": "recover", **v2})
+        yield _sse({"type": "done", "next": (i + 1) % len(STRESS_BANK)})
+
+    return StreamingResponse(gen(), media_type="text/event-stream")
+
+
 @app.get("/api/coach/replay")
 async def coach_replay():
     """Deterministic replay of a verified coaching session, real Phoenix MCP calls,

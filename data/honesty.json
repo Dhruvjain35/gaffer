@@ -1,0 +1,34 @@
+{
+  "abstentions": [
+    {
+      "q": "What ID do I need to pick up will-call tickets?",
+      "line": "I can't verify that specific detail from my sources, as there is no mention in the verified policies of a will-call pickup option or what ID would be required for it."
+    },
+    {
+      "q": "What's the cheapest hotel near MetLife Stadium and what does it cost?",
+      "line": "I can't verify hotel bookings or pricing from my sources, as accommodation options and hotel rates are outside my knowledge base."
+    },
+    {
+      "q": "Which airline has the cheapest flights from London to New York for the final?",
+      "line": "I can't verify airline prices or flight options from London to New York, as flight bookings and airline fares are outside what I can access in my verified sources."
+    },
+    {
+      "q": "Who is going to win the 2026 World Cup final?",
+      "line": "I can't predict who will win the tournament, as that is outside what I can verify!"
+    },
+    {
+      "q": "What was the score of the Brazil match yesterday?",
+      "line": "I cannot verify live scores or match results, as that information is outside of my knowledge base."
+    },
+    {
+      "q": "Did Messi confirm he is playing in 2026?",
+      "line": "I can't verify whether Lionel Messi has confirmed he is playing in the 2026 World Cup from my sources."
+    },
+    {
+      "q": "How much are resale tickets going for on the secondary market?",
+      "line": "Ticket-resale prices on the secondary market are outside what I can verify from my sources."
+    }
+  ],
+  "total_asked": 38,
+  "abstained": 7
+}

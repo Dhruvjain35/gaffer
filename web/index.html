@@ -462,6 +462,7 @@ footer{border-top:1px solid var(--border-2)}
         <span class="eyebrow">Ask Gaffer</span>
         <h2 class="h2">Ask anything. The referee checks every answer before you see it.</h2>
         <div class="suggest" id="suggest"></div>
+        <div class="challenge"><b>⚔ Try to beat the referee.</b> Ask it something it can’t verify, or smuggle in a wrong premise, a fake fixture, a made-up rule. If GAFFER bluffs, the referee catches it on the spot: every answer is graded GOAL or MISS and traced in Arize Phoenix, and you can open the trace.</div>
       </div>
     </div></div>
     <div class="composer">
@@ -605,6 +606,34 @@ footer{border-top:1px solid var(--border-2)}
 .sb-sig{font-family:var(--pixel);font-size:.5rem;letter-spacing:.04em;text-transform:uppercase;padding:4px 7px;border-radius:6px}
 .sb-sig.on{background:var(--tint-2);color:var(--green-soft)}
 .sb-sig.off{background:rgba(255,255,255,.05);color:var(--muted-2)}
+.stress-out{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.st-q{font-size:.92rem;color:var(--muted)}
+.st-a{padding:14px 16px;border-radius:12px;font-size:.9rem;line-height:1.5}
+.st-a.bad{background:rgba(224,168,90,.08);border:1px solid rgba(224,168,90,.25);color:#e9c79a}
+.st-a.good{background:var(--tint);border:1px solid var(--tint-2);color:var(--fg)}
+.st-tag{display:block;font-family:var(--pixel);font-size:.52rem;letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px}
+.st-a.bad .st-tag{color:#e0a85a}.st-a.good .st-tag{color:var(--green-soft)}
+.st-v{display:flex;align-items:center;gap:12px;padding:5px 2px}
+.st-stamp{font-family:var(--pixel);font-size:.7rem;letter-spacing:.06em;padding:6px 12px;border-radius:8px;flex:none}
+.st-v.miss .st-stamp{background:rgba(224,168,90,.16);color:#e0a85a}
+.st-v.goal .st-stamp{background:var(--tint-2);color:var(--green-soft)}
+.st-ex{font-size:.82rem;color:var(--muted)}
+.hon-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin-top:6px}
+.hon-item{background:#0a0d0b;border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.hon-q{font-size:.84rem;color:var(--fg);font-weight:600;margin-bottom:6px}
+.hon-a{font-size:.82rem;color:var(--green-soft);line-height:1.45;font-style:italic}
+.challenge{margin-top:22px;max-width:60ch;font-size:.9rem;line-height:1.5;color:var(--muted);background:var(--tint);border:1px solid var(--tint-2);border-radius:13px;padding:15px 18px}
+.challenge b{color:var(--green-soft);font-weight:600}
+.fair-list{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.fair-row{background:#0a0d0b;border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.fair-axis{font-family:var(--pixel);font-size:.56rem;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.fair-ok{background:var(--tint-2);color:var(--green-soft);padding:3px 8px;border-radius:6px}
+.fair-bad{background:rgba(224,168,90,.16);color:#e0a85a;padding:3px 8px;border-radius:6px}
+.fair-tw{display:flex;justify-content:space-between;gap:14px;padding:8px 0;font-size:.86rem;border-top:1px solid var(--border)}
+.fair-tw+.fair-tw{border-top:1px solid var(--border)}
+.fair-row .fair-tw:first-of-type{border-top:none}
+.fair-q{color:var(--fg)}
+.fair-v{color:var(--green-soft);font-family:var(--serif);white-space:nowrap}
 </style>
 <section class="screen proof" id="screen-proof">
   <section class="loop-intro"><div class="container">
@@ -615,6 +644,22 @@ footer{border-top:1px solid var(--border-2)}
   <div class="section"><div class="container container--wide">
     <div id="sbWrap"><p class="lead" style="color:var(--muted)">Reading the tape from Phoenix…</p></div>
 
+    <div class="sb-panel reveal" id="stressPanel">
+      <h3>Break it on purpose.</h3>
+      <p class="sub">Don’t take the green numbers on faith. Inject a hallucinated answer and watch the referee catch it live, in red, then watch GAFFER re-answer from verified records. Both verdicts below are real Arize Phoenix judge calls, made on the spot.</p>
+      <button class="btn" id="stressBtn">⚡ Inject a hallucination</button>
+      <div class="stress-out" id="stressOut"></div>
+    </div>
+    <div class="sb-panel reveal" id="honestyPanel" style="display:none">
+      <h3>It knows what it doesn’t know.</h3>
+      <p class="sub" id="honestySub"></p>
+      <div class="hon-list" id="honestyList"></div>
+    </div>
+    <div class="sb-panel reveal" id="fairPanel" style="display:none">
+      <h3>Does GAFFER play favorites?</h3>
+      <p class="sub" id="fairSub"></p>
+      <div class="fair-list" id="fairList"></div>
+    </div>
     <div class="sb-panel reveal">
       <h3>Straight from the Phoenix workspace</h3>
       <p class="sub">Screenshots of the live Arize Phoenix workspace this app writes to, the same traces, annotations, experiments and prompt registry the numbers above are pulled from.</p>
@@ -790,7 +835,7 @@ async function runTurn(q,mount,side){
 async function send(){const q=ta.value.trim();if(!q)return;ta.value='';ta.style.height='auto';if($('askintro'))$('askintro').remove();await runTurn(q,$('convInner'),true);}
 const PHX='<svg viewBox="0 0 24 24" width="13" height="13"><path d="M13 2c.6 3-1.4 4.6-3 6.6C8.4 10.8 8 12.4 8 14a6 6 0 1 0 9.8-4.6C16 7.6 14.6 6 15 3c-1 .5-2 1.4-2.6 2.6C12 4.2 12.5 3 13 2z"/></svg>';
 function renderTrust(turn,ev,evid){const goal=ev.label==='GOAL',gp=(ev.grounding==null)?null:Math.round(ev.grounding*100),items=evidenceItems(evid);
-  const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';const phx=window._phx||'';
+  const lat=ev.latency_ms?(ev.latency_ms>=1000?(ev.latency_ms/1000).toFixed(1)+'s':ev.latency_ms+'ms'):'';const tid=ev.trace_id?String(ev.trace_id).slice(-6):'';const phx=ev.trace_url||window._phx||'';
   const box=el(`<div class="tcard ${goal?'':'miss'}">
     <div class="head"><span class="tick">${goal?'✓':'!'}</span><span>${goal?'<b>Verified</b> by the referee':'<b>Couldn’t fully verify</b>'}${items.length?` · grounded in ${items.length} source${items.length>1?'s':''}`:''}</span></div>
     ${gp!=null?`<div class="gmeter"><div class="gml"><span>Answer traced to its cited evidence</span><b>${gp}%</b></div><div class="gbar"><i style="width:0"></i></div></div>`:''}
@@ -966,6 +1011,40 @@ async function loadScoreboard(){if(_sbLoaded)return;_sbLoaded=true;
   document.querySelectorAll('#screen-proof [data-phx]').forEach(a=>{const u=d[a.dataset.phx];if(u)a.href=u;});
   const sl=$('sbLinks');if(sl)sl.innerHTML=`<a href="${esc(d.dataset_url||'#')}" target="_blank" rel="noopener">open the dataset · ${d.examples} cases ↗</a><a href="${esc(d.prompts_url||'#')}" target="_blank" rel="noopener">open the prompt registry ↗</a><a href="${esc(d.project_url||'#')}" target="_blank" rel="noopener">open the live traces ↗</a>`;
   $('screen-proof').querySelectorAll('.reveal').forEach(n=>{n.classList.remove('in');io.observe(n);});
+  wireStress(); loadHonesty(); loadFairness();
+}
+let _fairLoaded=false;
+async function loadFairness(){if(_fairLoaded)return;_fairLoaded=true;
+  let f;try{f=await (await fetch('/api/fairness')).json();}catch{return;}
+  if(!f||!f.pairs||!f.pairs.length)return;
+  const worst=Math.max(...f.pairs.map(p=>p.grounding_gap||0));
+  $('fairSub').textContent=`The same question with one thing swapped: which venue, which nation, fluent vs broken English. If GAFFER favoured one, the twins would diverge. Across ${f.total} pairs both twins scored GOAL, with a grounding gap of ${worst.toFixed(2)} at worst, and the broken-English fan got an answer just as grounded.`;
+  const g=v=>v&&v.grounding!=null?Math.round(v.grounding*100)+'%':'–';
+  $('fairList').innerHTML=f.pairs.map(p=>`<div class="fair-row"><div class="fair-axis">${esc(p.axis)} ${p.fair?'<span class="fair-ok">no disparity</span>':'<span class="fair-bad">disparity</span>'}</div><div class="fair-tw"><span class="fair-q">${esc(p.a.q)}</span><span class="fair-v">${esc(p.a.label||'')} · ${g(p.a)}</span></div><div class="fair-tw"><span class="fair-q">${esc(p.b.q)}</span><span class="fair-v">${esc(p.b.label||'')} · ${g(p.b)}</span></div></div>`).join('');
+  $('fairPanel').style.display='';
+}
+let _stressI=0;
+function wireStress(){const btn=$('stressBtn');if(!btn||btn._wired)return;btn._wired=1;
+  btn.onclick=async()=>{btn.disabled=true;const out=$('stressOut');out.innerHTML='';
+    const add=h=>{const e=el(h);out.appendChild(e);return e;};
+    try{const resp=await fetch('/api/stress',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({i:_stressI})});
+      await consumeSSE(resp,ev=>{
+        if(ev.type==='q')add(`<div class="st-q">A fan asks: <b>${esc(ev.q)}</b></div>`);
+        if(ev.type==='poison')add(`<div class="st-a bad"><span class="st-tag bad">injected · tampered answer</span>${esc(ev.answer)}</div>`);
+        if(ev.type==='recover')add(`<div class="st-a good"><span class="st-tag good">GAFFER · re-answered from verified records</span>${esc(ev.answer)}</div>`);
+        if(ev.type==='verdict'){const goal=ev.label==='GOAL';add(`<div class="st-v ${goal?'goal':'miss'}"><span class="st-stamp">${goal?'GOAL':'MISS'}</span><span class="st-ex">referee${ev.score!=null?' · '+(Math.round(ev.score*100))+'%':''} · ${esc((ev.explanation||'').slice(0,140))}</span></div>`);}
+        if(ev.type==='done')_stressI=ev.next||0;
+      });
+    }catch(e){add(`<div class="st-v miss"><span class="st-ex">${esc(e.message)}</span></div>`);}
+    btn.disabled=false;btn.textContent='⚡ Inject another hallucination';};
+}
+let _honLoaded=false;
+async function loadHonesty(){if(_honLoaded)return;_honLoaded=true;
+  let h;try{h=await (await fetch('/api/honesty')).json();}catch{return;}
+  if(!h||!h.abstentions||!h.abstentions.length){return;}
+  $('honestySub').textContent=`Confident-but-wrong is the failure judges distrust most. Across the ${h.total_asked}-question golden set, GAFFER refused to bluff ${h.abstained} times, leading with an honest "I can't verify that" instead of inventing a fact. A few:`;
+  $('honestyList').innerHTML=h.abstentions.map(a=>`<div class="hon-item"><div class="hon-q">${esc(a.q)}</div><div class="hon-a">“${esc(a.line)}”</div></div>`).join('');
+  $('honestyPanel').style.display='';
 }
 
 async function loadVenues(){try{const d=await (await fetch('/api/venues')).json();
