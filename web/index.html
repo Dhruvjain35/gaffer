@@ -426,6 +426,27 @@ footer{border-top:1px solid var(--border-2)}
 .vc:hover{box-shadow:0 26px 60px -34px rgba(0,0,0,.9),0 0 30px -16px rgba(79,180,114,.26)}
 .fixc{transition:transform .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
 .fixc:hover{transform:translateY(-4px);box-shadow:0 24px 54px -34px rgba(0,0,0,.9),0 0 28px -16px rgba(79,180,114,.24)}
+/* live referee console: the machinery, on a loop */
+.rlive{max-width:780px;margin:42px auto 0;text-align:left}
+.rlive .bar .rlive-tally{margin-left:auto;font-family:var(--pixel);font-size:.56rem;letter-spacing:.05em;color:var(--green-lum);opacity:0;transition:opacity .4s}
+.rlive .bar .rlive-tally.on{opacity:1}
+.rlive-body{min-height:clamp(230px,30vh,280px);display:flex;flex-direction:column;gap:15px;font-size:1.04rem;line-height:1.55}
+.rl-line{display:flex;gap:12px;align-items:flex-start}
+.rl-tag{flex:none;font-family:var(--pixel);font-size:.52rem;letter-spacing:.05em;text-transform:uppercase;padding:5px 8px;border-radius:6px;margin-top:4px}
+.rl-q .rl-tag{background:rgba(255,255,255,.06);color:var(--muted)}
+.rl-a .rl-tag{background:var(--tint);color:var(--green-soft)}
+.rl-q{color:var(--fg);font-weight:500}
+.rl-a{color:var(--muted)}
+.rl-a.bad{color:#e9c79a}
+.rl-caret{display:inline-block;width:7px;height:1.05em;background:var(--green-lum);margin-left:3px;animation:rlblink 1.05s steps(1) infinite;vertical-align:-2px}
+@keyframes rlblink{50%{opacity:0}}
+.rl-verdict{min-height:32px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.rl-stamp{font-family:var(--pixel);font-size:.7rem;letter-spacing:.06em;padding:7px 13px;border-radius:8px;opacity:0;transform:scale(.82);transition:opacity .3s var(--ease),transform .35s var(--ease)}
+.rl-stamp.show{opacity:1;transform:none}
+.rl-stamp.goal{background:var(--tint-2);color:var(--green-soft)}
+.rl-stamp.miss{background:rgba(224,168,90,.18);color:#e0a85a}
+.rl-vmeta{font-size:.84rem;color:var(--muted-2)}
+.rl-coach{font-size:.9rem;color:var(--green-lum);min-height:20px;font-style:italic}
 .navprog{position:absolute;left:0;bottom:-1px;height:2px;width:0;background:var(--grad);box-shadow:0 0 9px rgba(92,196,131,.55);transition:width .08s linear;z-index:1;border-radius:0 2px 2px 0}
 @media (prefers-reduced-motion:reduce){.grain{display:none}}
 </style>
@@ -458,16 +479,17 @@ footer{border-top:1px solid var(--border-2)}
     </div>
   </div>
   <section class="section product"><div class="container prodc">
-    <span class="eyebrow reveal">See it work</span>
-    <h2 class="h2 reveal">Every answer, on the record.</h2>
-    <div class="mock reveal" data-scale>
-      <div class="scr"><div class="bar"><i></i><i></i><i></i><span class="lbl">Gaffer · ask the referee</span></div>
-      <div class="pad">
-        <div class="mock-q h3">Can I bring my own water bottle into the stadium?</div>
-        <p class="mock-a body">Yes. One factory-sealed, soft-plastic disposable bottle up to <b>500&nbsp;ml</b> is allowed at the US and Canada venues. Reusable bottles, metal cups and any glass are turned away at the gate.</p>
-        <div class="mock-v"><span class="v">✓</span><span><b>Verified</b> by the referee · grounded in 2 sources</span></div>
-        <div class="mock-chips"><span class="mc"><em>Policy</em>Permitted items</span><span class="mc"><em>Policy</em>Bag &amp; bottle</span></div>
-      </div></div>
+    <span class="eyebrow reveal">Live, right now</span>
+    <h2 class="h2 reveal">Watch it grade itself.</h2>
+    <p class="lead reveal" style="max-width:56ch;margin:14px auto 0">Every answer is scored GOAL or MISS by a separate referee model and written to Arize Phoenix. When it slips, the agent catches its own lie and re-answers from verified records. On a loop, in real time.</p>
+    <div class="rlive scr glow reveal" data-scale>
+      <div class="bar"><i></i><i></i><i></i><span class="lbl">the referee · live</span><span class="rlive-tally" id="rlTally"></span></div>
+      <div class="pad rlive-body">
+        <div class="rl-line rl-q"><span class="rl-tag">fan</span><span id="rlQ"></span><span class="rl-caret" id="rlCaret"></span></div>
+        <div class="rl-line rl-a"><span class="rl-tag">gaffer</span><span id="rlA"></span></div>
+        <div class="rl-verdict" id="rlV"></div>
+        <div class="rl-coach" id="rlC"></div>
+      </div>
     </div>
   </div></section>
   <section class="section--lg statband"><div class="container">
@@ -1083,6 +1105,37 @@ async function loadVenues(){try{const d=await (await fetch('/api/venues')).json(
 fetch('/api/state').then(r=>r.json()).then(s=>{if(s.phoenix_url){$('pbLink').href=s.phoenix_url;window._phx=s.phoenix_url;}$('pbLink').textContent=(s.playbook||'playbook').replace(/^phoenix:/,'');if(s.record)asRecord(s.record);}).catch(()=>{});
 fetch('/diagnostics').then(r=>r.json()).then(d=>{const dot=$('trDot');if(d.tracing==='live'){dot.classList.remove('off');$('trLabel').textContent='tracing live · Phoenix';}else{dot.classList.add('off');$('trLabel').textContent='tracing · local mirror';}}).catch(()=>{});
 (function(){const np=$('navprog');if(!np)return;const upd=()=>{const h=document.documentElement,max=h.scrollHeight-h.clientHeight;np.style.width=(max>4?(h.scrollTop/max*100):0)+'%';};addEventListener('scroll',upd,{passive:true});addEventListener('resize',upd);upd();})();
+
+/* live referee console: an ambient loop of the real machinery (answer -> grade -> catch a lie -> fix) */
+(function(){const Q=$('rlQ'),A=$('rlA'),V=$('rlV'),C=$('rlC'),T=$('rlTally'),caret=$('rlCaret');if(!Q)return;
+  const aLine=document.querySelector('.rl-a'),slp=ms=>new Promise(r=>setTimeout(r,ms));
+  const RL=[
+    {q:"When and where is the 2026 World Cup final?",a:"July 19, 2026 at MetLife Stadium, East Rutherford NJ. Kickoff 3:00 PM ET.",s:97},
+    {q:"Can I bring a power bank into the stadium?",a:"Yes, power banks are allowed. Clear bags up to 12 by 12 by 6 inches, and no outside food.",s:93},
+    {q:"What is the re-entry policy if I leave during a match?",bad:"Good news, you can leave and re-enter as many times as you like, just keep your ticket.",a:"Re-entry is not permitted. Once you leave you will not be readmitted, except in a medical emergency.",s:100,miss:true},
+    {q:"Which group is Japan in?",a:"Group F, alongside the Netherlands, Sweden and Tunisia.",s:90},
+    {q:"What's the cheapest hotel near MetLife Stadium?",a:"I can't verify hotel prices from my records, that's outside my knowledge base. Check the official host-city travel sites.",s:88},
+  ];
+  const type=async(el,txt,sp)=>{el.textContent='';for(let i=0;i<txt.length;i++){el.textContent+=txt[i];await slp(sp);}};
+  function stamp(label,score){const goal=label==='GOAL';V.innerHTML=`<span class="rl-stamp ${goal?'goal':'miss'}">${label}</span><span class="rl-vmeta">referee${score?' · '+score+'% grounded':' · contradicts the evidence'} · annotated in Arize Phoenix</span>`;requestAnimationFrame(()=>{const s=V.querySelector('.rl-stamp');if(s)s.classList.add('show');});}
+  async function run(){let goals=0,total=0,gsum=0;
+    while(true){for(const ex of RL){
+      if(document.hidden){await slp(600);continue;}
+      Q.textContent='';A.textContent='';V.innerHTML='';C.textContent='';aLine.classList.remove('bad');caret.style.display='';
+      await type(Q,ex.q,18);await slp(300);caret.style.display='none';await slp(250);
+      const first=ex.miss?ex.bad:ex.a;if(ex.miss)aLine.classList.add('bad');
+      await type(A,first,13);await slp(450);
+      C.textContent='referee grading…';await slp(750);C.textContent='';
+      if(ex.miss){stamp('MISS',0);await slp(1150);
+        C.textContent='the coach catches it and re-answers from verified records…';await slp(1500);
+        aLine.classList.remove('bad');A.textContent='';C.textContent='';
+        await type(A,ex.a,13);await slp(400);stamp('GOAL',ex.s);
+      }else{stamp('GOAL',ex.s);}
+      goals++;total++;gsum+=ex.s;T.textContent=`${goals}/${total} graded · ${Math.round(gsum/total)}% grounded`;T.classList.add('on');
+      await slp(2400);
+    }}}
+  run();
+})();
 loadVenues();route();
 </script>
 </body>
