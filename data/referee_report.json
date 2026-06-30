@@ -1,17 +1,13 @@
 {
-  "n": 60,
-  "positives": 38,
-  "negatives": 22,
-  "kappa": 1.0,
-  "kappa_label": "almost perfect",
-  "agreement": 1.0,
-  "confusion": {
-    "tp": 38,
-    "fn": 0,
-    "fp": 0,
-    "tn": 22
-  },
-  "takeaway": "On a 60-answer human golden set, including deliberately subtle cases that slip one fabricated detail into an otherwise grounded answer, the referee passed every grounded answer and caught every fabricated one. The whole 0.20 to 0.95 climb optimises toward a judge that agrees with a human 100% of the time.",
+  "real_answers": 38,
+  "real_passed": 38,
+  "real_flagged": 0,
+  "fabrications": 22,
+  "gross": 16,
+  "subtle": 6,
+  "caught": 22,
+  "leaked": 0,
+  "subtle_caught": 6,
   "judge_model": "gemini-2.5-flash",
-  "report_url": "https://app.phoenix.arize.com/s/dhruvhydrox/prompts"
+  "takeaway": "We tried to fool it. We authored 22 bad answers, 16 blatant contradictions of the evidence and 6 subtle ones that slip a single fabricated detail into an otherwise correct answer (a $40 parking add-on, '1 litre' for the real 590 ml). The production referee caught 22 of 22, including 6 of 6 subtle leaks, and never passed a fabrication. On 38 real grounded answers it flagged 0. The grader the whole climb optimises toward holds up, and this is reproducible: scripts/referee_report.py."
 }

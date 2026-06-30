@@ -87,7 +87,7 @@ GAFFER is two agents and a referee, wired into a closed self-improvement loop. T
 
 Most self-improving agents hand-wave quality. GAFFER's is auditable, and surfaced live in the app's [**Scoreboard**](https://gaffer-734868402447.us-central1.run.app/#proof). Everything here is real, pulled from the Phoenix workspace this app writes to:
 
-- **21 scrimmage rounds. 12 promotions, 9 refusals.** The agent climbed from a referee score of **0.20 to 0.95** on the held-out regression set, promoting candidates only when they beat production and refusing the rest, including the most recent round (production `0.95` beat a `0.70` candidate, no promotion).
+- **21 scrimmage rounds. 12 promotions, 9 refusals.** Over 21 rounds the production playbook climbed from a referee score of **0.20 to 0.95** on the regression set it is coached against (a sealed holdout is the next hardening step). The agent promoted candidates only when they beat production and refused the rest, including the most recent round (production `0.95` beat a `0.70` candidate, no promotion). Individual round-to-round gains were mostly within noise, only 1 of 12 promotions cleared a paired-bootstrap floor, so the trend over 21 rounds is the signal, not any single step.
 - **44 experiments, 25 playbook versions**, every `production` tag moved by the Gaffer itself after a winning experiment. Questions that scored `MISS 0.00` early (stadium rail access, Houston weather, power-bank rules) score `GOAL 1.00` now.
 
 <table>

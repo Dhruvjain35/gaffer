@@ -969,18 +969,16 @@ async function loadScoreboard(){if(_sbLoaded)return;_sbLoaded=true;
   const statsHtml='<div class="sb-stats">'+stats.map(s=>`<div class="sb-stat reveal"><div class="${s[0]}">${esc(''+s[1])}</div><div class="l">${esc(s[2])}</div></div>`).join('')+'</div>';
   // ---- Referee Report Card: the grader, graded (the rarest move in the field) ----
   let reportHtml='';
-  if(rep&&rep.kappa!=null){const cm=rep.confusion||{};const agree=rep.agreement!=null?Math.round(rep.agreement*100):null;
-    const cell=(v,cls)=>`<td class="${cls||''}">${v!=null?v:0}</td>`;
-    reportHtml=`<div class="sb-panel reveal"><h3>The referee, graded.</h3><p class="sub">Every self-grading agent invites one question: who grades the grader the whole climb optimises toward? So we hand-labelled ${rep.n} GAFFER answers as a human golden set and scored the production referee against it.</p>
+  if(rep&&rep.fabrications!=null){const cell=(v,cls)=>`<td class="${cls||''}">${v!=null?v:0}</td>`;
+    reportHtml=`<div class="sb-panel reveal"><h3>We tried to fool the referee.</h3><p class="sub">Every self-grading agent invites one question: can you trust the grader the whole climb optimises toward? So we authored ${rep.fabrications} bad answers, ${rep.gross} blatant and ${rep.subtle} subtle (one fabricated detail in an otherwise correct reply), and ran the production referee on them, live.</p>
       <div class="rep-grid">
-        <div class="rep-k"><div class="rep-kv">${rep.kappa.toFixed(2)}</div><div class="rep-kl">Cohen’s κ${rep.kappa_label?'<br><span>'+esc(rep.kappa_label)+'</span>':''}</div></div>
+        <div class="rep-k"><div class="rep-kv">${rep.caught}/${rep.fabrications}</div><div class="rep-kl">fabrications caught<br><span>${rep.leaked} leaked through</span></div></div>
         <div class="rep-cm"><table class="cmtab">
-          <tr><td class="hh"></td><td class="hh">referee GOAL</td><td class="hh">referee MISS</td></tr>
-          <tr><td class="hh">human GOAL</td>${cell(cm.tp,'ok')}${cell(cm.fn,'bad')}</tr>
-          <tr><td class="hh">human MISS</td>${cell(cm.fp,'bad')}${cell(cm.tn,'ok')}</tr></table>
-          <div class="rep-note">${agree!=null?agree+'% agreement · ':''}${rep.n} answers · the green diagonal is where the referee matched the human</div></div>
+          <tr><td class="hh"></td><td class="hh">referee: MISS</td><td class="hh">referee: GOAL</td></tr>
+          <tr><td class="hh">${rep.fabrications} authored fabrications</td>${cell(rep.caught,'ok')}${cell(rep.leaked,'bad')}</tr>
+          <tr><td class="hh">${rep.real_answers} real grounded answers</td>${cell(rep.real_flagged,'bad')}${cell(rep.real_passed,'ok')}</tr></table>
+          <div class="rep-note">it caught ${rep.subtle_caught}/${rep.subtle} of the subtle single-detail leaks · green is where the referee got it right · this measures the referee on adversarial fabrications, not a calibration κ</div></div>
       </div>${rep.takeaway?`<p class="sub" style="margin:16px 0 0">${esc(rep.takeaway)}</p>`:''}
-      ${rep.report_url?`<div class="sb-links"><a href="${esc(rep.report_url)}" target="_blank" rel="noopener">open the eval project ↗</a></div>`:''}
     </div>`;
   }
   // climb curve (production trajectory over rounds)
@@ -989,11 +987,11 @@ async function loadScoreboard(){if(_sbLoaded)return;_sbLoaded=true;
   const line=R.map((r,i)=>`${xs(i).toFixed(1)},${ys(r.current).toFixed(1)}`).join(' ');
   const grid=[0,.25,.5,.75,1].map(g=>`<line x1="${pad}" y1="${ys(g).toFixed(1)}" x2="${W-pad}" y2="${ys(g).toFixed(1)}" stroke="rgba(255,255,255,.06)" stroke-width=".25"/><text x="0" y="${(ys(g)+1).toFixed(1)}" fill="#5a6b60" font-size="2.4">${g.toFixed(2)}</text>`).join('');
   const dots=R.map((r,i)=>`<circle cx="${xs(i).toFixed(1)}" cy="${ys(r.current).toFixed(1)}" r="1.05" fill="${r.promoted?'#4fb472':'#e0a85a'}"><title>round ${i+1}: production ${fmt(r.current)} vs candidate ${fmt(r.candidate)} (${r.promoted?'promoted':'refused'})</title></circle>`).join('');
-  const curveHtml=`<div class="sb-panel reveal"><h3>From 0.20 to production, the agent climbing.</h3><p class="sub">The production playbook's referee score after each scrimmage round. Green points are rounds where a candidate beat production and got promoted; amber points were refused.</p>
+  const curveHtml=`<div class="sb-panel reveal"><h3>From 0.20 to production, the agent climbing.</h3><p class="sub">The production playbook's referee score after each scrimmage round. Green points are rounds where a candidate beat production and got promoted; amber points were refused. The trend over ${R.length} rounds is the signal: most individual round-to-round gains sit within noise${sigP!=null?' (only '+sigP+' of '+d.promotions+' promotions cleared a paired-bootstrap floor)':''}, so read the slope, not any single step.</p>
     <div class="sb-curve"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="sbg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6b3f"/><stop offset="1" stop-color="#74d195"/></linearGradient></defs>${grid}<polyline points="${line}" fill="none" stroke="url(#sbg)" stroke-width="0.9" stroke-linejoin="round" stroke-linecap="round"/>${dots}</svg></div>
     <div class="sb-legend"><span><i style="background:#4fb472"></i>candidate promoted</span><span><i style="background:#e0a85a"></i>candidate refused</span></div></div>`;
   // rounds list (newest first)
-  const rowsHtml='<div class="sb-panel reveal"><h3>Every scrimmage, every verdict.</h3><p class="sub">Each row is two real Phoenix experiments graded by the referee on the same '+d.examples+'-case set. We don’t just promote on a higher number: each promotion is flagged for whether the candidate beat production beyond a paired-bootstrap noise floor (CI > 0). '+(sigP!=null?'Only '+sigP+' of '+d.promotions+' did on an 8-example sample, which is exactly why the gate is hardening to significance-gating and a larger sealed holdout. ':'')+'Open either experiment in the live workspace.</p><div class="sb-rounds">'+
+  const rowsHtml='<div class="sb-panel reveal"><h3>Every scrimmage, every verdict.</h3><p class="sub">Each row is two real Phoenix experiments graded by the referee on the same '+d.examples+'-case set. Today’s gate promotes on any win (candidate beats production); after the fact we flag whether each promotion actually cleared a paired-bootstrap noise floor (CI > 0). '+(sigP!=null?'Only '+sigP+' of '+d.promotions+' did, on small per-round samples (as few as 4 paired examples), which is exactly why the gate is hardening to significance-gating and a sealed holdout. ':'')+'Open either experiment in the live workspace.</p><div class="sb-rounds">'+
     R.slice().reverse().map((r,idx)=>{const i=R.length-idx;const cb=Math.max(4,pct(r.current)),nb=Math.max(4,pct(r.candidate));
       return `<div class="sb-round"><div class="rd">Round<br>${i}<br>${esc((r.date||'').slice(0,10))}</div>
         <div class="sb-cmp">
@@ -1018,9 +1016,9 @@ async function loadFairness(){if(_fairLoaded)return;_fairLoaded=true;
   let f;try{f=await (await fetch('/api/fairness')).json();}catch{return;}
   if(!f||!f.pairs||!f.pairs.length)return;
   const worst=Math.max(...f.pairs.map(p=>p.grounding_gap||0));
-  $('fairSub').textContent=`The same question with one thing swapped: which venue, which nation, fluent vs broken English. If GAFFER favoured one, the twins would diverge. Across ${f.total} pairs both twins scored GOAL, with a grounding gap of ${worst.toFixed(2)} at worst, and the broken-English fan got an answer just as grounded.`;
+  $('fairSub').textContent=`${f.total} counterfactual spot-checks, a probe not a proof: the same ask with one thing swapped (which venue, which nation, fluent vs broken English). Two of the three also swap the underlying fact, and grounding here is a lexical-overlap proxy, so don't read too much in. Even so, both twins answered GOAL every time, the worst grounding gap was ${worst.toFixed(2)}, and the broken-English fan was answered just as well, no sign of a favourite. A bigger matched set with adversarial axes is the next step.`;
   const g=v=>v&&v.grounding!=null?Math.round(v.grounding*100)+'%':'–';
-  $('fairList').innerHTML=f.pairs.map(p=>`<div class="fair-row"><div class="fair-axis">${esc(p.axis)} ${p.fair?'<span class="fair-ok">no disparity</span>':'<span class="fair-bad">disparity</span>'}</div><div class="fair-tw"><span class="fair-q">${esc(p.a.q)}</span><span class="fair-v">${esc(p.a.label||'')} · ${g(p.a)}</span></div><div class="fair-tw"><span class="fair-q">${esc(p.b.q)}</span><span class="fair-v">${esc(p.b.label||'')} · ${g(p.b)}</span></div></div>`).join('');
+  $('fairList').innerHTML=f.pairs.map(p=>`<div class="fair-row"><div class="fair-axis">${esc(p.axis)} <span class="${(p.grounding_gap||0)<=0.2?'fair-ok':'fair-bad'}">grounding gap ${(p.grounding_gap||0).toFixed(2)}</span></div><div class="fair-tw"><span class="fair-q">${esc(p.a.q)}</span><span class="fair-v">${esc(p.a.label||'')} · ${g(p.a)}</span></div><div class="fair-tw"><span class="fair-q">${esc(p.b.q)}</span><span class="fair-v">${esc(p.b.label||'')} · ${g(p.b)}</span></div></div>`).join('');
   $('fairPanel').style.display='';
 }
 let _stressI=0;
