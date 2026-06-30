@@ -565,6 +565,15 @@ async def scoreboard():
     return _load_json("scoreboard")
 
 
+@app.get("/api/referee-report")
+async def referee_report():
+    """The referee, graded. A human golden set re-labels GAFFER answers GOAL/MISS,
+    scored against the production judge: Cohen's kappa + confusion matrix. Answers the
+    one question every observability judge asks of a self-grading system: who grades
+    the grader? Refresh: uv run python -m scripts.referee_report"""
+    return _load_json("referee_report")
+
+
 @app.get("/api/coach/replay")
 async def coach_replay():
     """Deterministic replay of a verified coaching session, real Phoenix MCP calls,

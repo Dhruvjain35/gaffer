@@ -1,0 +1,17 @@
+{
+  "n": 60,
+  "positives": 38,
+  "negatives": 22,
+  "kappa": 1.0,
+  "kappa_label": "almost perfect",
+  "agreement": 1.0,
+  "confusion": {
+    "tp": 38,
+    "fn": 0,
+    "fp": 0,
+    "tn": 22
+  },
+  "takeaway": "On a 60-answer human golden set, including deliberately subtle cases that slip one fabricated detail into an otherwise grounded answer, the referee passed every grounded answer and caught every fabricated one. The whole 0.20 to 0.95 climb optimises toward a judge that agrees with a human 100% of the time.",
+  "judge_model": "gemini-2.5-flash",
+  "report_url": "https://app.phoenix.arize.com/s/dhruvhydrox/prompts"
+}

@@ -20,16 +20,49 @@ PROMPT = "gafferplayer"
 BASE = os.environ.get("PHOENIX_COLLECTOR_ENDPOINT", "").rstrip("/")
 
 
-def _avg_score(eval_runs) -> float | None:
-    vals = []
+def _runs(eval_runs):
     for r in eval_runs or []:
         r = r if isinstance(r, dict) else getattr(r, "__dict__", {})
         res = r.get("result") or {}
-        if isinstance(res, dict) and res.get("score") is not None:
-            vals.append(float(res["score"]))
-        elif r.get("score") is not None:
-            vals.append(float(r["score"]))
+        sc = res.get("score") if isinstance(res, dict) else None
+        if sc is None:
+            sc = r.get("score")
+        if sc is not None:
+            yield r.get("dataset_example_id"), float(sc)
+
+
+def _avg_score(eval_runs):
+    vals = [s for _, s in _runs(eval_runs)]
     return round(sum(vals) / len(vals), 3) if vals else None
+
+
+def _per_example(full):
+    """Per-example referee scores keyed by dataset_example_id. evaluation_runs carry
+    only experiment_run_id, so join through task_runs to recover the example id."""
+    run2ex = {}
+    for t in full.get("task_runs", []) or []:
+        t = t if isinstance(t, dict) else getattr(t, "__dict__", {})
+        run2ex[t.get("id")] = t.get("dataset_example_id")
+    out = {}
+    for e in full.get("evaluation_runs", []) or []:
+        e = e if isinstance(e, dict) else getattr(e, "__dict__", {})
+        ex = run2ex.get(e.get("experiment_run_id"))
+        res = e.get("result") or {}
+        sc = res.get("score") if isinstance(res, dict) else None
+        if ex is not None and sc is not None:
+            out[ex] = float(sc)
+    return out
+
+
+def _bootstrap_ci(deltas, n=2000, lo=5, hi=95):
+    """90% CI of the mean paired delta (candidate - current). No Date/Math.random here,
+    this is a plain script so `random` is fine."""
+    import random
+    if not deltas:
+        return None
+    L = len(deltas)
+    means = sorted(sum(deltas[random.randrange(L)] for _ in range(L)) / L for _ in range(n))
+    return (round(means[int(lo / 100 * n)], 3), round(means[int(hi / 100 * n)], 3))
 
 
 def main() -> None:
@@ -41,12 +74,14 @@ def main() -> None:
     exps = c.experiments.list(dataset_id=did)
     print(f"{len(exps)} experiments on {DATASET}")
     rows = []
+    examp = {}  # experiment id -> {example_id: score} for paired significance
     for e in exps:
         e = e if isinstance(e, dict) else e.__dict__
         eid, name = e["id"], e["name"]
         try:
             full = c.experiments.get_experiment(experiment_id=eid)
             score = _avg_score(full.get("evaluation_runs"))
+            examp[eid] = _per_example(full)
         except Exception as ex:  # noqa: BLE001
             score = None
             print("  score ERR", name, repr(ex)[:80])
@@ -70,9 +105,17 @@ def main() -> None:
         if not (cur and cand and cur["score"] is not None and cand["score"] is not None):
             continue
         promoted = cand["score"] > cur["score"]
+        # paired bootstrap CI of the per-example delta (candidate - current)
+        cp, np_ = examp.get(cur["id"], {}), examp.get(cand["id"], {})
+        common = sorted(set(cp) & set(np_))
+        deltas = [np_[k] - cp[k] for k in common]
+        ci = _bootstrap_ci(deltas)
+        significant = bool(ci and ci[0] > 0)  # candidate beats current beyond noise
         rounds.append({
             "date": ts, "current": cur["score"], "candidate": cand["score"],
             "delta": round(cand["score"] - cur["score"], 3), "promoted": promoted,
+            "n_paired": len(deltas), "ci_low": ci[0] if ci else None,
+            "ci_high": ci[1] if ci else None, "significant": significant,
             "current_url": cur["url"], "candidate_url": cand["url"],
         })
     rounds.sort(key=lambda r: r["date"])
@@ -105,12 +148,14 @@ def main() -> None:
 
     promotions = sum(1 for r in rounds if r["promoted"])
     refusals = len(rounds) - promotions
+    sig_promotions = sum(1 for r in rounds if r["promoted"] and r["significant"])
     cur_curve = [r["current"] for r in rounds]
     snapshot = {
         "dataset": DATASET, "examples": n_examples,
         "experiments_total": len(rows),
         "rounds": rounds,
         "n_rounds": len(rounds), "promotions": promotions, "refusals": refusals,
+        "significant_promotions": sig_promotions,
         "production_score": cur_curve[-1] if cur_curve else None,
         "first_score": cur_curve[0] if cur_curve else None,
         "best_score": max(cur_curve) if cur_curve else None,

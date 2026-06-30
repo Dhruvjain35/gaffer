@@ -590,6 +590,21 @@ footer{border-top:1px solid var(--border-2)}
 .sb-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
 .sb-links a{font-family:var(--pixel);font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;color:var(--green-lum);border:1px solid var(--tint-2);background:var(--tint);border-radius:9px;padding:11px 15px}
 .sb-links a:hover{filter:brightness(1.15)}
+.rep-grid{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}
+.rep-k{text-align:center;padding:0 14px}
+.rep-kv{font-family:var(--serif);font-size:4rem;line-height:1;color:var(--green-lum)}
+.rep-kl{margin-top:8px;font-family:var(--pixel);font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rep-kl span{color:var(--green-soft)}
+.cmtab{border-collapse:collapse;font-size:.84rem}
+.cmtab td{border:1px solid var(--border);padding:11px 16px;text-align:center;color:var(--fg);font-family:var(--serif);font-size:1.15rem}
+.cmtab td.hh{font-family:var(--sans);font-size:.74rem;color:var(--muted);font-weight:500;background:#0a0d0b}
+.cmtab td.ok{background:rgba(92,196,131,.14);color:var(--green-soft)}
+.cmtab td.bad{background:rgba(224,168,90,.12);color:#e0a85a}
+.rep-note{margin-top:11px;font-size:.78rem;color:var(--muted-2)}
+@media(max-width:640px){.rep-grid{grid-template-columns:1fr;gap:18px}}
+.sb-sig{font-family:var(--pixel);font-size:.5rem;letter-spacing:.04em;text-transform:uppercase;padding:4px 7px;border-radius:6px}
+.sb-sig.on{background:var(--tint-2);color:var(--green-soft)}
+.sb-sig.off{background:rgba(255,255,255,.05);color:var(--muted-2)}
 </style>
 <section class="screen proof" id="screen-proof">
   <section class="loop-intro"><div class="container">
@@ -890,20 +905,39 @@ function renderPlan(){const w=$('matchesWrap'),P=_plan;
 
 let _sbLoaded=false;
 async function loadScoreboard(){if(_sbLoaded)return;_sbLoaded=true;
-  let d;try{d=await (await fetch('/api/scoreboard')).json();}catch{ $('sbWrap').innerHTML='<p class="lead" style="color:var(--muted)">Scoreboard unavailable right now.</p>';_sbLoaded=false;return;}
+  let d,rep=null;
+  try{d=await (await fetch('/api/scoreboard')).json();}catch{ $('sbWrap').innerHTML='<p class="lead" style="color:var(--muted)">Scoreboard unavailable right now.</p>';_sbLoaded=false;return;}
+  try{rep=await (await fetch('/api/referee-report')).json();}catch{}
   if(!d||!d.rounds||!d.rounds.length){$('sbWrap').innerHTML='<p class="lead" style="color:var(--muted)">No scrimmage history yet.</p>';return;}
   const R=d.rounds, pct=v=>Math.round(v*100);
   const fmt=v=>v==null?'–':v.toFixed(2);
+  const sigP=d.significant_promotions;
   // stat cards
   const stats=[
-    ['v g',fmt(d.production_score),'production playbook score, on the held-out set'],
+    ['v g',fmt(d.production_score),'production score on the referee’s '+(d.examples||'')+'-case set'],
     ['v',fmt(d.first_score)+' → '+fmt(d.best_score),'where it started, and its best coached score'],
     ['v',d.n_rounds,'scrimmages run, each a pair of Phoenix experiments'],
-    ['v g',d.promotions,'candidates the agent promoted'],
-    ['v',d.refusals,'candidates the agent refused'],
+    ['v g',d.promotions,'candidates promoted'],
+    ['v',d.refusals,'candidates refused, incumbent kept'],
     ['v',d.prompt_versions,'playbook versions in the Phoenix registry'],
   ];
   const statsHtml='<div class="sb-stats">'+stats.map(s=>`<div class="sb-stat reveal"><div class="${s[0]}">${esc(''+s[1])}</div><div class="l">${esc(s[2])}</div></div>`).join('')+'</div>';
+  // ---- Referee Report Card: the grader, graded (the rarest move in the field) ----
+  let reportHtml='';
+  if(rep&&rep.kappa!=null){const cm=rep.confusion||{};const agree=rep.agreement!=null?Math.round(rep.agreement*100):null;
+    const cell=(v,cls)=>`<td class="${cls||''}">${v!=null?v:0}</td>`;
+    reportHtml=`<div class="sb-panel reveal"><h3>The referee, graded.</h3><p class="sub">Every self-grading agent invites one question: who grades the grader the whole climb optimises toward? So we hand-labelled ${rep.n} GAFFER answers as a human golden set and scored the production referee against it.</p>
+      <div class="rep-grid">
+        <div class="rep-k"><div class="rep-kv">${rep.kappa.toFixed(2)}</div><div class="rep-kl">Cohen’s κ${rep.kappa_label?'<br><span>'+esc(rep.kappa_label)+'</span>':''}</div></div>
+        <div class="rep-cm"><table class="cmtab">
+          <tr><td class="hh"></td><td class="hh">referee GOAL</td><td class="hh">referee MISS</td></tr>
+          <tr><td class="hh">human GOAL</td>${cell(cm.tp,'ok')}${cell(cm.fn,'bad')}</tr>
+          <tr><td class="hh">human MISS</td>${cell(cm.fp,'bad')}${cell(cm.tn,'ok')}</tr></table>
+          <div class="rep-note">${agree!=null?agree+'% agreement · ':''}${rep.n} answers · the green diagonal is where the referee matched the human</div></div>
+      </div>${rep.takeaway?`<p class="sub" style="margin:16px 0 0">${esc(rep.takeaway)}</p>`:''}
+      ${rep.report_url?`<div class="sb-links"><a href="${esc(rep.report_url)}" target="_blank" rel="noopener">open the eval project ↗</a></div>`:''}
+    </div>`;
+  }
   // climb curve (production trajectory over rounds)
   const W=100,H=40,pad=3,n=R.length;
   const xs=i=>pad+(W-2*pad)*(n<2?0.5:i/(n-1)), ys=v=>pad+(H-2*pad)*(1-v);
@@ -914,16 +948,20 @@ async function loadScoreboard(){if(_sbLoaded)return;_sbLoaded=true;
     <div class="sb-curve"><svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none"><defs><linearGradient id="sbg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2f6b3f"/><stop offset="1" stop-color="#74d195"/></linearGradient></defs>${grid}<polyline points="${line}" fill="none" stroke="url(#sbg)" stroke-width="0.9" stroke-linejoin="round" stroke-linecap="round"/>${dots}</svg></div>
     <div class="sb-legend"><span><i style="background:#4fb472"></i>candidate promoted</span><span><i style="background:#e0a85a"></i>candidate refused</span></div></div>`;
   // rounds list (newest first)
-  const rowsHtml='<div class="sb-panel reveal"><h3>Every scrimmage, every verdict.</h3><p class="sub">Each row is two real Phoenix experiments graded by the referee on the same '+d.examples+'-case set. Open either in the live workspace.</p><div class="sb-rounds">'+
+  const rowsHtml='<div class="sb-panel reveal"><h3>Every scrimmage, every verdict.</h3><p class="sub">Each row is two real Phoenix experiments graded by the referee on the same '+d.examples+'-case set. We don’t just promote on a higher number: each promotion is flagged for whether the candidate beat production beyond a paired-bootstrap noise floor (CI > 0). '+(sigP!=null?'Only '+sigP+' of '+d.promotions+' did on an 8-example sample, which is exactly why the gate is hardening to significance-gating and a larger sealed holdout. ':'')+'Open either experiment in the live workspace.</p><div class="sb-rounds">'+
     R.slice().reverse().map((r,idx)=>{const i=R.length-idx;const cb=Math.max(4,pct(r.current)),nb=Math.max(4,pct(r.candidate));
       return `<div class="sb-round"><div class="rd">Round<br>${i}<br>${esc((r.date||'').slice(0,10))}</div>
         <div class="sb-cmp">
           <div class="sb-line"><span>Production</span><span class="t"><i style="width:${cb}%"></i></span><span class="num">${fmt(r.current)}</span></div>
           <div class="sb-line cand"><span>Candidate</span><span class="t"><i style="width:${nb}%"></i></span><span class="num">${fmt(r.candidate)}</span></div>
         </div>
-        <div class="sb-meta"><span class="sb-badge ${r.promoted?'promoted':'refused'}">${r.promoted?'promoted +'+r.delta.toFixed(2):'refused '+r.delta.toFixed(2)}</span><a class="sb-explink" href="${esc(r.promoted?r.candidate_url:r.current_url)}" target="_blank" rel="noopener">view experiment ↗</a></div>
+        <div class="sb-meta"><span class="sb-badge ${r.promoted?'promoted':'refused'}">${r.promoted?'promoted +'+r.delta.toFixed(2):'refused '+r.delta.toFixed(2)}</span>${r.promoted&&r.significant!=null?`<span class="sb-sig ${r.significant?'on':'off'}">${r.significant?'✓ beats noise':'within noise'}</span>`:''}<a class="sb-explink" href="${esc(r.promoted?r.candidate_url:r.current_url)}" target="_blank" rel="noopener">view experiment ↗</a></div>
       </div>`;}).join('')+'</div></div>';
-  $('sbWrap').innerHTML=statsHtml+curveHtml+rowsHtml;
+  // ---- Bench & Overturns: lead with the losses (restraint = credibility) ----
+  const refused=R.slice().reverse().filter(r=>!r.promoted);
+  const benchHtml=refused.length?`<div class="sb-panel reveal"><h3>What we didn’t ship.</h3><p class="sub">The gate is real because it sometimes ships nothing. ${d.refusals} times the coached candidate lost the scrimmage and GAFFER kept the incumbent. An eval that only ever promotes isn’t a gate, it’s a rubber stamp.</p><div class="sb-rounds">`+
+    refused.map(r=>`<div class="sb-round"><div class="rd">${esc((r.date||'').slice(0,10))}</div><div class="sb-cmp"><div class="sb-line"><span>Incumbent</span><span class="t"><i style="width:${Math.max(4,pct(r.current))}%"></i></span><span class="num">${fmt(r.current)}</span></div><div class="sb-line cand"><span>Candidate</span><span class="t"><i style="width:${Math.max(4,pct(r.candidate))}%"></i></span><span class="num">${fmt(r.candidate)}</span></div></div><div class="sb-meta"><span class="sb-badge refused">kept incumbent ${r.delta.toFixed(2)}</span></div></div>`).join('')+`</div></div>`:'';
+  $('sbWrap').innerHTML=statsHtml+reportHtml+curveHtml+rowsHtml+benchHtml;
   // wire deep links + reveal
   document.querySelectorAll('#screen-proof [data-phx]').forEach(a=>{const u=d[a.dataset.phx];if(u)a.href=u;});
   const sl=$('sbLinks');if(sl)sl.innerHTML=`<a href="${esc(d.dataset_url||'#')}" target="_blank" rel="noopener">open the dataset · ${d.examples} cases ↗</a><a href="${esc(d.prompts_url||'#')}" target="_blank" rel="noopener">open the prompt registry ↗</a><a href="${esc(d.project_url||'#')}" target="_blank" rel="noopener">open the live traces ↗</a>`;
