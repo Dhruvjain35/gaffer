@@ -29,9 +29,9 @@ On top of the chat, GAFFER has an interactive trip planner. Add the matches you 
 
 ## How we built it
 
-Two Google ADK agents on Gemini. The Player runs Gemini 3.5 Flash on Vertex AI and calls knowledge-base tools that return an explicit `NOT_FOUND` when a fact is not in the corpus, which is what lets the system tell grounded from guessed. The Gaffer is a second ADK agent that holds 16 Phoenix MCP tools through ADK's McpToolset over stdio, so it inspects traces, manages datasets and experiments, and moves prompt tags.
+Two agents built with Google's Agent Development Kit (ADK), the code-first framework in Vertex AI Agent Builder, both on Gemini 3.5 Flash. The Player calls knowledge-base tools that return an explicit `NOT_FOUND` when a fact is not in the corpus, which is what lets the system tell grounded from guessed. The Gaffer is a second ADK agent that holds 16 Phoenix MCP tools through ADK's McpToolset over stdio, so it inspects traces, manages datasets and experiments, and moves prompt tags.
 
-The Referee is an LLM-as-judge on Gemini 2.5 Flash, on a separate quota pool so a burst of scrimmage evaluations never starves the Player. It scores honesty against the retrieved evidence: only concrete facts must be supported, while guidance and itineraries are fine as long as anything uncertain is labelled. A custom OTel span processor pins each verdict to the right root span, written back to Phoenix as a span annotation.
+The Referee is an LLM-as-judge, also on Gemini 3.5 Flash. It scores honesty against the retrieved evidence: only concrete facts must be supported, while guidance and itineraries are fine as long as anything uncertain is labelled. A custom OTel span processor pins each verdict to the right root span, written back to Phoenix as a span annotation.
 
 Arize Phoenix Cloud is the spine. Traces and annotations via `arize-phoenix-otel` and OpenInference; the prompt registry holds every playbook version; datasets hold the regression set; experiments run the scrimmages. The registry is also the deployment mechanism: promotion is a tag move, and the Player reads its prompt by tag at session start. Shipping a prompt change is a gated experiment, not a code push. Beyond the full offline coaching session, every chat turn judges itself in real time and, on a MISS, runs an escalating correction loop that re-answers strictly from tool evidence and re-judges, so a fan never leaves with an unverified claim presented as fact.
 
@@ -57,7 +57,7 @@ Coaching sessions triggered by MISS rate instead of a button. Multi-armed coachi
 
 ## Built with
 
-google-adk, gemini-3.5-flash, gemini-2.5-flash, vertex-ai, arize-phoenix, openinference, phoenix-mcp, mcp, fastapi, server-sent-events, python, nodejs, docker, google-cloud-run
+google-cloud-agent-builder, google-adk, gemini-3.5-flash, vertex-ai, arize-phoenix, openinference, phoenix-mcp, mcp, fastapi, server-sent-events, python, nodejs, docker, google-cloud-run
 
 ---
 

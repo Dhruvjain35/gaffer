@@ -11,8 +11,8 @@
 [![Live demo](https://img.shields.io/badge/▶_Live_demo-gaffer.run.app-2f6b3f?style=for-the-badge)](https://gaffer-734868402447.us-central1.run.app)
 [![Watch the demo](https://img.shields.io/badge/Watch_the_90s_demo-▶-c0392b?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=ARjeNECEABY)
 
-![Google ADK](https://img.shields.io/badge/Google-ADK-34A853?logo=google&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini-3.5_·_2.5_Flash-4285F4?logo=googlegemini&logoColor=white)
+![Agent Builder](https://img.shields.io/badge/Vertex_AI-Agent_Builder_·_ADK-34A853?logo=googlecloud&logoColor=white)
+![Gemini](https://img.shields.io/badge/Gemini-3.5_Flash-4285F4?logo=googlegemini&logoColor=white)
 ![Arize Phoenix](https://img.shields.io/badge/Arize-Phoenix-ff5a1f?logo=arize&logoColor=white)
 ![Phoenix MCP](https://img.shields.io/badge/Phoenix-MCP_16_tools-6e44ff)
 ![FastAPI](https://img.shields.io/badge/FastAPI-SSE-009688?logo=fastapi&logoColor=white)
@@ -117,7 +117,7 @@ Beyond chat, GAFFER plans a whole trip. Add the matches you want to catch and it
 
 | Layer | What |
 |---|---|
-| **Agents** | Google ADK · Gemini 3.5 Flash (Player) + Gemini 2.5 Flash (Referee) on Vertex AI |
+| **Agents** | Google's Agent Development Kit (ADK), the code-first framework in Vertex AI Agent Builder · Gemini 3.5 Flash (Player + Referee) on Vertex AI |
 | **Observability + control loop** | Arize Phoenix Cloud: `arize-phoenix-otel` + OpenInference tracing, span annotations, prompt registry, datasets, experiments |
 | **Coach's hands** | official `@arizeai/phoenix-mcp` server (stdio, 16 tools) via ADK `McpToolset` |
 | **Serving** | FastAPI + Server-Sent Events · single-container Cloud Run (Python agents + Node for the MCP server) |

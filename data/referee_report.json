@@ -8,6 +8,6 @@
   "caught": 22,
   "leaked": 0,
   "subtle_caught": 6,
-  "judge_model": "gemini-2.5-flash",
+  "judge_model": "gemini-3.5-flash",
   "takeaway": "We tried to fool it. We authored 22 bad answers, 16 blatant contradictions of the evidence and 6 subtle ones that slip a single fabricated detail into an otherwise correct answer (a $40 parking add-on, '1 litre' for the real 590 ml). The production referee caught 22 of 22, including 6 of 6 subtle leaks, and never passed a fabrication. On 38 real grounded answers it flagged 0. The grader the whole climb optimises toward holds up, and this is reproducible: scripts/referee_report.py."
 }

@@ -138,7 +138,7 @@ def main():
         "real_answers": len(goods), "real_passed": real_passed, "real_flagged": real_flagged,
         "fabrications": fab, "gross": GROSS, "subtle": subtle_total,
         "caught": caught, "leaked": leaked, "subtle_caught": subtle_caught,
-        "judge_model": os.environ.get("JUDGE_MODEL", "gemini-2.5-flash"),
+        "judge_model": os.environ.get("JUDGE_MODEL", "gemini-3.5-flash"),
         "takeaway": takeaway,
     }
     out = ROOT / "data" / "referee_report.json"

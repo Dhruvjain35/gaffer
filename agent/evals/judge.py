@@ -15,8 +15,9 @@ from typing import Any, Optional
 
 logger = logging.getLogger(__name__)
 
-# Separate quota pool from the Player's gemini-3.5: scrimmages burst many judge calls.
-JUDGE_MODEL = os.environ.get("JUDGE_MODEL", "gemini-2.5-flash")
+# The Referee runs on Gemini 3.5 Flash, the same family as the Player. Override JUDGE_MODEL
+# to split it onto a separate quota pool if scrimmage bursts ever need it.
+JUDGE_MODEL = os.environ.get("JUDGE_MODEL", "gemini-3.5-flash")
 
 _JUDGE_TEMPLATE = """You are a strict football referee judging an AI World Cup concierge's answer.
 
