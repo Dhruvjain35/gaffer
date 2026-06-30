@@ -615,7 +615,7 @@ footer{border-top:1px solid var(--border-2)}
 .sb-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:14px;margin:6px 0}
 .sb-stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 22px}
 .sb-stat .v{font-family:var(--serif);font-size:2.4rem;line-height:1;color:var(--fg)}
-.sb-stat .v.g{color:var(--green-lum);font-style:normal}.sb-stat .v{white-space:nowrap}
+.sb-stat .v.g{color:var(--green-lum);font-style:normal}.sb-stat .v{white-space:nowrap}.sb-stat .v.two{font-size:1.6rem;letter-spacing:-.01em}
 .sb-stat .l{margin-top:10px;font-size:.82rem;color:var(--muted);line-height:1.35}
 .sb-panel{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:26px 28px;margin-top:22px}
 .sb-panel h3{font-family:var(--serif);font-size:1.55rem;margin:0 0 4px}
@@ -1016,7 +1016,7 @@ async function loadScoreboard(){if(_sbLoaded)return;_sbLoaded=true;
   // stat cards
   const stats=[
     ['v g',fmt(d.production_score),'production score on the referee’s '+(d.examples||'')+'-case set'],
-    ['v',fmt(d.first_score)+' → '+fmt(d.best_score),'where it started, and its best coached score'],
+    ['v two',fmt(d.first_score)+'→'+fmt(d.best_score),'where it started, and its best coached score'],
     ['v',d.n_rounds,'scrimmages run, each a pair of Phoenix experiments'],
     ['v g',d.promotions,'candidates promoted'],
     ['v',d.refusals,'candidates refused, incumbent kept'],
